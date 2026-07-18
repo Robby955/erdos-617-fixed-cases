@@ -1,0 +1,11 @@
+tmp/
+/r5/main.pdf
+/r6/main.pdf
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz

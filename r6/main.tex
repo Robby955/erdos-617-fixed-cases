@@ -1,0 +1,858 @@
+\documentclass[11pt,reqno,a4paper]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\comp}[1]{\overline{#1}}
+\newcommand{\one}{\mathbf{1}}
+
+\title[The six-color case]{The six-color case of an Erd\H{o}s--Gy\'arf\'as balanced-coloring problem}
+\author{Robert Sneiderman}
+\date{18 July 2026}
+\subjclass[2020]{05C15, 05C35, 05D10}
+\keywords{edge coloring, balanced coloring, extremal graph theory, Ramsey theory}
+
+\begin{document}
+\hypersetup{
+  pdftitle={The six-color case of an Erdos--Gyarfas balanced-coloring problem},
+  pdfauthor={Robert Sneiderman}
+}
+
+\begin{abstract}
+We prove the six-color case of a conjecture of Erd\H{o}s and Gy\'arf\'as:
+every six-coloring of the edges of $K_{37}$ has seven vertices whose induced
+edges omit at least one color.  For a fixed color, the counterexample
+hypothesis gives a graph in which every seven vertices span at most sixteen
+edges.  We combine the Kang--Pikhurko extremal theorem with minimum-degree
+decompositions to prove clique lemmas on 18, 19, 24, and 25 vertices.  These
+lemmas give a 97-edge lower bound for the relevant 31-vertex graphs and then
+contradict the edge count of a least color on 37 vertices.  The proof is
+non-computational.  This is a fixed-parameter result and does not settle the
+conjecture for general $r$.
+\end{abstract}
+
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{\centering
+\textbf{Preprint.}
+This manuscript has not completed external mathematical review.}}
+\end{center}
+
+\paragraph{AI-use disclosure.}
+OpenAI GPT-5.6 Sol was used extensively during proof search, drafting, and
+internal checking. OpenAI GPT-5 (Codex) was used for later source review and
+release checks. This manuscript has not completed external mathematical
+review.
+
+\section{Introduction}
+
+Erd\H{o}s and Gy\'arf\'as asked whether the following assertion holds for
+every integer $r\geq3$: whenever the edges of $K_{r^2+1}$ are colored with
+$r$ colors, some $r+1$ vertices induce a complete graph on which at least one
+color is absent \cite{ErdosGyarfas1999}.  They proved the cases $r=3$ and
+$r=4$, observed that the analogous assertion fails for $r=2$, and gave
+related constructions on $r^2$ vertices.  The question is also recorded as
+Erd\H{o}s Problem 617 \cite{ErdosProblems617}.
+
+We prove the assertion for six colors.
+
+\begin{theorem}\label{thm:main}
+For every map $\chi:E(K_{37})\to[6]$, there is a set
+$S\subseteq V(K_{37})$ with $|S|=7$ such that
+\[
+  \chi\!\left(E(K_{37}[S])\right)\ne[6].
+\]
+\end{theorem}
+
+Theorem~\ref{thm:main} concerns only $r=6$.  No assertion for $r\geq7$ is
+proved here.
+
+For one color in a hypothetical counterexample, let $G$ be the graph formed
+by the edges of that color.  Every seven vertices span at most sixteen edges
+of $G$, since each of the other five colors must occur.  We call this the
+local cap.  The argument has three stages.  First, we prove that certain
+admissible graphs on 18, 19, 24, and 25 vertices contain $K_6$.  Second, we
+peel three such cliques from a 31-vertex graph and reach a triangle-free
+13-vertex complement that violates the local cap.  Finally, a least color on
+37 vertices reduces by averaging to that 31-vertex obstruction.
+
+The only external graph bounds used below are the Kang--Pikhurko theorem
+\cite{KangPikhurko2005} and Brooks's theorem \cite{Brooks1941}.  All finite
+case splits in the proof are given explicitly.
+
+\section{Preliminaries}
+
+All graphs are finite and simple.  For a graph $F$, we write $e(F)$ for its
+number of edges, $\alpha(F)$ for its independence number, $\tau(F)$ for its
+minimum vertex-cover number, and $\delta(F)$ and $\Delta(F)$ for its minimum
+and maximum degrees.  The complement of $F$ is $\comp F$, and $F[W]$ denotes
+the subgraph induced by $W\subseteq V(F)$.  The Tur\'an graph with $q$ parts
+on $n$ vertices is $T_q(n)$, and $t_q(n)=e(T_q(n))$.
+
+\begin{definition}\label{def:admissible}
+A graph $F$ is \emph{admissible} if
+\[
+  e(F[S])\leq16
+  \qquad\text{for every }S\in\binom{V(F)}7.
+\]
+\end{definition}
+
+If $F$ is admissible and $L=\comp F$, then every seven vertices span at
+least five edges of $L$.  Admissibility is inherited by induced subgraphs.
+
+We use the following part of the Kang--Pikhurko theorem, together with its
+equality characterization \cite[Theorems 1 and 4 and Lemma 5]{KangPikhurko2005}.
+
+\begin{theorem}[Kang--Pikhurko]\label{thm:KP}
+Let $q\geq2$, let $n\geq q+3$, and suppose $q\leq(n-1)/2$.  If $L$ is a
+$K_{q+1}$-free graph on $n$ vertices that is not $q$-partite, then
+\begin{equation}\label{eq:KP}
+  e(L)\leq t_q(n)-\left\lfloor\frac nq\right\rfloor+1.
+\end{equation}
+The equality graphs are those in the construction characterized by Kang and
+Pikhurko.
+\end{theorem}
+
+We use Brooks's theorem in the following standard form: a connected graph of
+maximum degree $D$ has a proper $D$-coloring unless it is complete or an odd
+cycle \cite{Brooks1941}.
+
+One fixed equality exclusion will be used to reach the lower endpoint in the
+18-vertex lemma.
+
+\begin{lemma}[The 18-vertex endpoint]\label{lem:endpoint18}
+Let $R$ be an admissible graph on 18 vertices with $\alpha(R)\leq3$.  If
+$\comp R$ is not three-partite, then
+\[
+  e(R)\geq51.
+\]
+\end{lemma}
+
+\begin{proof}
+The graph $L=\comp R$ is $K_4$-free and not three-partite.  Since
+$t_3(18)=108$, Theorem~\ref{thm:KP} first gives
+\[
+  e(L)\leq108-6+1=103,
+  \qquad e(R)\geq50.
+\]
+Suppose equality holds.  The equality characterization of Kang and Pikhurko
+has old part-size sequence $(5,6,6)$ or $(5,5,7)$.  In the complement $R$,
+every old part is a clique.  The second sequence therefore contains a
+$K_7$, contrary to admissibility.
+
+For $(5,6,6)$, let $N_s$ and $N_t$ be the special and witness parts in
+the equality construction, let $x$ be its exceptional vertex, let
+$\varnothing\ne A\subsetneq N_s$ be its distinguished subset, and let
+$y\in N_t$ be its witness vertex.  In $L$, the vertex $x$ is adjacent to
+$A\cup\{y\}$ and to every old part other than $N_s,N_t$, while the edges
+between $y$ and $A$ are deleted.  Hence, in $R$, the vertex $x$ is adjacent
+to $N_s\setminus A$ and $N_t\setminus\{y\}$, and $y$ is adjacent to $A$.
+
+The parts $N_s,N_t$ have sizes five and six, in either order.  If the
+special part has size five,
+the witness $K_6$ together with the exceptional vertex spans
+\[
+  \binom62+5=20
+\]
+edges of $R$.  If the special part has size six, let $a$, with
+$1\leq a\leq5$, be the size of its distinguished subset.  The special
+$K_6$, together with either the exceptional vertex or the witness vertex,
+spans
+\[
+  \binom62+\max(a,6-a)\geq18
+\]
+edges.  Each case exceeds the local cap of sixteen.  Equality is impossible,
+so $e(R)\geq51$.
+\end{proof}
+
+The next accounting observation will be used repeatedly.
+
+\begin{lemma}[Neighborhood accounting]\label{lem:accounting}
+Let $F$ be a graph, let $v$ be a minimum-degree vertex of degree $d$, and put
+\[
+  N=N_F(v),\qquad U=V(F)\setminus(N\cup\{v\}),
+\]
+\[
+  X=e_F(N,U),\qquad Y=e(F[N]),\qquad A=X+Y.
+\]
+Then
+\begin{equation}\label{eq:accounting}
+  X+2Y\geq d(d-1),
+  \qquad A\geq\binom d2.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:nonneighbor-upper}
+  e(F[U])\leq e(F)-d-\binom d2.
+\end{equation}
+If $\alpha(F)\leq s+1$, then $\alpha(F[U])\leq s$.
+\end{lemma}
+
+\begin{proof}
+Each vertex of $N$ has at least $d-1$ incident edges after its edge to $v$
+is removed.  Summing over $N$ counts an $N$--$U$ edge once and an edge of
+$F[N]$ twice, which proves the first inequality.  Since
+$Y\leq\binom d2$,
+\[
+  A=(X+2Y)-Y\geq d(d-1)-\binom d2=\binom d2.
+\]
+The edge decomposition
+\[
+  e(F)=d+A+e(F[U])
+\]
+gives \eqref{eq:nonneighbor-upper}.  An independent $(s+1)$-set in $F[U]$
+together with $v$ would be an independent $(s+2)$-set in $F$.
+\end{proof}
+
+We will use the following elementary averaging fact.
+
+\begin{lemma}[Induced-subgraph averaging]\label{lem:averaging}
+Let $F$ have $n$ vertices and $E$ edges, and let $2\leq q\leq n$.  Some
+induced $q$-vertex subgraph of $F$ has at most
+\[
+  E\frac{\binom q2}{\binom n2}
+\]
+edges.
+\end{lemma}
+
+\begin{proof}
+Choose a $q$-set uniformly at random.  Each edge of $F$ belongs to the
+chosen set with probability $\binom q2/\binom n2$, so the expected number
+of induced edges is the displayed quantity.  At least one choice has no
+more edges than the expectation.
+\end{proof}
+
+We also record the effect of removing a $K_6$.
+
+\begin{lemma}[Clique peeling]\label{lem:peeling}
+Let $F$ be admissible, let $B\subseteq V(F)$ span a $K_6$, and suppose
+$\alpha(F)\leq s\leq5$.  Then
+\[
+  \alpha(F-B)\leq s-1,
+  \qquad e(F-B)\leq e(F)-15.
+\]
+\end{lemma}
+
+\begin{proof}
+Every vertex outside $B$ has at most one neighbor in $B$, since two such
+neighbors together with $B$ would give at least seventeen edges on seven
+vertices.  If $I\subseteq V(F)\setminus B$ were an independent $s$-set,
+the edges from $I$ to $B$ would meet at most $s<6$ vertices of $B$.  A vertex
+of $B$ outside their endpoints would extend $I$ to an independent
+$(s+1)$-set.  The edge bound follows by deleting the fifteen edges of $B$.
+\end{proof}
+
+The terminal argument below will appear at orders 13 and 14.
+
+\begin{lemma}[Terminal complement]\label{lem:terminal}
+Let $L$ be triangle-free with $\alpha(L)\leq5$, and suppose every seven
+vertices span at least five edges.  There is no degree-five vertex of $L$
+having at least seven nonneighbors.
+\end{lemma}
+
+\begin{proof}
+Suppose $w$ is such a vertex.  Put $A=N_L(w)$ and let $B$ be its set of
+nonneighbors, so $|A|=5$ and $|B|\geq7$.  The set $A$ is independent.  For
+$b\in B$, write
+\[
+  t_b=|N_L(b)\cap A|.
+\]
+If $b,c\in B$ satisfy $t_b,t_c\leq2$, then the seven-set
+$A\cup\{b,c\}$ spans
+\[
+  t_b+t_c+\one_{bc\in E(L)}
+\]
+edges.  The local lower bound forces $t_b=t_c=2$ and $bc\in E(L)$.  Thus
+the vertices with $t_b\leq2$ form a clique, and triangle-freeness permits at
+most two of them.
+
+At least five vertices of $B$ therefore satisfy $t_b\geq3$.  They are
+pairwise nonadjacent: if two were adjacent, their neighborhoods in the
+independent set $A$ would be disjoint, although their sizes sum to at least
+six.  Five such vertices together with $w$ form an independent six-set,
+contrary to $\alpha(L)\leq5$.
+\end{proof}
+
+\section{The 18-vertex clique lemma}
+
+We now prove the full statement denoted by $P_3$ in the reduction.
+
+\begin{proposition}[$P_3$]\label{prop:P3}
+If $R$ is admissible on 18 vertices, $\alpha(R)\leq3$, and $e(R)\leq55$,
+then $R$ contains a $K_6$.
+\end{proposition}
+
+\begin{proof}
+If $\comp R$ is three-partite, one of its three parts has size at least six
+and gives a $K_6$ in $R$.  Otherwise Lemma~\ref{lem:endpoint18} gives
+$e(R)\geq51$.
+
+Assume that $R$ has no $K_6$.  Choose a minimum-degree vertex $v$, write
+$d=d_R(v)$, and let $U$ be its $17-d$ nonneighbors.  Since
+$\alpha(R[U])\leq2$, the graph
+\[
+  L=\comp{R[U]}
+\]
+is triangle-free.  The absence of a $K_6$ gives $\alpha(L)\leq5$.
+Every neighborhood in a triangle-free graph is independent, so
+\begin{equation}\label{eq:deltaL5}
+  \Delta(L)\leq5.
+\end{equation}
+Lemma~\ref{lem:accounting} and \eqref{eq:deltaL5} give the following bounds.
+\begin{center}
+\begin{tabular}{c@{\qquad}c@{\qquad}c@{\qquad}c}
+\toprule
+$d$ & $|U|$ & lower bound on $e(R[U])$ & lower bound on $e(R)$\\
+\midrule
+0 & 17 & 94 & 94\\
+1 & 16 & 80 & 81\\
+2 & 15 & 68 & 71\\
+3 & 14 & 56 & 62\\
+4 & 13 & 46 & 56\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus $d\geq5$.  Since $e(R)\leq55$, the average degree gives $d\leq6$.
+
+Suppose first that $d=5$.  Now $|U|=12$, and
+\eqref{eq:deltaL5} gives $e(R[U])\geq36$.  Write
+\[
+  e(R)=50+\ell,\qquad
+  e_R(N,U)+e(R[N])=10+a,
+\]
+\[
+  e(R[U])=36+k.
+\]
+Here $1\leq\ell\leq5$, and exact edge accounting gives
+\begin{equation}\label{eq:P3-shell}
+  a+k=\ell-1,
+  \qquad a,k\geq0.
+\end{equation}
+Let $M=\comp{R[N]}$, put $m=e(M)$, and for $x\in N$ write
+$x_x=d_R(x,U)$.  Minimum degree gives
+\begin{equation}\label{eq:P3-pointwise}
+  x_x\geq d_M(x).
+\end{equation}
+The sum of the cross-degrees is
+\[
+  \sum_{x\in N}x_x=(10+a)-(10-m)=a+m.
+\]
+Summing \eqref{eq:P3-pointwise} gives $a+m\geq2m$, so
+\begin{equation}\label{eq:P3-m}
+  1\leq m\leq a\leq4.
+\end{equation}
+The lower bound $m\geq1$ follows because $m=0$ would make $N[v]$ a $K_6$.
+
+The triangle-free graph $L$ is not bipartite, since one part of a
+bipartition of its 12 vertices would be an independent six-set in $L$ and
+hence a $K_6$ in $R[U]$.  In particular,
+\[
+  \tau(L)=12-\alpha(L)\geq7.
+\]
+If $pq\in E(M)$, then
+\begin{equation}\label{eq:P3-cover}
+  N_R(p,U)\cup N_R(q,U)
+\end{equation}
+is a vertex cover of $L$.  Indeed, an uncovered edge of $L$ together with
+$p,q$ would be an independent four-set in $R$.
+
+There is an edge $pq\in E(M)$ for which $x_p+x_q\leq6$.  If $m\leq2$,
+this follows from
+\[
+  \sum_{x\in N}x_x=a+m\leq6.
+\]
+If $m=3$, the total is at most seven, and every edge of a three-edge simple
+graph has a nonisolated vertex outside its endpoints.  That outside vertex
+has positive cross-degree by \eqref{eq:P3-pointwise}.  If $m=4$, the total
+is eight, while a four-edge simple graph has at least four nonisolated
+vertices.  At least two positive cross-degrees therefore lie outside the
+endpoints of any chosen edge.  In every case \eqref{eq:P3-cover} has size at
+most six, contrary to $\tau(L)\geq7$.
+
+It remains that $d=6$.  Now $|U|=11$.  Put
+\[
+  X=e_R(N,U),\qquad Y=e(R[N]).
+\]
+The local cap on $N[v]$ gives $Y\leq10$, while minimum degree gives
+\[
+  X+2Y\geq30,
+  \qquad X+Y\geq20.
+\]
+The graph $L=\comp{R[U]}$ is triangle-free and nonbipartite.  Applying
+Theorem~\ref{thm:KP} with $q=2$ and $n=11$ gives
+\[
+  e(L)\leq t_2(11)-\left\lfloor\frac{11}{2}\right\rfloor+1
+  =30-5+1=26.
+\]
+Consequently,
+\[
+  e(R[U])\geq\binom{11}{2}-26=29
+\]
+and
+\[
+  e(R)\geq6+20+29=55.
+\]
+All inequalities are equalities.  Thus
+\[
+  e(R)=55,\qquad Y=10,\qquad X=10,\qquad e(L)=26.
+\]
+
+Let $M=\comp{R[N]}$.  Then $M$ has five edges.  For each $x\in N$,
+minimum degree gives $d_R(x,U)\geq d_M(x)$; equality of the sums gives
+\begin{equation}\label{eq:P3-cross-equality}
+  d_R(x,U)=d_M(x)
+  \qquad(x\in N).
+\end{equation}
+We also have $\tau(L)=11-\alpha(L)\geq6$.  As above, every edge $pq\in E(M)$
+makes the two $U$-neighborhoods a vertex cover of $L$.  Hence
+\begin{equation}\label{eq:P3-degree-sum}
+  d_M(p)+d_M(q)\geq6
+  \qquad(pq\in E(M)).
+\end{equation}
+
+We classify a five-edge simple graph $M$ on six vertices satisfying
+\eqref{eq:P3-degree-sum}.  If $M$ has a leaf, its neighbor has degree five,
+and all five edges form $K_{1,5}$.  If $M$ has no leaf, let $t$ be the
+number of nonisolated vertices.  The ten edge-ends give $4\leq t\leq5$.
+For $t=4$, the graph is $K_4$ minus one edge, and an edge joining degrees
+two and three violates \eqref{eq:P3-degree-sum}.  For $t=5$, every
+nonisolated vertex has degree two, so $M=C_5\mathbin{\dot\cup}K_1$, which
+also violates \eqref{eq:P3-degree-sum}.  Therefore $M=K_{1,5}$.  Its five
+leaves form a $K_5$ in $R[N]$, and adjoining $v$ gives a $K_6$, the final
+contradiction.
+\end{proof}
+
+\section{The 19-vertex clique lemma}
+
+\begin{proposition}\label{prop:Q19}
+If $Q$ is admissible on 19 vertices, $\alpha(Q)\leq3$, and $e(Q)\leq66$,
+then $Q$ contains a $K_6$.
+\end{proposition}
+
+\begin{proof}
+Suppose not.  Choose a minimum-degree vertex $v$, put $d=d_Q(v)$, and let
+$U$ be its $18-d$ nonneighbors.  The graph
+\[
+  L=\comp{Q[U]}
+\]
+is triangle-free because $\alpha(Q[U])\leq2$.  Since $Q[U]$ has no $K_6$,
+$\alpha(L)\leq5$, and hence $\Delta(L)\leq5$.
+
+Write $X=e_Q(N(v),U)$ and $Y=e(Q[N(v)])$.  Lemma~\ref{lem:accounting}
+gives
+\[
+  X+2Y\geq d(d-1),
+  \qquad X+Y\geq\binom d2.
+\]
+For $d=0,1,2,3$, the resulting lower bounds on $e(Q)$ are
+\[
+  108,\qquad95,\qquad83,\qquad74,
+\]
+respectively.  The average degree therefore leaves $d\in\{4,5,6\}$.
+
+If $d=4$, then $|U|=14$ and
+\[
+  e(Q[U])\geq\binom{14}{2}-35=56.
+\]
+All bounds are equalities.  In particular, $e(Q)=66$, $Y=6$, and $X=0$.
+Thus $N[v]$ is an isolated $K_5$, and $L$ is a 5-regular triangle-free
+graph on 14 vertices.  Every seven vertices span at least five edges of
+$L$.  Any vertex of $L$ has degree five and eight nonneighbors, contrary to
+Lemma~\ref{lem:terminal}.
+
+Suppose $d=5$.  Let
+\[
+  M=\comp{Q[N(v)]},\qquad m=e(M),
+\]
+and write
+\[
+  x_a=d_Q(a,U)=d_M(a)+z_a,
+  \qquad z_a\geq0,\qquad z=\sum_a z_a.
+\]
+The 13-vertex graph $L$ satisfies
+\[
+  e(L)\leq32,
+  \qquad \tau(L)=13-\alpha(L)\geq8.
+\]
+Exact accounting gives
+\[
+  e(Q)=5+(10-m)+(2m+z)+(78-e(L))
+      =93+m+z-e(L)\leq66.
+\]
+It follows that $m+z\leq5$.  If $m=0$, then $N[v]$ is a $K_6$.  Otherwise
+choose $aa'\in E(M)$.  The set
+\[
+  N_Q(a,U)\cup N_Q(a',U)
+\]
+is a vertex cover of $L$, for an uncovered edge would extend $a,a'$ to an
+independent four-set in $Q$.  Its size is at most
+\[
+  d_M(a)+d_M(a')+z_a+z_{a'}
+  \leq m+1+z\leq6,
+\]
+contrary to $\tau(L)\geq8$.
+
+It remains that $d=6$.  Now $|U|=12$.  Retain the notation $M,m,x_a,z_a$
+and put $Z=\sum_a z_a$.  The local cap on $N[v]$ gives $m\geq5$.  Since
+$e(L)\leq30$, exact accounting gives
+\[
+  e(Q)=6+(15-m)+(2m+Z)+(66-e(L))
+      =87+m+Z-e(L)\leq66,
+\]
+and hence
+\begin{equation}\label{eq:Q19-budget}
+  Z\leq9-m.
+\end{equation}
+We also have $\tau(L)\geq12-5=7$.  For every edge $aa'\in E(M)$, the two
+$U$-neighborhoods cover $L$, so
+\begin{equation}\label{eq:Q19-weight}
+  x_a+x_{a'}\geq7.
+\end{equation}
+
+We first suppose that $M$ is triangle-free.  If $\Delta(M)=5$, then
+$M=K_{1,5}$, and its leaves form a $K_5$ in $Q[N(v)]$ that extends with
+$v$ to a $K_6$.  We may therefore assume $\Delta(M)\leq4$.  For every
+edge $aa'$ of a triangle-free graph on six vertices,
+\[
+  d_M(a)+d_M(a')\leq6.
+\]
+Summing \eqref{eq:Q19-weight} over all edges of $M$ gives
+\begin{equation}\label{eq:Q19-sum}
+  7m
+  \leq\sum_a d_M(a)x_a
+  =\sum_a {d_M(a)}^2+\sum_a d_M(a)z_a.
+\end{equation}
+
+If $m\geq8$, the first sum is at most $6m$, and the second is at most
+$4(9-m)$.  Their sum is smaller than $7m$.  If $m=7$ and
+$\Delta(M)\leq3$, the right side is at most $42+6<49$.  If $m=7$ and
+$\Delta(M)=4$, the four neighbors of a degree-four vertex are independent,
+and the three remaining edges join the sixth vertex to three of them.  The
+degree sequence is $(4,3,2,2,2,1)$, so the right side is at most
+$38+8<49$.
+
+Let $m=6$.  If $\Delta(M)\leq3$, then
+\begin{equation}\label{eq:Q19-square30}
+  \sum_a {d_M(a)}^2\leq30.
+\end{equation}
+To see this, the only degree partitions of sum twelve and maximum part three
+with larger square-sum are $(3,3,3,3,0,0)$ and $(3,3,3,2,1,0)$.  The first
+would induce $K_4$ on its four nonisolated vertices.  In the second, deleting
+the isolated vertex leaves six edges on five vertices; equality in Mantel's
+theorem would give degree sequence $(3,3,2,2,2)$, not
+$(3,3,3,2,1)$.  Thus the right side of \eqref{eq:Q19-sum} is at most
+$30+9<42$.  If $m=6$ and $\Delta(M)=4$, the degree sequence is
+$(4,2,2,2,1,1)$.  Equality in \eqref{eq:Q19-sum} would require all three
+units of $Z$ to lie on the degree-four vertex.  One of the two edges not
+incident with that vertex would then have endpoint weight $2+2<7$.
+
+Let $m=5$.  If $\Delta(M)\leq2$, the right side of
+\eqref{eq:Q19-sum} is at most $20+8<35$.  If $\Delta(M)=3$, the sum can
+reach 35 only if the degree square-sum is at least 23.  The only possible
+partitions are
+\[
+  (3,3,3,1,0,0),\qquad
+  (3,3,2,2,0,0),\qquad
+  (3,3,2,1,1,0).
+\]
+The first is not graphical: three degree-three vertices on four
+nonisolated vertices force the fourth degree to be three.  The second is
+$K_4$ minus an edge and contains a triangle.  In the third, if the two
+degree-three vertices are adjacent, their two remaining neighbor sets among
+three vertices intersect and form a triangle.  If they are nonadjacent,
+both are adjacent to all three remaining nonisolated vertices, which makes
+the two degree-one entries impossible.  Finally, if $\Delta(M)=4$, then
+$M$ is $K_{1,4}$ together with an edge from the sixth vertex to one leaf.
+That last edge forces all four units of $Z$ onto its endpoints.  A different
+center--leaf edge then has endpoint weight $4+1<7$.
+
+This excludes every triangle-free $M$ except the star already handled.
+Suppose now that $M$ contains a triangle $T$ but no $K_4$, since a $K_4$ in
+$M$ is an independent four-set in $Q$.  Let $W$ be the other three vertices,
+and put
+\[
+  c=e_M(T,W),\qquad q=e(M[W]).
+\]
+The three vertices of $T$ are pairwise nonadjacent in $Q$.  Their
+$U$-neighborhoods cover all twelve vertices of $U$, since an uncovered
+vertex would extend $T$ to an independent four-set.  Hence
+\begin{equation}\label{eq:Q19-triangle-sum}
+  12\leq\sum_{a\in T}x_a
+  =6+c+\sum_{a\in T}z_a
+  \leq6+c+Z
+  \leq12-q.
+\end{equation}
+Every inequality is an equality.  Thus $q=0$, all slack lies on $T$, and
+the three triangle weights sum to twelve.
+
+Since $m=3+c\geq5$, at least one cross-edge exists.  Each vertex of $W$
+has at most two neighbors in $T$, because $M$ has no
+$K_4$, and it has zero slack.  A triangle vertex incident with a cross-edge
+therefore has weight at least five by \eqref{eq:Q19-weight}.  Cross-edges
+cannot meet all three vertices of $T$, since their weights would sum to at
+least fifteen.  They cannot meet only one, say $a$: every cross-neighbor
+would have weight one, forcing $x_a\geq6$, while the opposite triangle edge
+would have endpoint-weight sum at most six.
+
+Thus the cross-edges meet exactly two triangle vertices, say $a,b$.  Every
+cross-neighbor meets both.  Indeed, if a cross-neighbor met only $a$, then
+$x_a\geq6$; since $b$ is also incident with a cross-edge, $x_b\geq5$, while
+$x_c\geq d_M(c)=2$, contradicting the triangle weight sum twelve.  Every
+cross-neighbor consequently has weight two.  The edge constraints and the
+weight sum force
+\[
+  (x_a,x_b,x_c)=(5,5,2).
+\]
+The three $U$-neighborhoods partition $U$ into sets $A,B,P$ of sizes
+$5,5,2$.  Since $ac\in E(M)$, the set $A\cup P$ covers $L$.  Hence $B$ is
+independent in $L$, and $B\cup\{b\}$ is a $K_6$ in $Q$, the final
+contradiction.
+\end{proof}
+
+\section{The 25- and 24-vertex clique lemmas}
+
+\begin{proposition}\label{prop:H25}
+If $H$ is admissible on 25 vertices, $\alpha(H)\leq4$, and $e(H)\leq81$,
+then $H$ contains a $K_6$.
+\end{proposition}
+
+\begin{proof}
+Suppose not, and choose a minimum-degree vertex $v$ of degree $d\leq6$.
+If $d\leq5$, its $24-d$ nonneighbors induce a graph with independence
+number at most three and, by Lemma~\ref{lem:accounting}, at most
+\[
+  81-d-\binom d2
+\]
+edges.  Lemma~\ref{lem:averaging}, with $q=19$, gives the corresponding
+expected edge bound below.
+\begin{center}
+\begin{tabular}{c@{\qquad}c@{\qquad}c}
+\toprule
+$d$ & number of nonneighbors & expected edge bound\\
+\midrule
+0 & 24 & $4617/92$\\
+1 & 23 & $13680/253$\\
+2 & 22 & $4446/77$\\
+3 & 21 & $855/14$\\
+4 & 20 & $639/10$\\
+5 & 19 & $66$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry is at most 66, so some induced 19-vertex graph satisfies the
+hypotheses of Proposition~\ref{prop:Q19} and contains a $K_6$.
+
+It remains that $d=6$.  Let $N=N_H(v)$, let $R$ be the 18 nonneighbors of
+$v$, and put
+\[
+  m=15-e(H[N]).
+\]
+The local cap on $N[v]$ gives $m\geq5$.  Each vertex of $N$ needs at least
+its missing degree in $H[N]$ as cross-degree into $R$, so at least $2m$
+edges join $N$ to $R$.  Therefore
+\[
+  e(R)\leq81-6-(15-m)-2m=60-m\leq55.
+\]
+Also $\alpha(R)\leq3$.  Proposition~\ref{prop:P3} supplies a $K_6$.
+\end{proof}
+
+The next statement is the input denoted by $P_4$.
+
+\begin{proposition}[$P_4$]\label{prop:P4}
+If $P$ is admissible on 24 vertices, $\alpha(P)\leq4$, and $e(P)\leq70$,
+then $P$ contains a $K_6$.
+\end{proposition}
+
+\begin{proof}
+Suppose not.  A minimum-degree vertex $v$ has degree $d\leq5$.  If
+$d\leq4$, Lemmas~\ref{lem:accounting} and~\ref{lem:averaging}, with
+$q=19$, give the following expected edge bounds among the $23-d$
+nonneighbors.
+\begin{center}
+\begin{tabular}{c@{\qquad}c@{\qquad}c}
+\toprule
+$d$ & number of nonneighbors & expected edge bound\\
+\midrule
+0 & 23 & $11970/253$\\
+1 & 22 & $3933/77$\\
+2 & 21 & $3819/70$\\
+3 & 20 & $288/5$\\
+4 & 19 & $60$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each is at most 66, so Proposition~\ref{prop:Q19} gives a $K_6$.
+
+Suppose $d=5$.  Write $X=e_P(N(v),U)$ and $Y=e(P[N(v)])$.  Since $N[v]$
+does not span a $K_6$, we have $Y\leq9$.  The minimum-degree inequality
+$X+2Y\geq20$ therefore gives
+\[
+  X+Y\geq11.
+\]
+The 18 nonneighbors of $v$ span at most
+\[
+  70-5-11=54
+\]
+edges and have independence number at most three.  Proposition~\ref{prop:P3}
+again gives a $K_6$.
+\end{proof}
+
+\section{The 31-vertex bound}
+
+\begin{proposition}\label{prop:T31}
+If $H$ is admissible on 31 vertices and $\alpha(H)\leq5$, then
+\[
+  e(H)\geq97.
+\]
+\end{proposition}
+
+\begin{proof}
+Suppose $e(H)\leq96$, choose a minimum-degree vertex $v$ of degree
+$d\leq6$, and let $U$ be its $30-d$ nonneighbors.  Then
+$\alpha(H[U])\leq4$.
+
+If $d\leq5$, Lemmas~\ref{lem:accounting} and~\ref{lem:averaging}, with
+$q=25$, give the corresponding expected edge bound below.
+\begin{center}
+\begin{tabular}{c@{\qquad}c@{\qquad}c}
+\toprule
+$d$ & number of nonneighbors & expected edge bound\\
+\midrule
+0 & 30 & $1920/29$\\
+1 & 29 & $14250/203$\\
+2 & 28 & $1550/21$\\
+3 & 27 & $1000/13$\\
+4 & 26 & $1032/13$\\
+5 & 25 & $81$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each entry is at most 81.  Proposition~\ref{prop:H25} gives a first
+$K_6$, denoted by $B_1$.
+
+If $d=6$, write
+\[
+  X=e_H(N_H(v),U),\qquad Y=e(H[N_H(v)]).
+\]
+The local cap on $N_H[v]$ gives $Y\leq10$, while minimum degree gives
+$X+2Y\geq30$.  Hence $X+Y\geq20$, and
+\[
+  e(H[U])\leq96-6-20=70.
+\]
+Proposition~\ref{prop:P4} gives $B_1$ in this case as well.
+
+Apply Lemma~\ref{lem:peeling} repeatedly.  Removing $B_1$ leaves a
+25-vertex graph $Q$ with
+\[
+  \alpha(Q)\leq4,
+  \qquad e(Q)\leq81.
+\]
+Proposition~\ref{prop:H25} gives a second block $B_2$.  Removing it leaves
+a 19-vertex graph $R$ with
+\[
+  \alpha(R)\leq3,
+  \qquad e(R)\leq66.
+\]
+Proposition~\ref{prop:Q19} gives a third block $B_3$.  Let $C$ be the
+remaining 13-vertex graph.  Then
+\begin{equation}\label{eq:C13}
+  \alpha(C)\leq2,
+  \qquad e(C)\leq51.
+\end{equation}
+
+The graph $C$ has no $K_6$.  Suppose that $B\subseteq C$ were a $K_6$, and
+let $D=C-B$, so $|D|=7$.  If $D$ contains a nonedge $xy$, each of $x,y$
+has at most one neighbor in $B$.  Some vertex of $B$ is nonadjacent to both,
+forming an independent triple with $x,y$, contrary to \eqref{eq:C13}.  If
+$D$ has no nonedge, then $D$ is a $K_7$, contrary to admissibility.
+
+Put $L=\comp C$.  By \eqref{eq:C13}, the graph $L$ is triangle-free.  The
+absence of a $K_6$ in $C$ gives $\alpha(L)\leq5$, and hence
+$\Delta(L)\leq5$.  Every seven vertices span at least five edges of $L$,
+and
+\[
+  e(L)=\binom{13}{2}-e(C)\geq78-51=27.
+\]
+If every vertex of $L$ had degree at most four, then $e(L)\leq26$.
+Therefore $L$ has a degree-five vertex, which has exactly seven nonneighbors.
+This contradicts Lemma~\ref{lem:terminal}.
+\end{proof}
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Assume for a contradiction that every induced $K_7$ in a six-coloring of
+$K_{37}$ uses all six colors.  For each color $i\in[6]$, let $G_i$ be its
+color graph.  An independent seven-set in $G_i$ would omit color $i$, so
+\begin{equation}\label{eq:color-alpha}
+  \alpha(G_i)\leq6.
+\end{equation}
+On every seven vertices, the other five colors each occupy at least one of
+the 21 edges.  Hence
+\begin{equation}\label{eq:color-cap}
+  e(G_i[S])\leq21-5=16
+  \qquad\text{for every }S\in\binom{V(K_{37})}7.
+\end{equation}
+Thus each $G_i$ is admissible.
+
+Choose a least color graph $G$.  The six color classes partition the
+$\binom{37}{2}=666$ edges of $K_{37}$, so
+\begin{equation}\label{eq:least111}
+  e(G)\leq111.
+\end{equation}
+We claim that $\delta(G)\leq5$.  If $\delta(G)\geq6$, then
+\eqref{eq:least111} forces $G$ to be 6-regular with 111 edges.  No component
+is $K_7$, by \eqref{eq:color-cap}, and no component is an odd cycle, since
+every component is 6-regular.  Brooks's theorem gives a proper six-coloring
+of each component, hence of $G$.  One of the six independent color classes
+has at least seven vertices, contrary to \eqref{eq:color-alpha}.
+
+Choose a minimum-degree vertex $v$ of degree $d\leq5$, and let $U$ be its
+$36-d$ nonneighbors.  Then $\alpha(G[U])\leq5$.  By
+Lemma~\ref{lem:accounting},
+\begin{equation}\label{eq:final-U}
+  e(G[U])\leq111-d-\binom d2.
+\end{equation}
+For $d\leq4$, Lemma~\ref{lem:averaging}, with $q=31$, gives the
+corresponding expected edge bound below.
+\begin{center}
+\begin{tabular}{c@{\qquad}c@{\qquad}c}
+\toprule
+$d$ & number of nonneighbors & expected edge bound\\
+\midrule
+0 & 36 & $1147/14$\\
+1 & 35 & $10230/119$\\
+2 & 34 & $16740/187$\\
+3 & 33 & $16275/176$\\
+4 & 32 & $1515/16$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every value is less than 96.  If $d=5$, then $|U|=31$ and
+\eqref{eq:final-U} gives $e(G[U])\leq96$ directly.  In every case, some
+induced 31-vertex graph is admissible, has independence number at most five,
+and has at most 96 edges.  This contradicts Proposition~\ref{prop:T31}.
+
+The assumed balanced coloring cannot exist.  Therefore some seven vertices
+omit a color.
+\end{proof}
+
+\enlargethispage{3\baselineskip}
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}
