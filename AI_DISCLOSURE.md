@@ -15,7 +15,7 @@ not external mathematical review. The manuscripts should be read as
 unreviewed proof claims.
 
 The mathematical statements and arguments are presented in full in the PDFs.
-The $r=5,6$ proofs do not use program output as a premise. The $r=7,8$
+The r = 5, 6 proofs do not use program output as a premise. The r = 7, 8
 proofs are computer-assisted; their finite premises are accompanied by
 separate reconstructions, replay scripts, manifests, and proof artifacts.
 Readers are invited to report any gap with the exact page, lemma, and line of
