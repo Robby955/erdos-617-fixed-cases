@@ -1,0 +1,68 @@
+Endpoint18 local verification receipt
+UTC: 2026-07-20T14:04:50Z
+Status: PASS
+
+Command from the worktree root:
+
+python3 research/erdos-617-r8/verify_endpoint18_certificate.py --lrat-check /private/tmp/drat-trim-erdos617/lrat-check
+
+Output:
+
+encoding=VERIFIED
+cnf_sha256=6ef6da7d98c4742d277e96f9227265bbc40217fe006f6bd1b8bf5416904fcd03
+variables=1233
+clauses=50225
+edge_variables=153
+auxiliary_variables=1080
+totalizer_merges=288
+totalizer_states_checked=3834
+clauses_degree_units=36
+clauses_independence=43758
+clauses_symmetry=17
+clauses_totalizer_merge=5598
+clauses_triangle=816
+lrat=VERIFIED
+lrat_checker: c parsed a formula with 1233 variables and 50225 clauses
+lrat_checker: c VERIFIED
+
+Checksum command from research/erdos-617-r8/artifacts/endpoint18:
+
+shasum -a 256 -c SHA256SUMS
+
+Output before this receipt was added to the checksum ledger:
+
+round-000.cnf.gz: OK
+round-000.lrat.gz: OK
+manifest.json: OK
+REPLAY.md: OK
+../../endpoint18_lazy.py: OK
+../../verify_endpoint18_certificate.py: OK
+
+Checker identity command:
+
+shasum -a 256 /private/tmp/drat-trim-erdos617/lrat-check
+
+Output:
+
+a2caddba197bbb0846aabf2dd54e87d79612e3b840ea0c43714f5c522f2d86c7  /private/tmp/drat-trim-erdos617/lrat-check
+
+Source-quality commands:
+
+python3 -m ruff check research/erdos-617-r8/verify_endpoint18_certificate.py
+python3 -m mypy research/erdos-617-r8/verify_endpoint18_certificate.py
+
+Output:
+
+All checks passed!
+Success: no issues found in 1 source file
+
+A separate compressed-only replay copied only round-000.cnf.gz,
+round-000.lrat.gz, and manifest.json into a fresh temporary directory. The
+same semantic audit and LRAT replay passed. This checks the portable fallback
+without relying on the ignored raw CNF or LRAT in the research worktree.
+
+Scope limitation:
+
+This receipt certifies the exact 18-vertex formula and its unsatisfiability.
+It does not certify the preceding human reduction, close all of P(8,3), close
+fixed r=8, or resolve the universal problem.

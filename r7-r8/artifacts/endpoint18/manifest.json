@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "package_id": "erdos-617-r8-p83-d5-endpoint18",
+  "created_utc": "2026-07-20T14:01:08Z",
+  "status": "CERTIFIED_LOCAL",
+  "claim": "There is no simple graph L on 18 labeled vertices that is 7-regular, triangle-free, and has independence number at most 7.",
+  "application": "This excludes the minimum-degree-five equality endpoint in the P(8,3) reduction recorded in R8_DEPENDENCY_LEDGER.md.",
+  "nonclaims": [
+    "This package alone does not prove P(8,3).",
+    "This package alone does not prove the fixed r=8 case of Erdos Problem 617.",
+    "This package does not prove the universal statement in Erdos Problem 617.",
+    "The package has not been released or externally reviewed."
+  ],
+  "formula": {
+    "vertices": 18,
+    "edge_variables": 153,
+    "auxiliary_variables": 1080,
+    "variables": 1233,
+    "clauses": 50225,
+    "edge_variable_map": "Lexicographic pairs (u,v), 0 <= u < v < 18, mapped to variables 1,...,153.",
+    "symmetry_break": "N_L(0)={1,...,7}; this is safe because every proposed graph is 7-regular.",
+    "constraints": {
+      "symmetry_unit_clauses": 17,
+      "degree_totalizer_merge_clauses": 5598,
+      "degree_root_unit_clauses": 36,
+      "triangle_clauses": 816,
+      "independent_eight_set_clauses": 43758
+    },
+    "local_nine_set_cuts": 0,
+    "meaning": "Each vertex has degree exactly 7, each triple omits at least one edge, and each eight-set contains an edge."
+  },
+  "semantic_audit": {
+    "verifier": "../../verify_endpoint18_certificate.py",
+    "method": "Independent clause-multiset reconstruction plus inductive threshold audit of every totalizer merge.",
+    "totalizer_merges": 288,
+    "merge_count_states": 3834,
+    "source_imports_generator": false
+  },
+  "artifacts": {
+    "round-000.cnf.gz": {
+      "bytes": 638621,
+      "sha256": "fc4a734c7bc431e5329c9563824a34cb5fe17de3b7515ea6063136601e862a13",
+      "compression": "gzip -n -9"
+    },
+    "round-000.lrat.gz": {
+      "bytes": 23921475,
+      "sha256": "5ecef577abb4701f78b16e1b36f0f585f1a434ae64698f65bf75f2ae00f8ce09",
+      "compression": "gzip -n -9"
+    }
+  },
+  "uncompressed": {
+    "cnf_bytes": 4215035,
+    "cnf_lines": 50226,
+    "cnf_sha256": "6ef6da7d98c4742d277e96f9227265bbc40217fe006f6bd1b8bf5416904fcd03",
+    "lrat_bytes": 82908583,
+    "lrat_lines": 307536,
+    "lrat_sha256": "d8f76b58c81502dcc94287df04f4e193f54c35d15aadf5e721312eaaad9884e2"
+  },
+  "optional_raw_derivation": {
+    "drat_bytes": 65555834,
+    "drat_lines": 771587,
+    "drat_sha256": "2f37259bbbdcc04c7ac7cc7b15042d2a3678c5052bd18461e3e6a696cdb8e64c",
+    "included": false,
+    "note": "The checked LRAT is the preserved proof artifact; the earlier DRAT derivation is not required for replay."
+  },
+  "sources": {
+    "generator": {
+      "path": "../../endpoint18_lazy.py",
+      "sha256": "be4e1adfda266dc48b5b7c9c4d0a851bfae46b0769861b96b9fdb11d30520e87",
+      "introducing_commit": "96644bd92875be1398c2e9683753b5c1807c32ae"
+    },
+    "semantic_verifier": {
+      "path": "../../verify_endpoint18_certificate.py",
+      "sha256": "ae4efd65a7d5d96ae0506d6d7f5583bea0a169f0196d4e34b8f8b71371d605d0"
+    }
+  },
+  "lrat_checker": {
+    "project": "https://github.com/marijnheule/drat-trim",
+    "source_commit": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985",
+    "audited_binary_sha256": "a2caddba197bbb0846aabf2dd54e87d79612e3b840ea0c43714f5c522f2d86c7",
+    "audited_binary_platform": "Mach-O 64-bit arm64",
+    "result": "VERIFIED"
+  }
+}

@@ -53,11 +53,13 @@ searches used during its development are not premises of the proof.
 This manuscript has not yet completed external mathematical review.}}
 \end{center}
 
-\paragraph{AI-use disclosure.}
+\medskip
+\noindent\textbf{AI-use disclosure.}
 OpenAI GPT-5.6 Sol was used extensively during proof search, drafting, and
 internal checking. OpenAI GPT-5 (Codex) was used for later source review and
 release checks. xAI Grok 4.5 was used to critique an earlier draft. This
 manuscript has not completed external mathematical review.
+\medskip
 
 \section{Introduction}
 
@@ -187,11 +189,11 @@ We will repeatedly exclude equality in \eqref{eq:KP} using
 \eqref{eq:local}.  The required checks are recorded once here.
 
 \begin{lemma}[Local exclusion of equality]\label{lem:KP-equality}
-Let $R=\comp L$ be admissible.
+Let $L$ be a $K_{r+1}$-free graph on $n$ vertices that is not
+$r$-partite, and let $R=\comp L$ be admissible.
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item If $(r,n)=(2,10)$ and $L$ is nonbipartite, then $e(L)\leq20$.
-\item If $(r,n)=(3,15)$ and $L$ is not three-partite, equality in
-\eqref{eq:KP} is impossible.
+\item If $(r,n)=(2,10)$, then $e(L)\leq20$.
+\item If $(r,n)=(3,15)$, equality in \eqref{eq:KP} is impossible.
 \end{enumerate}
 \end{lemma}
 
@@ -344,7 +346,8 @@ by the endpoint neighborhoods are disjoint, hence complementary.
 If $L[B]$ has six edges, triangle-freeness and maximum degree two force
 $L[B]=C_6$.  Its two parity classes carry alternating complementary labels
 $P$ and $A\setminus P$.  The set consisting of $w$, the two vertices of
-$P$, and the three vertices in the parity class labeled $A\setminus P$
+$A$ belonging to $P$, and the three vertices in the parity class labeled
+$A\setminus P$
 spans only the two edges from $w$ to $P$.
 
 If $L[B]$ has five edges, its triangle-free possibilities are $P_6$,
@@ -488,6 +491,8 @@ independent four-set in $F$.  On the other hand,
 \[
   x_a+x_{a'}=d_M(a)+d_M(a')\leq e(M)+1=5,
 \]
+because $d_M(a)+d_M(a')$ counts every edge incident with $a$ or $a'$ once
+and counts $aa'$ a second time,
 whereas $\tau(T)=6$ by Lemma~\ref{lem:ten-structure}.  This contradiction
 settles the sixteen-vertex case.
 
@@ -591,9 +596,9 @@ Let $R$ be an admissible graph on fifteen vertices with $\alpha(R)\leq3$,
 and suppose that $\comp R$ is not three-partite.  If $e(R)=36$, then exactly
 one of the following holds.
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item The graph $R$ contains a $K_5$ joined by exactly one edge to a
-ten-vertex graph $R_0$, and $\comp{R_0}$ is the balanced two-fold blow-up
-of $C_5$.
+\item There is a partition $V(R)=C\mathbin{\dot\cup}V(R_0)$ with
+$|C|=5$, $R[C]=K_5$, and exactly one edge between $C$ and $V(R_0)$, where
+$\comp{R_0}$ is the balanced two-fold blow-up of $C_5$.
 \item The graph $R$ is an isolated $K_5$ together with a ten-vertex graph
 $R_0$ such that $\comp{R_0}$ is triangle-free, has nineteen edges, and has
 independence number at most four.

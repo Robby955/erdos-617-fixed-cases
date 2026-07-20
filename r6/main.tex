@@ -53,11 +53,13 @@ conjecture for general $r$.
 This manuscript has not completed external mathematical review.}}
 \end{center}
 
-\paragraph{AI-use disclosure.}
+\medskip
+\noindent\textbf{AI-use disclosure.}
 OpenAI GPT-5.6 Sol was used extensively during proof search, drafting, and
 internal checking. OpenAI GPT-5 (Codex) was used for later source review and
-release checks. This manuscript has not completed external mathematical
-review.
+release checks. xAI Grok 4.5 was used to critique a draft. This manuscript
+has not completed external mathematical review.
+\medskip
 
 \section{Introduction}
 
@@ -150,8 +152,15 @@ $t_3(18)=108$, Theorem~\ref{thm:KP} first gives
   e(L)\leq108-6+1=103,
   \qquad e(R)\geq50.
 \]
-Suppose equality holds.  The equality characterization of Kang and Pikhurko
-has old part-size sequence $(5,6,6)$ or $(5,5,7)$.  In the complement $R$,
+Suppose equality holds.  For $q=3$ and $n=18$, Lemma~5 of Kang and
+Pikhurko says that the nondecreasing old part sizes $n_1,n_2,n_3$ sum to
+seventeen and satisfy
+\[
+  n_1\geq2,\qquad n_2\leq n_1+1,\qquad n_3\leq n_1+2.
+\]
+If $n_1\leq4$, their sum is at most $4+5+6=15$, while if $n_1\geq6$,
+their sum is at least eighteen.  Thus $n_1=5$, and the only old part-size
+sequences are $(5,6,6)$ and $(5,5,7)$.  In the complement $R$,
 every old part is a clique.  The second sequence therefore contains a
 $K_7$, contrary to admissibility.
 
@@ -265,8 +274,9 @@ having at least seven nonneighbors.
 \end{lemma}
 
 \begin{proof}
-Suppose $w$ is such a vertex.  Put $A=N_L(w)$ and let $B$ be its set of
-nonneighbors, so $|A|=5$ and $|B|\geq7$.  The set $A$ is independent.  For
+Suppose $w$ is such a vertex.  Put $A=N_L(w)$ and
+$B=V(L)\setminus(A\cup\{w\})$, so $|A|=5$ and $|B|\geq7$.  The set $A$ is
+independent.  For
 $b\in B$, write
 \[
   t_b=|N_L(b)\cap A|.
@@ -357,9 +367,7 @@ Summing \eqref{eq:P3-pointwise} gives $a+m\geq2m$, so
 \end{equation}
 The lower bound $m\geq1$ follows because $m=0$ would make $N[v]$ a $K_6$.
 
-The triangle-free graph $L$ is not bipartite, since one part of a
-bipartition of its 12 vertices would be an independent six-set in $L$ and
-hence a $K_6$ in $R[U]$.  In particular,
+Since $\alpha(L)\leq5$,
 \[
   \tau(L)=12-\alpha(L)\geq7.
 \]
@@ -493,13 +501,19 @@ Exact accounting gives
   e(Q)=5+(10-m)+(2m+z)+(78-e(L))
       =93+m+z-e(L)\leq66.
 \]
-It follows that $m+z\leq5$.  If $m=0$, then $N[v]$ is a $K_6$.  Otherwise
+Since $e(L)\leq32$,
+\[
+  66\geq93+m+z-e(L)\geq61+m+z,
+\]
+so $m+z\leq5$.  If $m=0$, then $N[v]$ is a $K_6$.  Otherwise
 choose $aa'\in E(M)$.  The set
 \[
   N_Q(a,U)\cup N_Q(a',U)
 \]
 is a vertex cover of $L$, for an uncovered edge would extend $a,a'$ to an
-independent four-set in $Q$.  Its size is at most
+independent four-set in $Q$.  In the next degree sum the edge $aa'$ is
+counted twice, while each of the other $m-1$ edges is counted at most once.
+Thus the cover has size at most
 \[
   d_M(a)+d_M(a')+z_a+z_{a'}
   \leq m+1+z\leq6,
@@ -511,7 +525,11 @@ and put $Z=\sum_a z_a$.  The local cap on $N[v]$ gives $m\geq5$.  Since
 $e(L)\leq30$, exact accounting gives
 \[
   e(Q)=6+(15-m)+(2m+Z)+(66-e(L))
-      =87+m+Z-e(L)\leq66,
+      =87+m+Z-e(L)\leq66.
+\]
+Since $e(L)\leq30$,
+\[
+  66\geq87+m+Z-e(L)\geq57+m+Z,
 \]
 and hence
 \begin{equation}\label{eq:Q19-budget}
@@ -530,6 +548,8 @@ edge $aa'$ of a triangle-free graph on six vertices,
 \[
   d_M(a)+d_M(a')\leq6.
 \]
+Indeed, $N_M(a)\setminus\{a'\}$ and
+$N_M(a')\setminus\{a\}$ are disjoint subsets of the other four vertices.
 Summing \eqref{eq:Q19-weight} over all edges of $M$ gives
 \begin{equation}\label{eq:Q19-sum}
   7m
@@ -552,9 +572,13 @@ Let $m=6$.  If $\Delta(M)\leq3$, then
 To see this, the only degree partitions of sum twelve and maximum part three
 with larger square-sum are $(3,3,3,3,0,0)$ and $(3,3,3,2,1,0)$.  The first
 would induce $K_4$ on its four nonisolated vertices.  In the second, deleting
-the isolated vertex leaves six edges on five vertices; equality in Mantel's
-theorem would give degree sequence $(3,3,2,2,2)$, not
-$(3,3,3,2,1)$.  Thus the right side of \eqref{eq:Q19-sum} is at most
+the isolated vertex leaves a triangle-free graph with six edges on five
+vertices.  Choose a degree-three vertex $u$.  Its three neighbors are
+independent, and the fifth vertex is the unique nonneighbor of $u$.  Since
+only three edges remain after the edges incident with $u$ are removed, all
+three must join that fifth vertex to the three neighbors of $u$.  The
+resulting degree sequence is $(3,3,2,2,2)$, not $(3,3,3,2,1)$.  Thus the
+right side of \eqref{eq:Q19-sum} is at most
 $30+9<42$.  If $m=6$ and $\Delta(M)=4$, the degree sequence is
 $(4,2,2,2,1,1)$.  Equality in \eqref{eq:Q19-sum} would require all three
 units of $Z$ to lie on the degree-four vertex.  One of the two edges not
@@ -585,21 +609,21 @@ Suppose now that $M$ contains a triangle $T$ but no $K_4$, since a $K_4$ in
 $M$ is an independent four-set in $Q$.  Let $W$ be the other three vertices,
 and put
 \[
-  c=e_M(T,W),\qquad q=e(M[W]).
+  \gamma=e_M(T,W),\qquad q=e(M[W]).
 \]
 The three vertices of $T$ are pairwise nonadjacent in $Q$.  Their
 $U$-neighborhoods cover all twelve vertices of $U$, since an uncovered
 vertex would extend $T$ to an independent four-set.  Hence
 \begin{equation}\label{eq:Q19-triangle-sum}
   12\leq\sum_{a\in T}x_a
-  =6+c+\sum_{a\in T}z_a
-  \leq6+c+Z
+  =6+\gamma+\sum_{a\in T}z_a
+  \leq6+\gamma+Z
   \leq12-q.
 \end{equation}
 Every inequality is an equality.  Thus $q=0$, all slack lies on $T$, and
 the three triangle weights sum to twelve.
 
-Since $m=3+c\geq5$, at least one cross-edge exists.  Each vertex of $W$
+Since $m=3+\gamma\geq5$, at least one cross-edge exists.  Each vertex of $W$
 has at most two neighbors in $T$, because $M$ has no
 $K_4$, and it has zero slack.  A triangle vertex incident with a cross-edge
 therefore has weight at least five by \eqref{eq:Q19-weight}.  Cross-edges

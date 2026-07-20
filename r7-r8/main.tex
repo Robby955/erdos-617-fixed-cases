@@ -1,0 +1,1573 @@
+\documentclass[11pt,reqno,a4paper]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\comp}[1]{\overline{#1}}
+\newcommand{\Cr}{\binom r2}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title[The seven- and eight-color cases]{The seven- and eight-color cases of an Erd\H{o}s--Gy\'arf\'as balanced-coloring problem}
+\author{Robert Sneiderman}
+\date{20 July 2026}
+\subjclass[2020]{05C15, 05C35, 05D10}
+\keywords{edge coloring, balanced coloring, extremal graph theory, computer-assisted proof}
+
+\begin{document}
+\raggedbottom
+\hypersetup{
+  pdftitle={The seven- and eight-color cases of an Erdos--Gyarfas balanced-coloring problem},
+  pdfauthor={Robert Sneiderman}
+}
+
+\begin{abstract}
+We record computer-assisted proofs of two fixed cases of a problem of
+Erd\H{o}s and Gy\'arf\'as. Every seven-coloring of the edges of $K_{50}$
+has eight vertices whose induced edges omit a color, and every
+eight-coloring of the edges of $K_{65}$ has nine vertices whose induced
+edges omit a color. The seven-color proof uses a direct exhaustive lemma on
+weighted graphs with seven vertices. The eight-color proof uses a human
+full-color extremal argument together with 862 independently reconstructed
+and LRAT-checked finite instances. The accompanying repository contains the
+source, semantic verifiers, manifests, replay script, and proof artifacts.
+These results are being circulated for independent checking and have not yet
+received external mathematical review. Neither result settles the problem
+for arbitrary $r$.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Erd\H{o}s and Gy\'arf\'as asked whether the following holds for every
+integer $r\geq3$: whenever the edges of $K_{r^2+1}$ are colored with $r$
+colors, some $r+1$ vertices induce a complete graph on which at least one
+color is absent \cite{ErdosGyarfas1999}. The question is also recorded as
+Erd\H{o}s Problem 617 \cite{ErdosProblems617}.
+
+This paper concerns the next two fixed parameters after the previously
+known and separately treated cases.
+
+\begin{theorem}\label{thm:combined}
+Let $r\in\{7,8\}$. For every map
+\[
+  \chi:E(K_{r^2+1})\longrightarrow[r],
+\]
+there is a set $S\subseteq V(K_{r^2+1})$ with $|S|=r+1$ such that
+\[
+  \chi\!\left(E(K_{r^2+1}[S])\right)\ne[r].
+\]
+\end{theorem}
+
+The two parts of Theorem~\ref{thm:combined} are proved by different finite
+inputs. The $r=7$ finite lemma is a direct enumeration of
+$12{,}618{,}770$ weighted cases, reconstructed a second way using
+unlabelled graphs and automorphism orders. It does not use SAT. The $r=8$
+proof reduces one branch to a single formula and another to 861
+core--shell formulas. Independent semantic checkers reconstruct the
+formulas, and an LRAT checker verifies their unsatisfiability.
+
+\begin{remark}[Scope]\label{rem:scope}
+Theorem~\ref{thm:combined} is a pair of fixed-parameter results. It does
+not prove Erd\H{o}s Problem 617 for every $r$. It does not prove the fixed
+case $r=9$, give a Lean formalization, or claim external review. The
+certificate archives are not embedded in this manuscript.
+\end{remark}
+
+\section{Shared setup}\label{sec:setup}
+
+Assume that every $(r+1)$-set sees all $r$ colors. For a fixed color $i$,
+let $G_i$ be the graph formed by its edges. Then
+\begin{equation}\label{eq:alpha}
+  \alpha(G_i)\leq r.
+\end{equation}
+Every $(r+1)$-set contains at least one edge of each of the other $r-1$
+colors, so
+\begin{equation}\label{eq:local-cap}
+  e(G_i[S])\leq\binom{r+1}{2}-(r-1)=\binom r2+1
+  \qquad\left(S\in\binom{V(G_i)}{r+1}\right).
+\end{equation}
+
+For $n=ar+b$, where $0\leq b<r$, put
+\begin{equation}\label{eq:pr}
+  p_r(n)=r\binom a2+ab.
+\end{equation}
+This is the minimum number of edges in an $n$-vertex graph with
+independence number at most $r$. Since the other $r-1$ color graphs
+partition the complement of $G_i[W]$, Tur\'an's theorem gives the
+full-color induced-density bound
+\begin{equation}\label{eq:colored-density}
+  e\!\left(\comp{G_i[W]}\right)\geq(r-1)p_r(|W|).
+\end{equation}
+This inequality uses coexistence of all colors; it is not a consequence of
+the one-color local cap alone.
+
+Choose a least color graph $G$. Its edge budget is
+\begin{equation}\label{eq:least-budget}
+  e(G)\leq M_r:=\frac{r(r^2+1)}2.
+\end{equation}
+The shared reduction gives
+\begin{equation}\label{eq:degree-window}
+  2\leq\delta(G)\leq r-1.
+\end{equation}
+The upper bound uses Brooks's theorem \cite{Brooks1941}; the lower bound
+uses the Kang--Pikhurko extremal theorem \cite{KangPikhurko2005}.
+
+\begin{proof}[Proof of \eqref{eq:degree-window}]
+The average degree of $G$ is at most $r$. If $\delta(G)=r$, then $G$ is
+$r$-regular. On the other hand,
+\[
+  \chi(G)\geq
+  \left\lceil\frac{r^2+1}{\alpha(G)}\right\rceil\geq r+1.
+\]
+Some connected component therefore has chromatic number at least $r+1$.
+Brooks's theorem makes that component $K_{r+1}$, contrary to
+\eqref{eq:local-cap}.
+
+For the lower bound, suppose that a vertex $v$ has degree
+$d\in\{0,1\}$ and let $U$ be its nonneighbors other than $v$. Then
+\[
+  |U|=r^2-d,
+  \qquad \alpha(G[U])\leq r-1.
+\]
+The complement of $G[U]$ is $K_r$-free. It is not $(r-1)$-partite:
+such a partition would have a part of order at least $r+1$, which would
+be a target-color $K_{r+1}$ in $G[U]$. The Kang--Pikhurko theorem, with
+parameter $r-1$, gives
+\[
+ e(G[U])\geq
+ p_{r-1}(|U|)+\left\lfloor\frac{|U|}{r-1}\right\rfloor-1.
+\]
+For $d=0$ the right side is $M_r+r+1$. For $d=1$ it is $M_r$ before
+the edge incident with $v$ is added. Both cases contradict
+\eqref{eq:least-budget}.
+\end{proof}
+
+We shall also use the strict colored-density form. If
+$2\leq s<r$, $|W|=sr+t$, $t\geq1$, and
+$\alpha(G_i[W])\leq s$, then
+\begin{equation}\label{eq:nonpartite-density}
+ e\!\left(\comp{G_i[W]}\right)
+ \geq (r-1)\left(
+ p_r(|W|)+\left\lfloor\frac{|W|}{r}\right\rfloor-1\right).
+\end{equation}
+Indeed, $G_i[W]$ is not $r$-colorable because $|W|>rs$. For every
+$j\ne i$, it is a subgraph of $\comp{G_j[W]}$, so that complement is
+not $r$-partite. It is $K_{r+1}$-free because $\alpha(G_j)\leq r$.
+Applying the Kang--Pikhurko theorem to every $j\ne i$ and summing proves
+\eqref{eq:nonpartite-density}.
+
+\subsection{Colored terminal core and exact ladder}
+
+\begin{theorem}[Colored terminal core]\label{thm:terminal-core}
+Let $r\geq6$. There is no vertex set $W$ of order at least $2r$ such
+that
+\[
+  \alpha(G_i[W])\leq2,
+  \qquad \omega(G_i[W])\leq r-1.
+\]
+\end{theorem}
+
+\begin{proof}
+Put $H=G_i[W]$, $L=\comp H$, and $n=|W|$. The graph $L$ is
+triangle-free and $\alpha(L)\leq r-1$. Every neighborhood in $L$ is
+independent, whence
+\[
+  \Delta(L)\leq r-1,
+  \qquad e(L)\leq\frac{n(r-1)}2.
+\]
+The colored-density inequality gives
+\[
+  e(L)\geq(r-1)p_r(n).
+\]
+At $n=2r$ the two bounds force $L$ to be $(r-1)$-regular. Since
+$r-1>2(2r)/5$ for $r\geq6$, the Andr\'asfai--Erd\H{o}s--S\'os theorem
+\cite{AndrasfaiErdosSos1974} makes $L$ bipartite. One side has order at least $r$, contrary to
+$\alpha(L)\leq r-1$.
+
+For $n>2r$, one has $p_r(n)>n/2$. This follows from $p_r(2r)=r$ and
+\[
+  p_r(m+1)-p_r(m)=\left\lfloor\frac mr\right\rfloor\geq2
+  \qquad(m\geq2r).
+\]
+The two edge bounds then contradict one another.
+\end{proof}
+
+For fixed $r\geq6$, define $T_2=0$. Once $T_{s-1}$ is defined, put
+\begin{align}
+ A_s&=(s+1)r-2s-T_{s-1}+1,\label{eq:As}\\
+ \widehat B_s&=rs(s+T_{s-1}-2)-2(r-1)(s-1),\label{eq:Bs}
+\end{align}
+and, when $A_s>0$ and the resulting integer is less than $r$, put
+\begin{equation}\label{eq:Ts}
+ T_s=\max\left\{1,
+ \left\lfloor\frac{\widehat B_s}{A_s}\right\rfloor+1\right\}.
+\end{equation}
+
+\begin{theorem}[Exact colored core ladder]\label{thm:exact-ladder}
+Whenever $T_s(r)$ is defined, there is no vertex set $W$ with
+\[
+ |W|\geq sr+T_s,
+ \qquad \alpha(G_i[W])\leq s,
+ \qquad \omega(G_i[W])\leq r-1.
+\]
+\end{theorem}
+
+\begin{proof}
+The case $s=2$ is Theorem~\ref{thm:terminal-core}. Assume the assertion
+at $s-1$, and put $H=G_i[W]$ and $L=\comp H$. The graph $L$ is
+$K_{s+1}$-free and has independence number at most $r-1$. For each
+vertex $x$, its neighborhood in $L$ is $K_s$-free and retains that
+independence bound. The induction hypothesis gives
+\[
+  \Delta(L)\leq(s-1)r+T_{s-1}-1=: \Delta_s.
+\]
+For $n=sr+t$, $1\leq t<r$, equation
+\eqref{eq:nonpartite-density} gives
+\[
+  2e(L)\geq
+  2(r-1)\left(r\binom s2+st+s-1\right).
+\]
+After subtracting the upper bound $n\Delta_s$, the result is
+$A_st-\widehat B_s$. Definition \eqref{eq:Ts} is the first eligible
+integer $t$ for which this is positive. For larger orders, the increment
+of the lower bound minus that of $n\Delta_s$ is at least
+\[
+  2(r-1)\left\lfloor\frac nr\right\rfloor-\Delta_s
+  \geq A_s>0.
+\]
+The contradiction therefore persists for every $n\geq sr+T_s$.
+\end{proof}
+
+In particular,
+\begin{equation}\label{eq:threshold-values}
+ T_3(r)=1\ (r\geq6),\qquad T_4(r)=2\ (r\geq6),
+ \qquad (T_5(7),T_5(8))=(5,4).
+\end{equation}
+The same argument gives the pointwise form
+\begin{equation}\label{eq:residual-min-degree}
+ \delta(G_i[W])\geq r+t-T_{s-1}(r)
+\end{equation}
+whenever $|W|=sr+t$ and the independence and clique hypotheses at
+level $s$ hold: the nonneighbors of a vertex have order at most
+$(s-1)r+T_{s-1}-1$.
+
+Let $v$ have color-$i$ degree $d\leq r-1$, and let $U$ be its nonneighbor
+set. The colored core ladder proves the following block exclusion.
+
+\begin{proposition}[Shared block exclusion]\label{prop:block-exclusion}
+The graph $G_i[U]$ cannot contain $r-4$ pairwise disjoint copies of
+$K_r$ in color $i$.
+\end{proposition}
+
+\begin{proof}
+Since $v$ is anticomplete to $U$ in color $i$,
+\begin{equation}\label{eq:U-alpha}
+  \alpha(G_i[U])\leq r-1.
+\end{equation}
+Extend the proposed blocks to a maximal packing of $k$ target-color
+copies of $K_r$ in $U$, let $R$ be the remainder, and put
+$s=r-k-1$. Then
+\begin{equation}\label{eq:R-alpha}
+  \alpha(G_i[R])\leq s.
+\end{equation}
+For if $R$ contained an independent $(s+1)$-set, it could be extended
+through the $k$ blocks by choosing one independent representative from
+each. Every previously chosen vertex forbids at most one vertex in the
+next $K_r$, by the local $(r+1)$-set cap, and
+$(s+1)+k=r$. This would give an independent $r$-set in $U$, contrary to
+\eqref{eq:U-alpha}. Maximality of the packing gives
+\begin{equation}\label{eq:R-omega}
+  \omega(G_i[R])\leq r-1.
+\end{equation}
+
+Write $t=r-d\geq1$. Since $|U|=r^2-d=r(r-1)+t$, the remainder has
+order
+\begin{equation}\label{eq:R-order}
+  |R|=sr+t.
+\end{equation}
+If $k=r-4$, then $s=3$, and
+\eqref{eq:R-alpha}--\eqref{eq:R-order} contradict
+Theorem~\ref{thm:exact-ladder} because $T_3(r)=1$. If $k=r-3$, the
+terminal-core theorem gives the same contradiction at $s=2$. If
+$k=r-2$, then \eqref{eq:R-alpha} makes $R$ a clique, while
+$|R|=r+t\geq r+1$, a contradiction. Finally, a packing with
+$k\geq r-1$ contains $r-1$ blocks and leaves at least one vertex outside
+them. That vertex and one independent representative from each block
+give an independent $r$-set in $U$. These cases exhaust every maximal
+extension of the proposed $r-4$ blocks.
+\end{proof}
+
+\subsection{Recursive colored edge floors}
+
+For integers $a,m\geq0$, let $\mathcal F_r(a,m)$ be the family of
+actual induced target-color graphs $G_i[W]$ with $|W|=m$ and
+\[
+  \alpha(G_i[W])\leq a,
+  \qquad \omega(G_i[W])\leq r-1.
+\]
+Every member and each of its induced subgraphs satisfies
+\[
+  e(G_i[Z])\leq D_r(|Z|)
+  :=\binom{|Z|}{2}-(r-1)p_r(|Z|).
+\]
+The full-color provenance in this definition is necessary; an abstract
+one-color graph satisfying the local cap need not satisfy the terminal
+exclusions above.
+
+We define a lower bound $B_r(a,m)$, taking the value $+\infty$ when the
+recursion proves that $\mathcal F_r(a,m)$ is empty. Put
+\[
+ B_r(0,0)=0,
+ \qquad B_r(0,m)=+\infty\quad(m>0),
+\]
+and
+\[
+ B_r(1,m)=
+ \begin{cases}
+  \binom m2,&m\leq r-1,\\
+  +\infty,&m\geq r.
+ \end{cases}
+\]
+For $a\geq2$, define
+\begin{equation}\label{eq:Qr}
+ Q_r(a,m)=p_a(m)+
+ \begin{cases}
+  0,&m\leq a(r-1),\\
+  \lfloor m/a\rfloor-1,&a(r-1)<m\leq ar,\\
+  \lfloor m/a\rfloor,&m\geq ar+1,
+ \end{cases}
+\end{equation}
+and
+\begin{equation}\label{eq:Cr}
+ C_r(\delta)=
+ \begin{cases}
+  \binom{\delta+1}{2},&0\leq\delta<r-1,\\
+  \binom r2+1,&\delta=r-1,\\
+  \displaystyle \delta+
+  \left\lceil\frac{r+2}{r}\binom\delta2\right\rceil,&\delta\geq r.
+ \end{cases}
+\end{equation}
+If $T_a(r)$ is defined and $m\geq ar+T_a(r)$, set
+$B_r(a,m)=+\infty$. Otherwise put
+\begin{equation}\label{eq:Rr}
+ R_r(a,m)=
+ \min_{\substack{0\leq\delta<m\\
+ B_r(a-1,m-1-\delta)<+\infty}}
+ \max\left\{
+ B_r(a-1,m-1-\delta)+C_r(\delta),
+ \left\lceil\frac{m\delta}{2}\right\rceil
+ \right\},
+\end{equation}
+where the minimum of an empty set is $+\infty$. Put
+\[
+ b_r(a,m)=\max\{Q_r(a,m),R_r(a,m)\}.
+\]
+Set $B_r(a,m)=+\infty$ if $b_r(a,m)>D_r(m)$; otherwise set
+$B_r(a,m)=b_r(a,m)$.
+
+\begin{proposition}[Recursive colored lower bound]
+\label{prop:recursive-lower-bound}
+Every $F\in\mathcal F_r(a,m)$ satisfies
+\[
+  e(F)\geq B_r(a,m).
+\]
+In particular, $B_r(a,m)=+\infty$ certifies that the family is empty.
+\end{proposition}
+
+\begin{proof}
+Induct on $a$. The cases $a=0,1$ are immediate. For $a\geq2$,
+Tur\'an's theorem gives $e(F)\geq p_a(m)$. If $m>a(r-1)$, the
+complement of $F$ is $K_{a+1}$-free and is not $a$-partite: an
+$a$-partition would give a clique of order at least $r$ in $F$.
+Kang--Pikhurko therefore gives the middle line of \eqref{eq:Qr}.
+
+When $m\geq ar+1$, equality in that bound is incompatible with the local
+cap. If $m\geq ar+2$, the old parts in the equality construction have
+total order $m-1>ar$, so one part gives a clique of order at least
+$r+1$. If $m=ar+1$, all old parts have order $r$. In the notation of
+the equality construction, a special old part $S$, exceptional vertex
+$x$, witness vertex $y$, and nonempty proper $A\subset S$ give
+\[
+ e(F[S\cup\{x\}])=\binom r2+r-|A|,
+ \qquad
+ e(F[S\cup\{y\}])=\binom r2+|A|.
+\]
+The local cap would require both $r-|A|\leq1$ and $|A|\leq1$, which
+is impossible for $r\geq6$. This proves $e(F)\geq Q_r(a,m)$.
+
+Choose a minimum-degree vertex $x$, set $\delta=d_F(x)$,
+$N=N_F(x)$, and $U=V(F)\setminus(N\cup\{x\})$. Then
+$F[U]\in\mathcal F_r(a-1,m-1-\delta)$. Put
+\[
+ X=e_F(N,U),\qquad Y=e_F(N).
+\]
+Minimum degree gives $X+2Y\geq\delta(\delta-1)$. As
+$Y\leq\binom\delta2$, this first gives
+$X+Y\geq\binom\delta2$. If $\delta=r-1$, equality would force
+$Y=\binom{r-1}{2}$ and $X=0$, making $N\cup\{x\}$ a $K_r$;
+one extra edge is therefore required.
+
+If $\delta\geq r$, average the local cap over the sets
+$\{x\}\cup S$ with $S\in\binom Nr$. Each $S$ spans at most
+$\binom{r-1}{2}$ edges, and hence
+\[
+  Y\leq\frac{r-2}{r}\binom\delta2.
+\]
+Combining this with the degree-sum inequality gives
+\[
+  \delta+X+Y\geq C_r(\delta).
+\]
+The induction hypothesis on $F[U]$ proves the first term in the maximum
+in \eqref{eq:Rr}; the degree sum gives
+$e(F)\geq\lceil m\delta/2\rceil$. Taking both bounds at the same
+$\delta$, then minimizing over possible minimum degrees, proves
+\eqref{eq:Rr}. Theorem~\ref{thm:exact-ladder} justifies each terminal
+$+\infty$ value, and $e(F)\leq D_r(m)$ justifies the final emptiness
+test.
+\end{proof}
+
+For a least color graph $G_i$, let $v$ be a minimum-degree vertex of
+degree $d\leq r-1$, and let $U$ be its nonneighbor set. After selecting
+$j$ disjoint target copies of $K_r$ in $U$, let $R_j$ be their
+complement. If $R_j$ has no further $K_r$, representative selection gives
+\[
+ R_j\in\mathcal F_r(r-1-j,r^2-d-jr).
+\]
+Indeed, an independent $(r-j)$-set in $R_j$ could be extended by one
+representative from each deleted block. At every choice, fewer than $r$
+previously selected vertices each forbid at most one block vertex, so a
+representative remains. The resulting independent $r$-set in $U$
+contradicts \eqref{eq:U-alpha}.
+
+For the edge accounting, put $N=N_{G_i}(v)$,
+$X=e_{G_i}(N,U)$, and $Y=e_{G_i}(N)$. Minimum degree gives
+$X+2Y\geq d(d-1)$, while $Y\leq\binom d2$; hence
+$X+Y\geq\binom d2$. Subtracting the edges incident with $v$, these
+neighborhood edges, and the internal edges of the selected blocks gives
+\begin{equation}\label{eq:entry-upper}
+ e(R_j)\leq E_{r,d,j}:=
+ M_r-d-\binom d2-j\binom r2.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:entry-criterion}
+ B_r(r-1-j,r^2-d-jr)>E_{r,d,j}
+\end{equation}
+forces every packing of $j$ blocks to extend by one block.
+
+The exact margins $B_r-E_{r,d,j}$ needed below are
+\begin{center}
+\begin{tabular}{c@{\quad}c@{\quad}rrr}
+\toprule
+$r$&$d$&$j=0$&$j=1$&$j=2$\\
+\midrule
+7&0&57&$+\infty$&$+\infty$\\
+7&1&42&$+\infty$&$+\infty$\\
+7&2&25&$+\infty$&$+\infty$\\
+7&3&18&28&$+\infty$\\
+7&4&10&9&$+\infty$\\
+7&5&5&4&$+\infty$\\
+7&6&$-1$&$-2$&$-3$\\
+\bottomrule
+\end{tabular}
+\qquad
+\begin{tabular}{c@{\quad}rrrr}
+\toprule
+$d$&$j=0$&$j=1$&$j=2$&$j=3$\\
+\midrule
+0&60&104&$+\infty$&$+\infty$\\
+1&44&72&$+\infty$&$+\infty$\\
+2&35&41&$+\infty$&$+\infty$\\
+3&24&23&$+\infty$&$+\infty$\\
+4&17&16&$+\infty$&$+\infty$\\
+5&8&7&6&$+\infty$\\
+6&3&2&1&$+\infty$\\
+7&$-4$&$-5$&$-6$&$-7$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The left table is for $r=7$ and the right table for $r=8$. Every entry
+needed for $d\leq5$ at $r=7$, and for $d\leq6$ at $r=8$, is positive
+or infinite. Criterion \eqref{eq:entry-criterion} therefore forces,
+respectively, three or four disjoint blocks, contrary to
+Proposition~\ref{prop:block-exclusion}. Together with
+\eqref{eq:degree-window}, this proves
+\begin{equation}\label{eq:fixed-degree-reductions}
+ \delta(G)=6\quad(r=7),
+ \qquad \delta(G)=7\quad(r=8).
+\end{equation}
+
+\section{The seven-color case}\label{sec:r7}
+
+\begin{theorem}\label{thm:r7}
+Every seven-coloring of $K_{50}$ has an eight-vertex set that omits at
+least one color.
+\end{theorem}
+
+The only new finite premise for this theorem is the next weighted
+seven-vertex lemma.
+
+\begin{lemma}[Weighted light edge]\label{lem:r7-light-edge}
+Let $M$ be a graph on seven vertices with
+\[
+  \alpha(M)\leq5,
+  \qquad 6\leq m:=e(M)\leq9.
+\]
+Give its vertices nonnegative integer weights $z_y$, and put
+$Z=\sum_yz_y$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $m+Z\leq8$, some edge $yy'$ satisfies
+  \[
+    d_M(y)+d_M(y')+z_y+z_{y'}\leq6.
+  \]
+\item If $m+Z\leq9$, some edge $yy'$ satisfies
+  \[
+    d_M(y)+d_M(y')+z_y+z_{y'}\leq7.
+  \]
+\end{enumerate}
+\end{lemma}
+
+The direct finite check gives the exact extrema
+\begin{center}
+\begin{tabular}{c@{\qquad}rrrr}
+\toprule
+$m\backslash Z$&0&1&2&3\\
+\midrule
+6&6&6&6&7\\
+7&6&6&7&\\
+8&6&6&&\\
+9&7&&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+over all cases satisfying the hypotheses. Section~\ref{sec:finite-r7}
+states the semantics and independent reconstruction.
+
+\subsection{Human implication chain}
+
+Assume that every eight-set in a seven-coloring of $K_{50}$ sees all seven
+colors, and choose a least color graph $G$.
+\begin{enumerate}[label=\textup{R7.\arabic*},leftmargin=3.5em]
+\item The least-color budget is $e(G)\leq175$.
+\item The shared colored recursion excludes minimum degree at most five,
+  while \eqref{eq:degree-window} gives the upper bound six. Hence
+  $\delta(G)=6$.
+\item For a degree-six vertex, its 43 nonneighbors $U$ satisfy
+  \[
+    \alpha(G[U])\leq6,
+    \qquad e(G[U])\leq154.
+  \]
+\item Lemma~\ref{lem:r7-light-edge}, the star-and-cover argument, and the
+  shared recursion give
+  \[
+    P_6(43)\geq156,
+    \qquad P_5(36)\geq134,
+    \qquad P_4(29)\geq113.
+  \]
+\item These floors exceed the successive edge upper bounds
+  \[
+    154,\qquad133,\qquad112.
+  \]
+  Three disjoint target copies of $K_7$ are therefore forced in $U$.
+\item Proposition~\ref{prop:block-exclusion} forbids exactly three such
+  blocks when $r=7$, giving the contradiction.
+\end{enumerate}
+
+The residual ledger is
+\begin{center}
+\begin{tabular}{c@{\qquad}c@{\qquad}c@{\qquad}c}
+\toprule
+residual order&independence cap&edge upper&no-next-$K_7$ floor\\
+\midrule
+43&6&154&156\\
+36&5&133&134\\
+29&4&112&113\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For this section, $P_a(n)$ denotes a valid lower edge bound on an actual
+induced target-color graph $F$ with $|F|=n$, $\alpha(F)\leq a$, and
+$\omega(F)\leq6$. The recursive bound above gives
+\begin{equation}\label{eq:r7-input-floors}
+\begin{gathered}
+ P_3(20)\geq63,\qquad P_3(21)\geq75,\\
+ P_5(37)\geq143,\qquad P_5(38)\geq153,
+ \qquad P_5(39)\geq176.
+\end{gathered}
+\end{equation}
+
+\subsection{The star-and-cover mechanism}
+
+Let $x$ be a minimum-degree vertex of an induced target graph $F$, and
+put
+\[
+ \delta=d_F(x),\qquad N=N_F(x),
+ \qquad W=V(F)\setminus N_F[x].
+\]
+Write $M=\comp{F[N]}$ and $m=e(M)$. For $y\in N$, minimum degree
+gives $d_F(y,W)\geq d_M(y)$. Define nonnegative integers $z_y$ by
+\[
+ d_F(y,W)=d_M(y)+z_y,
+ \qquad Z=\sum_{y\in N}z_y.
+\]
+Then
+\begin{equation}\label{eq:r7-cross-count}
+ e_F(N,W)=2m+Z.
+\end{equation}
+If $\delta=6$, the number of edges outside $F[W]$ is
+\begin{equation}\label{eq:r7-star6}
+ 6+e_F(N)+e_F(N,W)=21+m+Z.
+\end{equation}
+Here $M$ is nonempty, since otherwise $N_F[x]$ is a $K_7$. If
+$\delta=7$, the corresponding total is
+\begin{equation}\label{eq:r7-star7}
+ 28+m+Z.
+\end{equation}
+The local eight-set cap applied to $N_F[x]$ gives $m\geq6$. Also
+$\alpha(M)\leq5$, since an independent six-set in $M$, together with
+$x$, would be a target $K_7$.
+
+For an edge $yy'$ of $M$, put
+\[
+ C=N_F(y,W)\cup N_F(y',W).
+\]
+Then
+\begin{equation}\label{eq:r7-cover-size}
+ |C|\leq d_M(y)+d_M(y')+z_y+z_{y'}.
+\end{equation}
+When $\alpha(F)\leq4$, the graph $F[W\setminus C]$ has independence
+number at most two: an independent triple there, together with the
+nonadjacent pair $y,y'$, would be an independent five-set in $F$.
+Thus $|W\setminus C|\geq14$ contradicts
+Theorem~\ref{thm:terminal-core}.
+
+When $\delta=6$, choose any edge $yy'$ of the nonempty graph $M$. The
+quantity $d_M(y)+d_M(y')-1$ counts the edges incident to at least one of
+$y,y'$, so
+\[
+ d_M(y)+d_M(y')\leq m+1.
+\]
+Together with $z_y+z_{y'}\leq Z$, this bounds the right side of
+\eqref{eq:r7-cover-size} by $m+1+Z$.
+
+\begin{lemma}\label{lem:r7-p4-floors}
+One has
+\[
+  P_4(28)\geq100,
+  \qquad P_4(29)\geq113.
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose first that $|F|=28$ and $e(F)\leq99$. Average degree gives
+$\delta\leq7$. If $\delta\leq5$, then $|W|\geq22=3\cdot7+T_3(7)$,
+contrary to Theorem~\ref{thm:exact-ladder}.
+
+If $\delta=6$, then $|W|=21$ and
+\eqref{eq:r7-input-floors} gives $e(F[W])\geq75$. Equation
+\eqref{eq:r7-star6} gives $m+Z\leq3$; the bound following
+\eqref{eq:r7-cover-size} gives $|C|\leq4$. Hence
+$|W\setminus C|\geq17$, a contradiction.
+
+If $\delta=7$, then $|W|=20$ and
+$e(F[W])\geq63$. Equation \eqref{eq:r7-star7} gives $m+Z\leq8$.
+Lemma~\ref{lem:r7-light-edge} gives $|C|\leq6$, so
+$|W\setminus C|\geq14$, again a contradiction. This proves the first
+floor.
+
+Now suppose that $|F|=29$ and $e(F)\leq112$. Average degree gives
+$\delta\leq7$. A degree at most six leaves at least 22 nonneighbors and
+is excluded by the three-layer theorem. Thus $\delta=7$, $|W|=21$,
+and $e(F[W])\geq75$. Equation \eqref{eq:r7-star7} gives
+$m+Z\leq9$. Lemma~\ref{lem:r7-light-edge} gives $|C|\leq7$, leaving
+at least 14 vertices and producing the terminal-core contradiction.
+\end{proof}
+
+\begin{lemma}\label{lem:r7-propagation}
+One has
+\[
+ P_5(35)\geq122,
+ \qquad P_5(36)\geq134,
+ \qquad P_6(43)\geq156.
+\]
+\end{lemma}
+
+\begin{proof}
+If a 35-vertex graph with independence number at most five has at most
+121 edges, its minimum degree is at most six. A degree at most four
+leaves at least 30 nonneighbors and is excluded by $T_4(7)=2$. At
+degrees five and six, Lemma~\ref{lem:r7-p4-floors} and the star floors
+give
+\[
+ P_4(29)+15\geq128,
+ \qquad P_4(28)+22\geq122.
+\]
+This proves $P_5(35)\geq122$.
+
+For order 36 and at most 133 edges, the minimum degree is at most seven.
+Degrees at most five are excluded by the four-layer theorem. At degrees
+six and seven, the lower bounds are
+\[
+ P_4(29)+22\geq135,
+ \qquad P_4(28)+34\geq134.
+\]
+This proves $P_5(36)\geq134$.
+
+Finally, suppose that $|F|=43$, $\alpha(F)\leq6$, and
+$e(F)\leq155$. The minimum degree is at most seven. A degree at most two
+leaves at least 40 nonneighbors and is excluded by $T_5(7)=5$. For
+degrees three through seven the lower bounds are
+\[
+\begin{array}{c|ccccc}
+\delta&3&4&5&6&7\\ \hline
+e(F)&176+6&153+10&143+15&134+22&122+34.
+\end{array}
+\]
+Every entry is at least 156, proving the final floor.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:r7}]
+Suppose otherwise and choose a least color graph $G$. Equation
+\eqref{eq:fixed-degree-reductions} gives $\delta(G)=6$. Fix a
+degree-six vertex $v$, and let $U$ be its 43 nonneighbors. Then
+$\alpha(G[U])\leq6$. Minimum-degree accounting gives at least
+$6+\binom62=21$ target edges outside $U$, and hence
+\[
+ e(G[U])\leq175-6-\binom62=154.
+\]
+If $G[U]$ had no $K_7$, Lemma~\ref{lem:r7-propagation} would give at
+least 156 edges. Choose a target $K_7$, delete it, and call the
+36-vertex remainder $R_1$. If $R_1$ had an independent six-set, each
+of its vertices would forbid at most one vertex of the deleted $K_7$, so
+one block vertex could be adjoined to form an independent seven-set in
+$U$. Hence $\alpha(G[R_1])\leq5$, while
+\[
+ e(G[R_1])\leq154-\binom72=133.
+\]
+Lemma~\ref{lem:r7-propagation} forces a second disjoint $K_7$. Delete
+it and call the 29-vertex remainder $R_2$. An independent five-set in
+$R_2$ could be extended first through one deleted block and then through
+the other, with at most five and then six forbidden block vertices. Thus
+\[
+ \alpha(G[R_2])\leq4,
+ \qquad e(G[R_2])\leq133-\binom72=112.
+\]
+Lemma~\ref{lem:r7-p4-floors} forces a third disjoint $K_7$. Thus $U$
+contains three disjoint target copies of $K_7$, contrary to
+Proposition~\ref{prop:block-exclusion}.
+\end{proof}
+
+\section{Finite verification for the seven-color case}\label{sec:finite-r7}
+
+A finite case is a pair $(M,z)$, where $M$ is a labeled graph on seven
+vertices, $6\leq e(M)\leq9$, $\alpha(M)\leq5$, and
+$z\in\mathbb N^7$ satisfies $e(M)+\sum_yz_y\leq9$. For each case, the
+checker computes
+\[
+  \min_{yy'\in E(M)}
+  \left(d_M(y)+d_M(y')+z_y+z_{y'}\right).
+\]
+The exact enumeration is as follows.
+
+\begin{center}
+\begin{tabular}{c@{\qquad}r@{\qquad}c}
+\toprule
+$(m,Z)$&weighted cases&largest possible minimum\\
+\midrule
+$(6,0)$&54,257&6\\
+$(6,1)$&379,799&6\\
+$(6,2)$&1,519,196&6\\
+$(6,3)$&4,557,588&7\\
+$(7,0)$&116,280&6\\
+$(7,1)$&813,960&6\\
+$(7,2)$&3,255,840&7\\
+$(8,0)$&203,490&6\\
+$(8,1)$&1,424,430&6\\
+$(9,0)$&293,930&7\\
+\midrule
+total&12,618,770&\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The admissible labeled graph counts for $m=6,7,8,9$ are respectively
+\[
+  54{,}257,\quad116{,}280,\quad203{,}490,\quad293{,}930.
+\]
+The canonical checker enumerates labeled edge subsets and weak
+compositions directly. The separate Sage checker uses nauty
+\cite{McKayPiperno2014} to generate
+40, 65, 97, and 131 unlabelled graph types, then reconstructs the labeled
+counts from automorphism orders. Both routes reproduce the table. Neither
+route calls a SAT solver, and there is no detached proof trace.
+
+The accompanying release contains the direct checker
+\path{code/verify_r7_weighted_light_edge.py}, the independent Sage checker
+\path{code/verify_r7_weighted_light_edge_sage.py}, the arithmetic replay
+\path{code/verify_r7_fixed_outer_closure.py}, and the shared ladder check
+\path{code/verify_colored_core_ladder.py}. Their hashes are recorded in the
+release checksum ledger.
+
+\section{The eight-color case}\label{sec:r8}
+
+\begin{theorem}\label{thm:r8}
+Every eight-coloring of $K_{65}$ has a nine-vertex set that omits at least
+one color.
+\end{theorem}
+
+Throughout this section, $P_a(n)$ denotes a valid lower edge bound on an
+actual induced target-color graph with $n$ vertices, independence number
+at most $a$, and clique number at most seven. The proof needs two such
+edge floors.
+
+\begin{lemma}[Twenty-three-vertex full-color floor]\label{lem:r8-p323}
+Let $H$ be an actual induced target-color graph in a hypothetical balanced
+eight-coloring. If
+\[
+  |V(H)|=23,
+  \qquad\alpha(H)\leq3,
+  \qquad\omega(H)\leq7,
+\]
+then $e(H)\geq91$.
+\end{lemma}
+
+The proof reduces a putative graph with at most 90 edges to a degree-seven
+vertex with a 15-vertex triangle-free complement core. Full-color density
+and the Kang--Pikhurko theorem force the extremal core. The missing-edge
+graph on the seven-vertex neighborhood is a star, and each center--leaf
+row pair partitions a minimum cover of the core. The full-color ten-set cap
+removes one split core; the local nine-set cap removes the remaining two.
+
+\begin{proof}
+Suppose instead that $e(H)\leq90$, and choose a minimum-degree vertex
+$v$. Average degree gives $d_H(v)\leq\lfloor180/23\rfloor=7$. If
+$d_H(v)\leq6$, its nonneighbors contain at least 16 vertices. Their
+induced graph has independence number at most two and clique number at
+most seven, contrary to Theorem~\ref{thm:terminal-core}. Hence
+$d_H(v)=7$.
+
+Put $A=N_H(v)$ and $B=V(H)\setminus(A\cup\{v\})$, so $|A|=7$ and
+$|B|=15$. Define
+\[
+ L=\comp{H[B]},\qquad M=\comp{H[A]},
+ \qquad m=e(L),\qquad f=e(M).
+\]
+The graph $L$ is triangle-free, has $\alpha(L)\leq7$, and is
+nonbipartite. Indeed, one side of a bipartition of 15 vertices would have
+order at least eight and would give a target $K_8$ in $H[B]$.
+The colored-density bound gives
+\begin{equation}\label{eq:r8-p323-m-lower}
+ m\geq7p_8(15)=49.
+\end{equation}
+The Kang--Pikhurko bound for a nonbipartite triangle-free graph on 15
+vertices gives
+\begin{equation}\label{eq:r8-p323-m-upper}
+ m\leq t_2(15)-\left\lfloor\frac{15}{2}\right\rfloor+1
+ =56-7+1=50.
+\end{equation}
+Here $t_2(15)=\lfloor15^2/4\rfloor=56$ is the triangle-free Tur\'an
+number.
+
+For $a\in A$, put
+\[
+ D_a=N_H(a)\cap B,
+ \qquad c_a=|D_a|,
+ \qquad c=\sum_{a\in A}c_a.
+\]
+Minimum degree gives
+\[
+ d_H(a)=1+6-d_M(a)+c_a\geq7,
+ \qquad c_a\geq d_M(a),
+ \qquad c\geq2f.
+\]
+Also $f\geq1$, since otherwise $\{v\}\cup A$ is a target $K_8$.
+The full edge ledger is
+\begin{equation}\label{eq:r8-p323-edge-ledger}
+ e(H)=7+(21-f)+(105-m)+c=133-f-m+c.
+\end{equation}
+It follows that
+\begin{equation}\label{eq:r8-p323-c-upper}
+ c\leq m+f-43\leq f+7,
+ \qquad f\leq7.
+\end{equation}
+
+For every edge $aa'\in E(M)$, the set $D_a\cup D_{a'}$ is a vertex
+cover of $L$. Otherwise an uncovered edge of $L$, together with $a,a'$,
+would be an independent four-set in $H$. Since
+$\tau(L)=15-\alpha(L)\geq8$, we have
+\begin{equation}\label{eq:r8-p323-cover}
+ c_a+c_{a'}\geq8\qquad(aa'\in E(M)).
+\end{equation}
+The graph $M$ has no two disjoint edges, because they would give
+$c\geq16$, while \eqref{eq:r8-p323-c-upper} gives $c\leq14$. If $M$
+contained a triangle, the absence of two disjoint edges would make that
+triangle its entire nonisolated part, so $f=3$. Summing
+\eqref{eq:r8-p323-cover} around the triangle would give $c\geq12$, while
+\eqref{eq:r8-p323-c-upper} would give $c\leq10$.
+
+A nonempty graph with matching number at most one and no triangle is a
+star. Thus
+\[
+ M=K_{1,f}\cup(6-f)K_1,
+ \qquad1\leq f\leq6.
+\]
+Let $a_0$ be the center, $a_1,\ldots,a_f$ the leaves, and put
+$x=c_{a_0}$. Minimum degree and \eqref{eq:r8-p323-cover} give
+\[
+ x\geq f,
+ \qquad c_{a_j}\geq\max\{1,8-x\}\qquad(1\leq j\leq f).
+\]
+Consequently,
+\begin{equation}\label{eq:r8-p323-c-lower}
+ c\geq x+f\max\{1,8-x\}\geq f+7.
+\end{equation}
+For $x\leq7$, the difference between the final two quantities is
+$(f-1)(7-x)$; for $x\geq7$, it is $x-7$. Equations
+\eqref{eq:r8-p323-m-upper}, \eqref{eq:r8-p323-c-upper}, and
+\eqref{eq:r8-p323-c-lower} force
+\begin{equation}\label{eq:r8-p323-equality}
+ m=50,\qquad c=f+7,\qquad e(H)=90.
+\end{equation}
+
+For every leaf $a_j$, equality also gives
+\[
+ c_{a_0}+c_{a_j}=8,
+ \qquad D_{a_0}\cap D_{a_j}=\varnothing,
+\]
+and $C_j:=D_{a_0}\cup D_{a_j}$ is an eight-vertex minimum cover of
+$L$. For $f=1$ this follows from $c=8$ and
+\eqref{eq:r8-p323-cover}. For $f\geq2$, equality in
+\eqref{eq:r8-p323-c-lower} forces $x=7$, every leaf row to have size
+one, and every isolated row to be empty.
+
+The equality case of the Kang--Pikhurko theorem now applies. There are
+disjoint sets $P,Q$ and vertices $x_0,y_0$ such that
+\[
+ |P|=6,
+ \quad |Q|=7,
+ \quad Q=X\mathbin{\dot\cup}Y,
+ \quad a:=|X|\in\{1,2,3\},
+\]
+and
+\[
+ E(L)=E(K_{P,Q})\cup\{x_0y_0\}
+ \cup\{x_0q:q\in X\}\cup\{y_0q:q\in Y\}.
+\]
+Swapping $x_0,y_0$ permits $a\leq3$. The maximum independent
+seven-sets and their complementary minimum covers are exactly
+\begin{center}
+\begin{tabular}{p{0.29\textwidth}p{0.38\textwidth}c}
+\toprule
+independent set&minimum cover $C$&$e_L(C)$\\
+\midrule
+$Q$&$P\cup\{x_0,y_0\}$&1\\
+$P\cup\{x_0\}$&$Q\cup\{y_0\}$&$7-a$\\
+$P\cup\{y_0\}$&$Q\cup\{x_0\}$&$a$\\
+$\{x_0\}\cup Y$&$P\cup X\cup\{y_0\}$&6, if $a=1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This list is exhaustive. An independent set meeting $P$ cannot meet
+$Q$, and order seven then forces all six vertices of $P$ and one of
+$x_0,y_0$. An independent set avoiding $P$ is checked directly from
+$Q=X\mathbin{\dot\cup}Y$.
+
+Fix a leaf $a_j$. The ten-set
+$S=\{a_0,a_j\}\cup C_j$ contains no target edge between $a_0,a_j$,
+exactly eight cross edges, and $28-e_L(C_j)$ target edges inside $C_j$.
+The full-color ten-set density bound, not merely the local nine-set cap,
+therefore gives
+\begin{equation}\label{eq:r8-ten-set}
+ 36-e_L(C_j)=e_H(S)\leq D_8(10)=31,
+ \qquad e_L(C_j)\geq5.
+\end{equation}
+
+If $a=3$, every minimum cover in the table spans at most four edges,
+contrary to \eqref{eq:r8-ten-set}. If $a=2$, the only remaining cover is
+$C_j=Q\cup\{y_0\}$. Put $C'=Q\cup\{x_0\}$; then
+$e_L(C')=2$ and $|C_j\cap C'|=7$. For each
+$z\in\{a_0,a_j\}$, the local cap on the nine-set $\{z\}\cup C'$ gives
+\[
+ 28-2+|D_z\cap C'|\leq29,
+ \qquad |D_z\cap C'|\leq3.
+\]
+The two rows partition $C_j$, so their intersections with $C'$ sum to
+seven, not at most six.
+
+Finally, let $a=1$. If $C_j=Q\cup\{y_0\}$, use
+$C'=Q\cup\{x_0\}$. If $C_j=P\cup X\cup\{y_0\}$, use
+$C'=P\cup\{x_0,y_0\}$. In both cases
+\[
+ e_L(C')=1,
+ \qquad |C_j\cap C'|=7.
+\]
+The local nine-set cap gives $|D_z\cap C'|\leq2$ for each of the two
+rows, again contradicting their total intersection of seven. All equality
+cores are impossible.
+\end{proof}
+
+The second floor is the computer-assisted dependency
+\begin{equation}\label{eq:r8-p324}
+  P_3(24)\geq106.
+\end{equation}
+Its exhaustive minimum-degree split is
+\begin{center}
+\small
+\begin{tabular}{c p{0.36\textwidth}p{0.34\textwidth}}
+\toprule
+minimum degree&reduction&receipt\\
+\midrule
+$0,\ldots,4$&complement degree count&human arithmetic\\
+5&one 18-vertex endpoint formula&semantic reconstruction and one LRAT\\
+6&17-vertex complement degree argument&human proof\\
+7&16-vertex complement--shell incidence argument&human proof\\
+8&861 fixed core--shell pairs&semantic reconstruction and 861 LRATs\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proof}[Proof of \eqref{eq:r8-p324}]
+Suppose that $H$ is a counterexample: $|V(H)|=24$,
+$\alpha(H)\leq3$, $\omega(H)\leq7$, every nine-set spans at most 29
+edges, and $e(H)\leq105$. Choose a minimum-degree vertex $v$ of degree
+$d\leq8$, let $U$ be its $u=23-d$ nonneighbors, and put
+$L=\comp{H[U]}$. The graph $L$ is triangle-free,
+$\alpha(L)\leq7$, every nine-set of $L$ spans at least seven edges,
+and $\Delta(L)\leq7$.
+
+Minimum-degree accounting gives
+\begin{equation}\label{eq:p83-basic-lower}
+ e(H)\geq\binom{d+1}{2}+\binom u2-e(L).
+\end{equation}
+Using $e(L)\leq\lfloor7u/2\rfloor$ gives
+\begin{center}
+\begin{tabular}{c@{\quad}c@{\quad}c@{\quad}l}
+\toprule
+$d$&$u$&lower bound for $e(H)$&conclusion\\
+\midrule
+0&23&173&impossible\\
+1&22&155&impossible\\
+2&21&140&impossible\\
+3&20&126&impossible\\
+4&19&115&impossible\\
+5&18&105&equality endpoint\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At $d=5$, equality in \eqref{eq:p83-basic-lower} forces
+$e(L)=63$, so $L$ is seven-regular. Equality in the star accounting
+forces $H[N_H[v]]$ to be a $K_6$ with no edges from $N_H(v)$ to $U$.
+Thus the branch requires a triangle-free seven-regular graph on 18
+vertices with independence number at most seven. The endpoint formula in
+Section~\ref{sec:finite-r8} encodes exactly that graph and has a checked
+LRAT refutation.
+
+If $d=6$, then $u=17$. In fact $\Delta(L)\leq6$. To see this, suppose
+that $z$ has seven neighbors $A$ in $L$; $A$ is independent. Among the
+remaining nine vertices $b$, put $p(b)=|N_L(b)\cap A|$. For distinct
+$b,c$, the nine-set $A\cup\{b,c\}$ gives
+\[
+ p(b)+p(c)+\mathbf1_{bc\in E(L)}\geq7.
+\]
+At most two vertices have $p(b)\leq3$: two such vertices must both have
+value three and be adjacent, while three would form a triangle. Any two
+vertices with $p$-value at least four are nonadjacent, because their
+neighborhoods in the seven-set $A$ intersect. At least seven such
+vertices, together with $z$, form an independent eight-set, a
+contradiction. Hence $e(L)\leq51$, and
+\[
+ e(H)\geq\binom72+\binom{17}{2}-51=106.
+\]
+
+It remains to exclude $d=7,8$.
+
+\medskip
+\noindent\textit{The degree-seven branch.}
+Here $|A|=7$ and $|B|=16$ for
+$A=N_H(v)$ and $B=V(H)\setminus(A\cup\{v\})$. Put
+$L=\comp{H[B]}$. It is triangle-free, has $\alpha(L)\leq7$, every
+nine vertices span at least seven edges, and $\Delta(L)\leq7$.
+
+We first prove $e(L)\leq48$. It is enough to show that a degree-seven
+vertex forces $e(L)=44$. Suppose $z$ has degree seven, put
+$P=N_L(z)$, and let $Q$ be the other eight vertices. The set $P$ is
+independent. For $b\in Q$, write $p_b=|N_L(b)\cap P|$. For distinct
+$b,c\in Q$,
+\begin{equation}\label{eq:d7-pair}
+ p_b+p_c+\mathbf1_{bc\in E(L)}\geq7.
+\end{equation}
+At most two vertices are low, meaning $p_b\leq3$. Any two low vertices
+must have value three and be adjacent, while three low vertices would
+form a triangle. Any two high vertices are nonadjacent, since their
+neighborhoods in $P$ both have order at least four. There cannot be
+seven high vertices, since those vertices together with $z$ would be an
+independent eight-set. Thus $Q$ consists of six high vertices and two
+low vertices $x,y$, with
+\[
+ p_x=p_y=3,
+ \qquad xy\in E(L).
+\]
+The only possible edges inside $Q$ are $xy$ and edges from $x$ or $y$
+to the six high vertices. No high vertex can meet both $x$ and $y$, so
+$e(L[Q])\leq7$. The nine-set $\{z\}\cup Q$ gives the reverse
+inequality, and every high vertex meets exactly one of $x,y$. Let $R$ be
+the six high vertices, and put
+$R_x=N_L(x)\cap R$ and $R_y=N_L(y)\cap R$. Then $R_x,R_y$ partition
+$R$, and the degree bound gives $|R_x|=|R_y|=3$. For $r\in R_x$, the sets
+$N_L(r)\cap P$ and $N_L(x)\cap P$ are disjoint; their orders are at
+least four and exactly three, so they partition $P$. The same holds on
+the $y$ side. Consequently
+\[
+ \sum_{b\in Q}p_b=2\cdot3+6\cdot4=30,
+ \qquad e(L)=7+30+7=44.
+\]
+If no degree-seven vertex exists, $e(L)\leq16\cdot6/2=48$.
+
+Put $F=\comp{H[A]}$, $f=e(F)$, and, for $a\in A$, put
+\[
+ D_a=N_H(a)\cap B,
+ \qquad c_a=|D_a|,
+ \qquad c=\sum_{a\in A}c_a.
+\]
+The graph $F$ is nonempty, or $H[\{v\}\cup A]$ is a $K_8$.
+Minimum degree gives $c_a\geq d_F(a)$ and $c\geq2f$. The full edge
+count is
+\[
+ e(H)=148-m-f+c\leq105,
+ \qquad m=e(L),
+\]
+so
+\begin{equation}\label{eq:d7-c-upper}
+ c\leq m+f-43\leq f+5.
+\end{equation}
+For every $aa'\in E(F)$, the set $D_a\cup D_{a'}$ covers $L$; an
+uncovered $L$-edge would make an independent four-set with $a,a'$.
+Since $\tau(L)\geq9$,
+\begin{equation}\label{eq:d7-cover}
+ c_a+c_{a'}\geq9\qquad(aa'\in E(F)).
+\end{equation}
+Equations \eqref{eq:d7-c-upper}--\eqref{eq:d7-cover} give $f\geq4$,
+while $c\geq2f$ and \eqref{eq:d7-c-upper} give $f\leq5$.
+
+The graph $F$ cannot have two disjoint edges, since
+\eqref{eq:d7-cover} would give $c\geq18$, whereas
+\eqref{eq:d7-c-upper} gives $c\leq10$. A graph with matching number at
+most one is a star or a triangle together with isolated vertices. Since
+$f\in\{4,5\}$, it is a star $K_{1,f}$. If $a_0$ is its center and
+$x=c_{a_0}$, then
+\[
+ c\geq x+f\max\{1,9-x\}\geq f+8,
+\]
+contrary to \eqref{eq:d7-c-upper}. This excludes $d=7$.
+
+\medskip
+\noindent\textit{The degree-eight branch.}
+Now $|A|=8$ and $|B|=15$. Define
+\[
+ L=\comp{H[B]},\quad F=\comp{H[A]},
+ \quad m=e(L),\quad f=e(F).
+\]
+The graph $L$ is triangle-free, $\alpha(L)\leq7$,
+$\Delta(L)\leq7$, and every nine-set spans at least seven edges. The
+graph $F$ is $K_4$-free and $\alpha(F)\leq6$. Applying the local cap
+to $\{v\}\cup A$ gives $f\geq7$.
+
+For $a\in A$, write
+\[
+ D_a=N_H(a)\cap B,
+ \qquad c_a=d_F(a)+\varepsilon_a,
+ \qquad \varepsilon_a\geq0.
+\]
+The equality follows from minimum degree. With
+$c=\sum_ac_a=2f+\sum_a\varepsilon_a$, the edge ledger is
+\[
+ e(H)=8+(28-f)+(105-m)+c=141-f-m+c\leq105.
+\]
+Hence
+\begin{equation}\label{eq:d8-slack}
+ c\leq m+f-36,
+ \qquad \sum_a\varepsilon_a\leq m-f-36.
+\end{equation}
+The first inequality and $f\geq7$ give $m\geq43$. The graph $L$ is
+nonbipartite, because a bipartition has a part of order at least eight.
+Kang--Pikhurko gives $m\leq50$, so
+\begin{equation}\label{eq:d8-m-range}
+ 43\leq m\leq50.
+\end{equation}
+
+Two incidence conditions are forced. If $aa'\in E(F)$, the rows
+$D_a,D_{a'}$ cover $L$, and therefore
+\begin{equation}\label{eq:d8-pair-cover}
+ d_F(a)+d_F(a')+\varepsilon_a+\varepsilon_{a'}\geq8.
+\end{equation}
+If $T$ is a triangle of $F$, the three corresponding rows cover all of
+$B$, and therefore
+\begin{equation}\label{eq:d8-triangle-cover}
+ \sum_{a\in T}\bigl(d_F(a)+\varepsilon_a\bigr)\geq15.
+\end{equation}
+
+Nauty 2.8.9's \texttt{geng} stream \cite{McKayPiperno2014} contains all
+unlabelled triangle-free graphs
+on 15 vertices with maximum degree at most seven and 43 through 50 edges.
+There are 46,184 stream records. Exact checks of $\alpha(L)\leq7$ and
+the nine-set lower bound retain 997 core types, distributed as
+\[
+\begin{array}{c|rrrrrrrr}
+m&43&44&45&46&47&48&49&50\\ \hline
+\text{cores}&435&250&152&82&45&21&9&3.
+\end{array}
+\]
+Equation \eqref{eq:d8-slack} also gives $f\leq m-36\leq14$. The shell
+stream therefore contains all 6,896 unlabelled eight-vertex graphs with
+7 through 14 edges. It rejects $K_4$ or an independent seven-set and,
+for each remaining $F$, enumerates every weak composition of
+$\sum_a\varepsilon_a\leq7$. The bound seven follows from
+$f\geq7$, $m\leq50$, and \eqref{eq:d8-slack}. It then checks
+\eqref{eq:d8-slack}, \eqref{eq:d8-pair-cover}, and
+\eqref{eq:d8-triangle-cover}. Thus every possible fixed pair from this
+branch occurs in the two filtered streams.
+
+If the triangle condition is temporarily omitted, the other filters leave
+no shell through $m=46$. At $m=47$ they leave three book graphs: two
+adjacent centers, $t=3,4,5$ common leaves, and $5-t$ isolated vertices.
+The forced row-size vector is
+\[
+ 6,6,\underbrace{2,\ldots,2}_{t\text{ times}},
+ \underbrace{0,\ldots,0}_{5-t\text{ times}}.
+\]
+A center--center--leaf triangle has row-size sum 14, contrary to
+\eqref{eq:d8-triangle-cover}. Hence no case with $m\leq47$ remains.
+For $m=48,49,50$, respectively, the shell filter retains 17, 40, and
+48 records, while the core filter retains 21, 9, and 3 types. It follows
+that the finite index contains exactly
+\[
+ 21\cdot17+9\cdot40+3\cdot48=861
+\]
+core--shell pairs.
+
+For a fixed pair, the 120 Boolean variables record membership
+$b\in D_a$. The formula enforces the global edge cap; the row bounds
+$|D_a|\geq d_F(a)$; the column bounds
+$|\{a:b\in D_a\}|\geq\max\{0,d_L(b)-6\}$; the mixed
+independent-four exclusions; the triangle-column covers; and the mixed
+$K_8$ exclusions. It also enforces the local-cap families consisting of
+one shell and eight core vertices, of $v$ with six shell and two core
+vertices, and of $v$ with seven shell and one core vertex. Every graph in
+the branch satisfies these constraints, so unsatisfiability of this
+restricted formula is enough; the encoding need not include every other
+nine-set family.
+The standard-library semantic verifier independently reconstructs the raw
+filters, the pair order, every clause family, and every auxiliary
+totalizer. All 861 reconstructed formulas are refuted by checked LRAT
+proofs, as detailed in Section~\ref{sec:finite-r8}. Thus $d=8$ is also
+impossible, completing the proof of \eqref{eq:r8-p324}.
+\end{proof}
+
+\subsection{Human implication chain}
+
+Assume that every nine-set in an eight-coloring of $K_{65}$ sees all eight
+colors, and choose a least color graph $G$.
+\begin{enumerate}[label=\textup{R8.\arabic*},leftmargin=3.5em]
+\item The least-color budget is $e(G)\leq260$.
+\item The shared colored recursion excludes minimum degrees at most six,
+  and \eqref{eq:degree-window} gives $\delta(G)=7$.
+\item For a degree-seven vertex, its 57 nonneighbors $U$ satisfy
+  \[
+    \alpha(G[U])\leq7,
+    \qquad e(G[U])\leq232.
+  \]
+\item Lemma~\ref{lem:r8-p323}, \eqref{eq:r8-p324}, and the shared
+  recursion give
+  \[
+    P_7(57)\geq235,
+    \quad P_6(49)\geq206,
+    \quad P_5(41)\geq177,
+    \quad P_4(33)\geq149.
+  \]
+\item These values exceed the successive edge upper bounds
+  \[
+    232,\quad204,\quad176,\quad148.
+  \]
+  Four disjoint target copies of $K_8$ are forced in $U$.
+\item Proposition~\ref{prop:block-exclusion} forbids exactly four such
+  blocks when $r=8$.
+\end{enumerate}
+
+The full residual table is
+\begin{center}
+\begin{tabular}{c@{\quad}c@{\quad}c@{\quad}c@{\quad}c}
+\toprule
+$j$&order&independence cap&edge upper&no-next-$K_8$ floor\\
+\midrule
+0&57&7&232&235\\
+1&49&6&204&206\\
+2&41&5&176&177\\
+3&33&4&148&149\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For actual induced target graphs with clique number at most seven, importing
+Lemma~\ref{lem:r8-p323} and \eqref{eq:r8-p324} into
+Proposition~\ref{prop:recursive-lower-bound} gives
+\begin{center}
+\begin{tabular}{c@{\qquad}l@{\qquad}l}
+\toprule
+$a$&orders $n$&corresponding floors $P_a(n)$\\
+\midrule
+4&31, 32, 33&120, 134, 149\\
+5&40, 41, 42, 43&163, 177, 189, 203\\
+6&48, 49, 50&192, 206, 218\\
+7&57&235\\
+\bottomrule
+\end{tabular}
+\end{center}
+The verifier \texttt{verify\_r8\_d7\_full\_color\_bridge.py} evaluates
+the recursion and records every minimizing degree branch.
+
+\begin{proof}[Proof of Theorem~\ref{thm:r8}]
+Suppose otherwise and choose a least color graph $G$. Equation
+\eqref{eq:fixed-degree-reductions} gives $\delta(G)=7$. Choose a
+degree-seven vertex $v$ and let $U$ be its nonneighbors. Minimum-degree
+accounting gives
+\[
+ |U|=57,
+ \qquad \alpha(G[U])\leq7,
+ \qquad e(G[U])\leq260-7-\binom72=232.
+\]
+After deleting $j$ disjoint target copies of $K_8$, let $R_j$ be the
+residual. Then
+\begin{equation}\label{eq:r8-residual-data}
+ |R_j|=57-8j,
+ \qquad \alpha(G[R_j])\leq7-j,
+ \qquad e(G[R_j])\leq232-28j.
+\end{equation}
+The independence claim follows by representative selection. If $R_j$
+had an independent set of order $8-j$, choose one representative from
+each deleted block in sequence. Every outside vertex has at most one
+target neighbor in a target $K_8$, since two such neighbors would violate
+the local nine-set cap. Before each choice at most seven vertices have
+been selected, so at most seven vertices of the next block are forbidden.
+The result is an independent eight-set in $U$; together with $v$ it
+contradicts $\alpha(G)\leq8$.
+
+Every $R_j$ is obtained only by vertex deletion, so it remains an actual
+induced subgraph of the original color graph. In particular, it retains
+the full-color provenance required by Lemma~\ref{lem:r8-p323} and
+Proposition~\ref{prop:recursive-lower-bound}. For $j=0,1,2,3$, the four
+floors in the preceding table are strictly above the respective upper
+bounds $232,204,176,148$. Therefore $R_j$ contains a target $K_8$ at
+each stage. Four disjoint target copies of $K_8$ are forced in $U$,
+contrary to Proposition~\ref{prop:block-exclusion}.
+\end{proof}
+
+\section{Finite verification for the eight-color case}\label{sec:finite-r8}
+
+For the degree-five endpoint, the formula searches for a labeled graph on
+18 vertices that is 7-regular, triangle-free, and has independence number
+at most seven, after fixing one neighborhood by symmetry. For degree eight,
+write
+\[
+  A=N_H(v),\quad |A|=8,
+  \qquad B=V(H)\setminus(A\cup\{v\}),\quad |B|=15,
+\]
+and put $L=\comp{H[B]}$ and $F=\comp{H[A]}$. The human reduction filters
+the unlabelled core and shell streams, then indexes every pair satisfying
+the remaining edge ledger.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+finite branch&instances&full clauses&LRATs\\
+\midrule
+degree five&1&50,225&1\\
+degree eight&861&52,434,647&861\\
+\midrule
+total&862&52,484,872&862\\
+\bottomrule
+\end{tabular}
+\end{center}
+The degree-five formula has 1,233 variables and 288 totalizer merges.
+Across the degree-eight formulas, the semantic verifier reconstructs
+413,938 retained clauses and 836,035 totalizer merges.
+
+The degree-eight stream reduction is
+\begin{center}
+\begin{tabular}{c@{\qquad}r@{\qquad}r@{\qquad}r}
+\toprule
+$e(L)$&filtered core types&filtered shell records&indexed pairs\\
+\midrule
+48&21&17&357\\
+49&9&40&360\\
+50&3&48&144\\
+\midrule
+total&33&105&861\\
+\bottomrule
+\end{tabular}
+\end{center}
+There are no indexed pairs with $e(L)\leq47$. Before the final pairing,
+nauty 2.8.9 produces 46,184 raw 15-vertex core graphs and 6,896 raw
+eight-vertex shell graphs. The semantic filters retain 997 core types and
+905 shell records across all edge rows. The two exact generator commands
+are
+{\small\begin{verbatim}
+geng -q -t -D7 15 43:50
+geng -q 8 7:14
+\end{verbatim}}
+The local \texttt{geng} binary used to create the retained streams has
+SHA-256
+\begin{center}
+\texttt{3ca950af2145c546f9f586cf960eaf98}\par\vspace{-2pt}
+\texttt{f88fc3920564338f8306b6f58d018af5}.
+\end{center}
+
+The accompanying release contains the degree-five semantic verifier
+\path{code/verify_endpoint18_certificate.py}, its compressed CNF and LRAT in
+\path{artifacts/endpoint18/}, and the complete degree-eight package under
+\path{artifacts/r8-fixed-outer/}.
+
+The degree-eight portable archive has 2,600 regular files and a
+2,599-entry checksum ledger. Its size is 15,226,513 bytes and its SHA-256
+is
+\begin{center}
+\texttt{af5e7d7c20ab44f2330e7b69fdffe16c}\par\vspace{-2pt}
+\texttt{018eb948bfb41539ff2f0a7f2e14bfc0}.
+\end{center}
+\section{Replay and trust boundary}\label{sec:replay}
+
+From the \path{r7-r8/} release directory, the seven-color replay surface is
+{\small\begin{verbatim}
+python3 code/verify_r7_weighted_light_edge.py
+sage code/verify_r7_weighted_light_edge_sage.py
+python3 code/verify_r7_fixed_outer_closure.py
+python3 code/verify_colored_core_ladder.py
+\end{verbatim}}
+The pinned LRAT checker and the full eight-color replay can be built and run
+with
+{\small\begin{verbatim}
+git clone https://github.com/marijnheule/drat-trim.git
+git -C drat-trim checkout 2e3b2dc0ecf938addbd779d42877b6ed69d9a985
+make -C drat-trim lrat-check
+./reproduce.sh --lrat-check "$PWD/drat-trim/lrat-check"
+\end{verbatim}}
+
+The LRAT format and its checking semantics are described in
+\cite{CruzFilipeEtAl2017}; the DRAT-trim toolchain is described in
+\cite{WetzlerHeuleHunt2014}. The audited \texttt{lrat-check} executable was
+built from DRAT-trim source commit
+\begin{center}
+\texttt{2e3b2dc0ecf938addbd779d42877b6ed69d9a985}.
+\end{center}
+Its arm64 binary SHA-256 is
+\begin{center}
+\texttt{a2caddba197bbb0846aabf2dd54e87d7}\par\vspace{-2pt}
+\texttt{9612e3b840ea0c43714f5c522f2d86c7}.
+\end{center}
+
+The finite checkers do not verify the human implication chains, the
+Kang--Pikhurko theorem, or completeness of nauty's unlabelled graph
+generation. For $r=8$, the independent semantic checkers establish what
+the retained formulas mean; the LRAT checker establishes their
+unsatisfiability. The human reduction is needed to connect those formulas
+to Theorem~\ref{thm:r8}. For $r=7$, the proof receipt is direct exhaustive
+enumeration plus an unlabelled reconstruction, not a detached certificate.
+
+Certificate payloads are in the artifact directories named in
+Sections~\ref{sec:finite-r7} and~\ref{sec:finite-r8}.
+
+\section{AI-use disclosure}\label{sec:ai-disclosure}
+
+OpenAI GPT 5.6 Sol was used substantially in this work. Its use included
+exploratory proof search, proposing intermediate lemmas, checking algebra,
+drafting and revising verification programs, organizing finite case
+reductions, preparing replay ledgers, and drafting portions of the research
+notes from which this manuscript was assembled. The model
+also helped identify failed approaches and presentation errors. This was
+not limited to copy editing.
+
+OpenAI GPT-5 (Codex) was used for later source review, mathematical audits,
+certificate replay, and preparation of the release package. xAI Grok 4.5
+was used to critique a draft.
+
+Model output is not treated as mathematical authority. Proposed lemmas were
+rejected when their hypotheses could not be traced, and finite claims were
+kept separate from human reductions. The $r=7$ finite lemma has two
+implementations with different graph-generation methods. The $r=8$
+formulas have separate production and semantic-verification paths, followed
+by LRAT replay. These checks reduce some risks, but they do not amount to an
+independent human review and do not certify the cited published theorem.
+
+This preprint is being circulated for independent checking and has not yet
+received external mathematical review. The author remains responsible for
+the statements, proof, code, citations, and any errors.
+
+Any circulated revision should retain a clear disclosure of the model's
+substantial role and link to the human-readable proof, semantic verifiers,
+manifests, and certificate replay instructions. The disclosure should not
+be read as a claim that the model independently proved or formally verified
+the results.
+
+\section{Nonclaims and remaining work}\label{sec:nonclaims}
+
+This preprint makes none of the following claims.
+\begin{enumerate}[label=\textup{N\arabic*.},leftmargin=2.8em]
+\item It does not solve Erd\H{o}s Problem 617 for arbitrary $r$.
+\item It does not settle the fixed case $r=9$ or any larger unresolved
+  fixed parameter.
+\item It does not prove the cited Kang--Pikhurko theorem from first
+  principles.
+\item It is not a Lean formalization.
+\item It has not been externally reviewed or accepted.
+\item A passing finite replay does not replace the human reductions that
+  establish completeness of the case splits.
+\end{enumerate}
+
+The older degree-nine $\mathsf Q_3$, $\mathsf P(8,4)$, and
+$\mathsf P(8,5)$ statements remain open as standalone claims. The fixed
+$r=8$ bridge bypasses them rather than proving them.
+
+\appendix
+\section{Dependency ledger}
+
+\begin{center}
+\begin{tabular}{L{0.25\textwidth}L{0.31\textwidth}L{0.32\textwidth}}
+\toprule
+result&human dependency&finite dependency\\
+\midrule
+Theorem~\ref{thm:r7}&shared colored ladder; star-and-cover propagation;
+three-block contradiction&weighted light-edge enumeration and unlabelled
+reconstruction\\
+Theorem~\ref{thm:r8}&shared colored ladder; 23-vertex equality-core proof;
+human branches of $P_3(24)$; four-block contradiction&one endpoint formula
+and 861 core--shell formulas, semantic reconstruction, 862 LRAT replays\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The external mathematical inputs are Brooks's theorem, the
+Andr\'asfai--Erd\H{o}s--S\'os minimum-degree theorem, and the
+Kang--Pikhurko extremal theorem, including its equality description in
+the instances explicitly cited above. The accompanying README identifies
+the source, code, proof artifacts, and replay procedure.
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}
