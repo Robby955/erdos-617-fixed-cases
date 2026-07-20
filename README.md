@@ -4,6 +4,8 @@ This repository contains four fixed-parameter proof claims related to
 [Erdős Problem 617](https://www.erdosproblems.com/617), an edge-coloring
 problem of Erdős and Gyárfás.
 
+**Latest release:** [PDF downloads, scope, and verification notes](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20)
+
 ## Claims
 
 - **r = 5:** Every five-coloring of the edges of K₂₆ has six vertices
