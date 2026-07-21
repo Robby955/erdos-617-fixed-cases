@@ -54,8 +54,8 @@ manifests, replay commands, and proof artifacts are included under
 AI use is described in [AI_DISCLOSURE.md](AI_DISCLOSURE.md). OpenAI GPT-5.6
 Sol was used extensively during proof search, drafting, program development,
 and internal checking. OpenAI GPT-5 (Codex) was used for later source review,
-replay packaging, and release checks. xAI Grok 4.5 was used to critique an
-earlier version of each fixed-case manuscript.
+replay packaging, and release checks. xAI Grok 4.5 was used to critique drafts
+of the r = 5, 6, 7, 8 manuscripts.
 
 ## Corrections
 
