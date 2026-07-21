@@ -1,0 +1,138 @@
+{
+  "artifact": "erdos-617-r9-order26-degree9-m64",
+  "created_at": "2026-07-21",
+  "status": {
+    "m64": "locally_proved",
+    "fixed_r9": "locally_proved_computer_assisted",
+    "erdos_617": "open"
+  },
+  "proof_premise": [
+    "exact rational dual verification for 7454 core-shell pairs",
+    "solver-free scalar reduction over 101880 raw states",
+    "human three-hub exclusion for 4 states",
+    "solver-free orbit exhaustion for 10635 states"
+  ],
+  "independent_search_audit": "independent incremental CaDiCaL reconstruction passed all 101880 raw states with zero SAT and zero UNKNOWN",
+  "files": [
+    {
+      "path": "research/erdos-617-r6/R9_P93_ORDER26_M64_REDUCED_FRONTIER.md",
+      "sha256": "6c65a1d97fda96d158e2aed331e4718a98d74402320779545b26c1cfe40e6ac2",
+      "role": "theorem_note"
+    },
+    {
+      "path": "research/erdos-617-r6/R9_P93_ORDER26_M64_DEPENDENCY_AUDIT.md",
+      "sha256": "917a0cb5f5c5b122223f6d71bfba50d8eed9d01283ee7b91ce2894e724ae2848",
+      "role": "dependency_audit"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m64_dual_generator.py",
+      "sha256": "d6777c61b92526efbdbb193ec76aeda2901f9365f7461c231a345b1901af5e96",
+      "role": "certificate_generator"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m64_duals.jsonl",
+      "sha256": "4710a3e7761bcfe319a3af94c92fb228cb98eba0ea2d2ff9753568389ea6465c",
+      "role": "exact_dual_data"
+    },
+    {
+      "path": "research/erdos-617-r6/verify_r9_p93_order26_m64_duals.py",
+      "sha256": "59957efd96ebcf801b513350a9b8547940de80a02428420d054246a1d90814bc",
+      "role": "semantic_dual_verifier"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m64_scalar_side_verifier.py",
+      "sha256": "5527d683a9b3d7fb6738cc666c189966bd78d37730e6d3f847355f364c47aeb9",
+      "role": "solver_free_scalar_verifier"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m64_tau3_verifier.py",
+      "sha256": "659bc2861a23e0c735923673f303ce86736ea5602865f952a8797abed2137fa1",
+      "role": "three_hub_verifier"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m64_p1_orbit_verifier.py",
+      "sha256": "16ec73bccd0414a5993960aab0960514c06b51b7f4d131db5dbbaa4df185c3b5",
+      "role": "solver_free_orbit_verifier"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m64_cadical_audit.py",
+      "sha256": "832150b34d63a1295e75ab08be89c6ead8fc67f0f02e02dd1d61791e36a0f76b",
+      "role": "independent_cadical_audit"
+    },
+    {
+      "path": "research/erdos-617-r6/test_r9_p93_order26_m64_package.py",
+      "sha256": "84942e9aa864d426a8342b38f5a8a87bc2ba5e68a9782fd0efc7ea0849f21096",
+      "role": "corruption_tests"
+    },
+    {
+      "path": "research/erdos-617-r6/verify_r9_p93_order26_m64_manifest.py",
+      "sha256": "42918b9797d1907e4622b66dc360c7bdeac102a6751cdcf8dcaca05aeac32866",
+      "role": "manifest_verifier"
+    },
+    {
+      "path": "research/erdos-617-r6/artifacts/r9-order26-m64/cadical_receipt.json",
+      "sha256": "5406858a8e38264e8764af2051246d790d5b5ff83acc4afba8db1479f42eb588",
+      "role": "independent_cadical_receipt"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m59_dual_generator.py",
+      "sha256": "1c2a58547f15974cac788870a58e7edc359816d8b7b1979e69832852b8f7bdef"
+    },
+    {
+      "path": "research/erdos-617-r6/verify_r9_p93_order26_m62_duals.py",
+      "sha256": "3bd6646e5702769034b800937c1b8f4c23f30b1292debc6e0937152a466c50d7"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m62_p1_orbit_verifier.py",
+      "sha256": "3d660036fdbe2b591b8a7b91965995d1044a3ebfd853ec3365bb226e30bc8de6"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m62_scalar_side_verifier.py",
+      "sha256": "60862386665b2fade512692fcd0b6fa438325184b7097382530869a388669cf9"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m60_p1_qstate_verifier.py",
+      "sha256": "d9511109fa84d2b671605bf7fe6bcce82b67ea0d78806c54ce1b1db2cfa020c7"
+    },
+    {
+      "path": "research/erdos-617-r6/verify_r9_p93_order26_m60_duals.py",
+      "sha256": "92a615bc5ab70d5342132221cd11b8aff3e278b7ea657307404f9de95b020785"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m60_duals.jsonl",
+      "sha256": "9470c5b7ea9b0951f99dccdf6ff03dccd420b1620de4dedb5ad9dc8252ea4953"
+    },
+    {
+      "path": "research/erdos-617-r6/r9_p93_order26_m62_duals.jsonl",
+      "sha256": "d80b2e95446ca6771c6c64591c43addc256e49c4bf099e8e09e7c648ad013796"
+    }
+  ],
+  "external_dependency": {
+    "name": "nauty geng",
+    "version": "Usage: geng [-cCmtfkbd#D#] [-kTSPF] [-uygsnh] [-lvq] ",
+    "sha256": "3ca950af2145c546f9f586cf960eaf98f88fc3920564338f8306b6f58d018af5"
+  },
+  "tool_versions": {
+    "python": "3.13.13",
+    "platform": "macOS-26.4.1-arm64-arm-64bit-Mach-O",
+    "networkx": "3.4.2",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "python_sat": "1.9.dev7",
+    "cadical": "1.9.5 through python-sat cadical195",
+    "pytest": "9.0.3",
+    "ruff": "ruff 0.15.13",
+    "mypy": "mypy 2.1.0 (compiled: yes)"
+  },
+  "receipts": {
+    "path": "research/erdos-617-r6/artifacts/r9-order26-m64/replay_receipts.json",
+    "sha256": "ca4a6d1c52d427b048c4ada4ce77efd79dab53a9bf53de176bf4ffdb483bc31b"
+  },
+  "nonclaims": [
+    "This package is a local computer-assisted proof package.",
+    "It is not external mathematical review.",
+    "It does not prove Erd\u0151s Problem 617 for arbitrary r."
+  ]
+}

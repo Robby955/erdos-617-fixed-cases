@@ -1,0 +1,897 @@
+\documentclass[11pt,reqno,a4paper]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\comp}[1]{\overline{#1}}
+\newcommand{\K}{K}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\emptycert}{+\infty}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title[The nine-color case]{The Nine-Color Case of an
+Erd\H{o}s--Gy\'arf\'as Balanced-Coloring Problem}
+\author{Robert Sneiderman}
+\date{Preprint, 21 July 2026}
+\subjclass[2020]{05C15, 05C35, 05D10, 68V20}
+\keywords{edge coloring, extremal graph theory, computer-assisted proof,
+LRAT certificate}
+
+\begin{document}
+\raggedbottom
+\emergencystretch=2em
+\hypersetup{
+  pdftitle={The Nine-Color Case of an Erdos--Gyarfas Balanced-Coloring Problem},
+  pdfauthor={Robert Sneiderman}
+}
+
+\begin{abstract}
+Erd\H{o}s and Gy\'arf\'as asked whether every $r$-coloring of
+$E(K_{r^2+1})$ contains $r+1$ vertices on which some color is absent.
+We prove the assertion for $r=9$: every nine-coloring of $E(K_{82})$
+has ten vertices whose induced edges omit a color. The proof combines a
+colored extremal recursion with two terminal results. The first proves
+$P_3(26)\ge121$ by exact rational certificates, structural reductions,
+and solver-free finite-state searches. The second proves that the
+corresponding family on 27 vertices is empty; a human reduction leaves
+50 finite instances, each refuted by a replayed LRAT certificate. A
+short full-color argument then proves $P_4(37)\ge192$, which makes every
+cell of the outer packing recursion strict. The source release contains
+independent catalog reconstruction, semantic verifiers, corruption tests,
+manifests, and replay instructions. This fixed case does not settle the
+problem for arbitrary $r$.
+\end{abstract}
+
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\centering
+\textbf{Verification status.}
+The solver-free proof, full implication chain, independent
+101,880-state CaDiCaL reconstruction, and clean public-package replay pass
+locally. External mathematical review remains pending.}}
+\end{center}
+
+\section{Introduction}\label{sec:introduction}
+
+Erd\H{o}s and Gy\'arf\'as posed the following question
+\cite{ErdosGyarfas1999}. If the edges of $K_{r^2+1}$ are colored with
+$r$ colors, must some set of $r+1$ vertices omit a color on its induced
+edges? The assertion is immediate for some small parameters, but no
+general proof is known. It is listed as Erd\H{o}s Problem 617.
+
+We establish the nine-color case.
+
+\begin{theorem}\label{thm:main}
+Every map
+\[
+  \chi:E(K_{82})\longrightarrow[9]
+\]
+has a set $S\subseteq V(K_{82})$ of order ten such that
+\[
+  \chi(E(K_{82}[S]))\ne[9].
+\]
+\end{theorem}
+
+The argument is by contradiction. For each color $i$, let $G_i$ contain
+the edges of color $i$. If every ten-set sees all colors, then
+\[
+  \alpha(G_i)\le9
+  \quad\text{and}\quad
+  e(G_i[S])\le37\quad(|S|=10).
+\]
+More importantly, the eight graphs of the other colors partition
+$E(\comp{G_i})$. This simultaneous decomposition gives induced-density
+bounds unavailable in a one-color relaxation.
+
+The proof has three parts.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.8em]
+\item A colored recursive lower bound turns terminal information into
+five forced copies of $K_9$ in a least-color nonneighborhood.
+\item Two computer-assisted terminal theorems give
+\[
+  P_3(26)\ge121,\qquad \cP_3(27)=\varnothing.
+\]
+\item A human full-color lemma combines these statements to prove
+$P_4(37)\ge192$. The resulting outer margins are
+$5,4,3,2,3$ in the only formerly deficient row.
+\end{enumerate}
+
+The finite work is not treated as an opaque solver call. The order-$26$
+proof has exact catalog semantics, rational dual checks, and deterministic
+solver-free searches. The order-$27$ proof uses LRAT refutations only
+after a human lemma removes 282 of 332 core types. An independent verifier
+rebuilds every remaining formula and replays every proof.
+
+\section{Colored induced graphs}\label{sec:colored}
+
+Assume throughout Sections~\ref{sec:colored}--\ref{sec:final} that a
+counterexample to Theorem~\ref{thm:main} exists. Fix a target color $i$.
+For $n=9q+b$, $0\le b<9$, put
+\begin{equation}\label{eq:p9}
+ p_9(n)=(9-b)\binom q2+b\binom{q+1}{2}
+       =9\binom q2+qb.
+\end{equation}
+This is the minimum edge count in an $n$-vertex graph with independence
+number at most nine.
+
+\begin{lemma}[Full-color induced density]\label{lem:density}
+For every $W\subseteq V(K_{82})$,
+\[
+ e(G_i[W])\le D_9(|W|),\qquad
+ D_9(n):=\binom n2-8p_9(n).
+\]
+\end{lemma}
+
+\begin{proof}
+Each nontarget graph $G_j[W]$ has independence number at most nine, so
+Tur\'an's theorem gives $e(G_j[W])\ge p_9(|W|)$. The eight nontarget
+graphs partition the complement of $G_i[W]$. Summing their lower bounds
+proves the claim.
+\end{proof}
+
+The values used later are
+\begin{equation}\label{eq:D-values}
+ D_9(10)=37,\qquad D_9(11)=39,\qquad
+ D_9(26)=125,\qquad D_9(27)=135.
+\end{equation}
+
+\begin{definition}\label{def:family}
+Let $\cF(a,n)$ be the family of graphs $G_i[W]$ inherited from the same
+hypothetical coloring, with
+\[
+ |W|=n,\qquad \alpha(G_i[W])\le a,\qquad \omega(G_i[W])\le8.
+\]
+If the family is nonempty, let $P_a(n)$ be its minimum edge count.
+We also write $\cP_a(n)$ for the family itself and
+$\cP_a(n)=\varnothing$ when it is empty.
+\end{definition}
+
+The inherited provenance is part of the definition. In particular, every
+member and every induced subgraph satisfies Lemma~\ref{lem:density}.
+
+\subsection{The colored recursive bound}
+
+We first justify the terminal thresholds used by the recursion.
+
+\begin{lemma}[Colored layer thresholds]\label{lem:thresholds}
+There is no member of $\cF(s,n)$ when
+\[
+ n\ge9s+T_s,\qquad
+ (T_2,T_3,T_4,T_5,T_6)=(0,1,2,4,8).
+\]
+\end{lemma}
+
+\begin{proof}
+For $s=2$, let $H\in\cF(2,n)$ and put $L=\comp H$. The graph $L$ is
+triangle-free and $\alpha(L)\le8$, so $\Delta(L)\le8$ and
+$e(L)\le4n$. Lemma~\ref{lem:density} gives
+$e(L)\ge8p_9(n)$. At $n=18$, equality is forced and $L$ is
+8-regular. Since $8>2n/5$, the Andrásfai--Erd\H{o}s--S\'os theorem
+makes $L$ bipartite \cite{AndrasfaiErdosSos1974}, contradicting
+$\alpha(L)\le8$. For $n>18$, one has $p_9(n)>n/2$, giving an
+immediate edge-count contradiction.
+
+Proceed by induction on $s$. If $H\in\cF(s,n)$ and $L=\comp H$, then
+every neighborhood in $L$ induces the complement of a member of the
+preceding layer. Hence
+\begin{equation}\label{eq:threshold-degree}
+ \Delta(L)\le9(s-1)+T_{s-1}-1.
+\end{equation}
+Write $n=9s+t$, $1\le t<9$. For every nontarget color $j$, the graph
+$\comp{G_j[W]}$ contains $H$ and is not 9-partite: nine independent
+sets of $H$ have total order at most $9s<n$. The
+Kang--Pikhurko theorem therefore gives
+\[
+ e(G_j[W])\ge p_9(n)+s-1.
+\]
+Summing over the eight nontarget colors and comparing with
+\eqref{eq:threshold-degree} gives a contradiction exactly when
+\[
+ A_st-\widehat B_s>0,
+\]
+where
+\[
+ A_s=9(s+1)-2s-T_{s-1}+1,\qquad
+ \widehat B_s=9s(s+T_{s-1}-2)-16(s-1).
+\]
+Thus the first eligible offset is
+\[
+ T_s=\max\left\{1,
+ \left\lfloor\frac{\widehat B_s}{A_s}\right\rfloor+1\right\},
+\]
+provided it is less than nine. Starting from $T_2=0$ gives
+$T_3=1$, $T_4=2$, $T_5=4$, and $T_6=8$. The edge-count margin
+increases at every later order: its doubled one-vertex increment is at
+least
+\[
+ 16\left\lfloor\frac n9\right\rfloor-
+ \bigl(9(s-1)+T_{s-1}-1\bigr)\ge A_s>0.
+\]
+Thus each contradiction persists beyond its first offset.
+\end{proof}
+
+We record the exact recursion used in the final calculation. For an
+independence cap $a$, define the Tur\'an floor
+\[
+ p_a(n)=(a-b)\binom q2+b\binom{q+1}{2},
+ \qquad n=aq+b,\quad0\le b<a.
+\]
+Set
+\[
+ B(0,0)=0,\qquad B(0,n)=\emptycert\ (n>0),
+\]
+and
+\[
+ B(1,n)=
+ \begin{cases}
+ \binom n2,&n\le8,\\
+ \emptycert,&n\ge9.
+ \end{cases}
+\]
+For $a\ge2$, put
+\begin{equation}\label{eq:Q}
+ Q(a,n)=p_a(n)+
+ \begin{cases}
+ 0,&n\le8a,\\
+ \lfloor n/a\rfloor-1,&8a<n\le9a,\\
+ \lfloor n/a\rfloor,&n\ge9a+1,
+ \end{cases}
+\end{equation}
+and
+\begin{equation}\label{eq:C}
+ C(d)=
+ \begin{cases}
+ \binom{d+1}{2},&d<8,\\
+ 37,&d=8,\\
+ d+\left\lceil\frac{11}{9}\binom d2\right\rceil,&d\ge9.
+ \end{cases}
+\end{equation}
+By Lemma~\ref{lem:thresholds}, the exact colored-layer thresholds used
+here are
+\[
+ T_2=0,\quad T_3=1,\quad T_4=2,\quad T_5=4,\quad T_6=8.
+\tag{\ref{eq:C}a}
+\]
+Whenever $T_a$ is defined and $n\ge9a+T_a$, set
+$B(a,n)=\emptycert$. Otherwise set
+\begin{equation}\label{eq:R}
+ R(a,n)=
+ \min_{\substack{0\le d<n\\B(a-1,n-1-d)<\emptycert}}
+ \max\left\{
+ B(a-1,n-1-d)+C(d),\,
+ \left\lceil\frac{nd}{2}\right\rceil
+ \right\},
+\end{equation}
+then put $b(a,n)=\max\{Q(a,n),R(a,n)\}$. If
+$b(a,n)>D_9(n)$, set $B(a,n)=\emptycert$; otherwise set
+$B(a,n)=b(a,n)$.
+
+\begin{proposition}[Recursive lower bound]\label{prop:recurrence}
+Every $F\in\cF(a,n)$ satisfies $e(F)\ge B(a,n)$. A value
+$B(a,n)=\emptycert$ certifies that $\cF(a,n)$ is empty.
+\end{proposition}
+
+\begin{proof}
+Induct on $a$. The cases $a=0,1$ follow from the definitions. The scalar
+bound \eqref{eq:Q} is Tur\'an's bound plus the Kang--Pikhurko
+nonpartite increment \cite{KangPikhurko2005}. The complement of $F$ is
+not $a$-partite when $n>8a$, since one part would be a target clique of
+order at least nine. To justify the last extra
+unit, consider equality in their construction. If $n\ge9a+2$, its $a$
+old parts have total order $n-1>9a$, so one gives a target clique of
+order at least ten. If $n=9a+1$, every old part has order nine. For the
+special old part $S$, exceptional vertices $x,y$, and nonempty proper
+set $A\subset S$, the two ten-sets $S\cup\{x\}$ and $S\cup\{y\}$
+have respectively
+\[
+ \binom92+9-|A|
+ \quad\text{and}\quad
+ \binom92+|A|
+\]
+target edges. The cap 37 would require both $|A|\ge8$ and
+$|A|\le1$, a contradiction. This proves \eqref{eq:Q}.
+
+Choose a minimum-degree vertex $x$ of $F$, of degree $d$, and let $U$
+be its nonneighbor set. Then $F[U]\in\cF(a-1,n-1-d)$. If
+$X=e_F(N(x),U)$ and $Y=e_F(N(x))$, minimum degree gives
+\[
+ X+2Y\ge d(d-1).
+\]
+For $d<8$ this yields
+$d+X+Y\ge\binom{d+1}{2}$. At $d=8$, equality would produce a
+target $K_9$, giving one additional edge. For $d\ge9$, averaging the
+ten-set cap over the nine-subsets of $N(x)$ gives the last line of
+\eqref{eq:C}. The degree-sum bound also gives
+$e(F)\ge\lceil nd/2\rceil$. These two estimates yield
+\eqref{eq:R}. Lemma~\ref{lem:density} justifies the final emptiness test,
+and Lemma~\ref{lem:thresholds} justifies the declared terminal values.
+\end{proof}
+
+The terminal results proved below strengthen this recursion by setting
+\begin{equation}\label{eq:terminal-inputs}
+ B(3,26)\ge121,\qquad B(3,27)=\emptycert.
+\end{equation}
+A third input, proved in Section~\ref{sec:bridge}, is
+\begin{equation}\label{eq:bridge-input}
+ B(4,37)\ge192.
+\end{equation}
+
+\section{The packing contradiction}\label{sec:packing}
+
+\begin{lemma}[Representative selection]\label{lem:representatives}
+Let $Q$ be a target copy of $K_9$ and let $x\notin Q$. At most one
+edge from $x$ to $Q$ has the target color. Consequently, from $k$
+disjoint target copies of $K_9$ one can choose representatives
+target-anticomplete to any fixed target-independent set $I$, provided
+$|I|+k\le9$.
+\end{lemma}
+
+\begin{proof}
+The ten-set $Q\cup\{x\}$ must see all eight nontarget colors. Those
+colors can occur only on the nine edges from $x$ to $Q$, so at most one
+of those edges has the target color. Choose representatives successively.
+Before choosing from the next block, at most eight earlier vertices are
+present; each excludes at most one of its nine vertices. At least one
+choice remains.
+\end{proof}
+
+Let $G$ be a color graph with the fewest edges. Then
+\begin{equation}\label{eq:least}
+ e(G)\le\frac{1}{9}\binom{82}{2}=369.
+\end{equation}
+Its minimum degree is at most eight. Indeed, minimum degree at least nine
+would force $G$ to be nine-regular. Since $\alpha(G)\le9$, some component
+has chromatic number at least ten, contradicting Brooks's theorem unless
+it is $K_{10}$ \cite{Brooks1941}. A target $K_{10}$ contradicts the
+ten-set cap.
+
+Fix a minimum-degree vertex $v$ of degree $d\le8$, and let $U$ be its
+target nonneighbor set. Suppose $j$ disjoint target copies of $K_9$ have
+been selected in $U$, and let $R_j$ be the residual. If $R_j$ has no
+further $K_9$, representative selection gives
+\begin{equation}\label{eq:residual-family}
+ R_j\in\cF(8-j,81-d-9j).
+\end{equation}
+To see the independence bound, an independent $(9-j)$-set in $R_j$
+could be extended by one representative from each selected block using
+Lemma~\ref{lem:representatives}. The resulting independent nine-set in
+$U$, together with $v$, would contradict $\alpha(G)\le9$.
+
+Put $N=N_G(v)$, $X=e_G(N,U)$, and $Y=e(G[N])$. Summing the degree
+lower bound over $N$ gives
+\[
+ X+2Y\ge d(d-1).
+\]
+Since $Y\le\binom d2$, it follows that $X+Y\ge\binom d2$. The
+least-color budget therefore gives
+\begin{equation}\label{eq:outer-upper}
+ e(R_j)\le
+ E_{d,j}:=369-d-\binom d2-36j.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:packing-test}
+ B(8-j,81-d-9j)>E_{d,j}
+\end{equation}
+forces the packing to extend by one block.
+
+\begin{lemma}[Five-block exclusion]\label{lem:five-block}
+The graph $G[U]$ cannot contain five disjoint copies of $K_9$.
+\end{lemma}
+
+\begin{proof}
+Extend five blocks to a maximal packing of $k$ blocks and put
+$s=8-k$. The same representative argument gives independence number at
+most $s$ in the residual, whose order is
+\[
+ 9s+(9-d).
+\]
+For $k=5$, this contradicts the colored threshold $T_3=1$. For $k=6$,
+the threshold $T_2=0$ applies. If $k=7$, the residual has independence
+number at most one and order at least ten, so it is a target clique,
+contrary to maximality. If $k\ge8$, eight blocks leave at least one
+vertex of $U$ outside them. Lemma~\ref{lem:representatives} selects one
+representative from each block target-anticomplete to that vertex. These
+nine vertices form an independent set in $G[U]$, and adding $v$ gives
+an independent ten-set in $G$. Thus no maximal extension of five blocks
+exists.
+\end{proof}
+
+\section{The 26-vertex terminal}\label{sec:o26}
+
+\begin{theorem}\label{thm:o26}
+Every $H\in\cF(3,26)$ has at least 121 edges.
+\end{theorem}
+
+\begin{proof}
+Suppose $e(H)\le120$. A vertex of degree at most seven has at least
+18 target nonneighbors. Their induced graph belongs to $\cF(2,n)$ for
+some $n\ge18$, contrary to Lemma~\ref{lem:thresholds}. Hence
+$\delta(H)\ge8$, while averaging gives $\delta(H)\le9$.
+
+The degree-eight branch is excluded by
+Lemma~\ref{lem:two-row}, proved below. In the degree-nine branch choose a
+degree-nine vertex $v$ and put
+\[
+ A=N_H(v),\quad B=V(H)\setminus(A\cup\{v\}),\quad
+ F=\comp{H[A]},\quad L=\comp{H[B]}.
+\]
+Thus $|A|=9$ and $|B|=16$. The graph $L$ is triangle-free, so
+$e(L)\le64$. Lemma~\ref{lem:density} on $B$ gives
+$e(L)\ge8p_9(16)=56$. Hence
+\[
+ 56\le e(L)\le64.
+\]
+Proposition~\ref{prop:o26-finite} excludes every one of these nine levels.
+\end{proof}
+
+\subsection{A common human exclusion}
+
+\begin{lemma}[Seventeen-vertex two-row exclusion]\label{lem:two-row}
+Neither of the following configurations exists:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.5em]
+\item $|V(H)|=26$, $\delta(H)=8$, and $e(H)\le120$;
+\item $|V(H)|=27$, $\delta(H)=9$, and $e(H)\le135$,
+\end{enumerate}
+where $H\in\cF(3,|V(H)|)$.
+\end{lemma}
+
+\begin{proof}
+Choose a minimum-degree vertex $v$, put $A=N_H(v)$ and
+$B=V(H)\setminus(A\cup\{v\})$, and set
+$F=\comp{H[A]}$, $L=\comp{H[B]}$. In both cases $|B|=17$.
+The checked core catalog has fourteen types. Every type has a vertex
+$z$ such that $L-z$ is bipartite with sides $X,Y$ of order eight and
+$d_L(z)=p+q\le5$, where $p$ and $q$ count its neighbors in $X$ and
+$Y$. Both are positive. If $h$ is the number of missing $X$--$Y$
+edges, then
+\begin{equation}\label{eq:h-bound}
+ h\le p+q.
+\end{equation}
+
+The graph $F$ has an edge $cu$. Put
+$S=(N_H(c)\cap B)\cup(N_H(u)\cap B)$. This is a vertex cover of $L$;
+otherwise $c,u$ and an uncovered edge of $L$ form an independent
+four-set in $H$. Applying $D_9(11)=39$ to
+$\{c,u\}\cup X\cup\{z\}$ and to the analogous set using $Y$ gives
+\[
+ |S\cap X|+\mathbf1_{z\in S}\le p+3,\qquad
+ |S\cap Y|+\mathbf1_{z\in S}\le q+3.
+\]
+If $z\in S$, the independent set $B\setminus S$ forces
+\[
+ h\ge(6-p)(6-q)>p+q.
+\]
+If $z\notin S$, the missing neighborhood rectangle and the remaining
+independent cross-pairs are disjoint, giving
+\[
+ h\ge pq+(5-p)(5-q)>p+q.
+\]
+Both inequalities contradict \eqref{eq:h-bound}. The finite dependency
+is only the fourteen-core catalog and its displayed witness.
+\end{proof}
+
+\subsection{The nine core levels}
+
+For $a\in A$, write
+\[
+ D_a=N_H(a)\cap B,\qquad q_a=|D_a|.
+\]
+The finite reduction uses the following necessary conditions:
+\begin{enumerate}[label=\textup{(C\arabic*)},leftmargin=3.2em]
+\item $L$ is triangle-free, $\alpha(L)\le8$, and $\Delta(L)\le8$;
+\item $F$ is $K_4$-free and $\alpha(F)\le7$;
+\item minimum degree gives $q_a\ge d_F(a)$ and column demands
+\[
+ \sum_{a\in A}\mathbf1_{b\in D_a}\ge d_L(b)-6;
+\]
+\item if $aa'\in E(F)$, then $D_a\cup D_{a'}$ covers $L$;
+\item if $a,a',a''$ form a triangle of $F$, then
+$D_a\cup D_{a'}\cup D_{a''}=B$;
+\item no row $D_a$ contains an independent eight-set of $L$;
+\item the target-edge ledger bounds $\sum_aq_a$ at the relevant level.
+\end{enumerate}
+Each condition follows from minimum degree, the exclusion of independent
+four-sets, or the exclusion of target $K_9$.
+
+\begin{proposition}[Finite order-$26$ exclusion]\label{prop:o26-finite}
+No incidence system satisfying \textup{(C1)--(C7)} exists at any core
+level $e(L)=56,\ldots,64$.
+\end{proposition}
+
+\begin{proof}
+Canonical generation lists every eligible core and shell up to
+isomorphism. Exact rational duals remove most core--shell pairs. For a
+retained dual, every incidence variable has total coefficient at most one,
+while the weighted right side exceeds the global incidence budget. All
+coefficients are checked as rational numbers.
+
+The remaining pairs are reduced to integral row-size and side-count
+states. The production searches are deterministic and solver-free. For
+$m=58,\ldots,64$, the core is $K_{8,8}$ with $64-m$ cross-edges
+deleted. Its two sides control the row domains and core-cover conditions.
+Table~\ref{tab:o26} gives the proof-facing accounting.
+
+\begin{table}[ht]
+\centering
+\caption{Order-$26$, degree-nine proof ledger.}
+\label{tab:o26}
+\scriptsize
+\begin{tabular}{@{}c r r L{4.1cm} L{3.2cm}@{}}
+\toprule
+$m$&cores&shells&primary final exclusion&independent audit\\
+\midrule
+56,57&431&18&minimum-cover and support classification&
+6,804 support pairs reconstructed\\
+58&50&55&row states and final shell-triangle lemma&
+5,056 Boolean states\\
+59&20&85&two-hub finite recurrence&11,943 UNSAT\\
+60&10&152&two-hub recurrence and $K_{5,3}+K_1$ lemma&
+23,157 UNSAT\\
+61&4&393&side counts and set-system recurrence&29,155 UNSAT\\
+62&2&1,147&side counts and orbit recurrence&38,342 UNSAT\\
+63&1&2,245&cover-13 lemma and orbit recurrence&44,504 UNSAT\\
+64&1&7,454&three-hub lemma and orbit recurrence&
+101,880 CaDiCaL UNSAT\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At $m=63$, exact duals leave 334 pairs, scalar conditions leave thirteen,
+and the orbit recurrence rejects all 10,715 surviving row states. At
+$m=64$, exact duals leave 562 pairs from 7,454. The scalar replay checks
+101,880 states and leaves 10,639. A human three-hub argument excludes four
+states. In each, the three hubs $c,u,w$ form a path with center $c$.
+Writing the sides of the core $K_{8,8}$ as $X,Y$, the scalar assignments
+give, up to exchanging the sides,
+\[
+ |D_c\cap X|=1,\quad |D_c\cap Y|=6,\quad
+ D_u,D_w\subset X,\quad |D_u|=|D_w|=7.
+\]
+If $D_c\cap X=\{x_0\}$ and $S=D_c\cap Y$, the two hub-edge cover
+conditions force
+\[
+ D_u=D_w=X\setminus\{x_0\}.
+\]
+Every row adjacent to all three hubs then equals
+$(Y\setminus S)\cup\{x_0\}$. The six vertices of $S$ still need a
+second incidence, but the four states have only $4,0,1,2$ remaining row
+positions. This is impossible.
+
+A solver-free $S_8\times S_8$ orbit recurrence excludes the other
+10,635 states after 3,883,026 orbit representatives and 299,684,034
+demand states. Thus every generated pair is rejected. Independent Boolean
+reconstruction is an audit of this last conclusion, not its proof premise.
+\end{proof}
+
+\section{The 27-vertex terminal}\label{sec:o27}
+
+\begin{theorem}\label{thm:o27}
+The family $\cP_3(27)$ is empty.
+\end{theorem}
+
+\begin{proof}
+Let $H\in\cF(3,27)$. Lemma~\ref{lem:density} gives $e(H)\le135$.
+A vertex of degree at most eight has at least 18 target nonneighbors,
+which induce a forbidden member of the two-layer family. Hence
+$\delta(H)\ge9$, while averaging gives $\delta(H)\le10$.
+
+Lemma~\ref{lem:two-row} excludes $\delta(H)=9$. If $\delta(H)=10$, then
+$H$ is 10-regular and has 135 edges. Proposition~\ref{prop:d10}
+excludes this branch.
+\end{proof}
+
+\begin{proposition}[Regular endpoint]\label{prop:d10}
+There is no 10-regular graph $H\in\cF(3,27)$.
+\end{proposition}
+
+\begin{proof}
+Choose $v\in V(H)$ and put
+\[
+ A=N_H(v),\quad B=V(H)\setminus(A\cup\{v\}),\quad
+ F=\comp{H[A]},\quad L=\comp{H[B]}.
+\]
+Thus $|A|=10$, $|B|=16$. For $b\in B$, let
+$C_b=N_H(b)\cap A$. Regularity gives
+\begin{equation}\label{eq:column-size}
+ |C_b|=d_L(b)-5.
+\end{equation}
+The graph $F$ has independence number at most seven, so
+$\tau(F)\ge3$. For every edge $bb'\in E(L)$, the union
+$C_b\cup C_{b'}$ covers $F$; otherwise an uncovered edge of $F$ and
+$bb'$ form an independent four-set in $H$. Consequently
+\begin{equation}\label{eq:degree-sum}
+ d_L(b)+d_L(b')\ge13\qquad(bb'\in E(L)).
+\end{equation}
+
+Independent canonical generation produces 332 eligible core types, with
+edge-level counts
+\[
+179,80,39,17,9,4,2,1,1
+\]
+for $e(L)=56,\ldots,64$. The minimum endpoint-degree-sum profile is
+\[
+\begin{array}{c|rrrrrrr}
+\text{minimum sum}&10&11&12&13&14&15&16\\ \hline
+\text{cores}&19&102&161&38&10&1&1.
+\end{array}
+\]
+Thus \eqref{eq:degree-sum} rejects 282 cores and leaves 50.
+
+For each survivor, a deterministic CNF encodes a relaxation of the
+configuration. It contains exact degrees and edge counts, every split of
+an independent four-set, every mixed target $K_9$, the full-color
+11-set cap, and the local deletion inequalities. Constraints omitted
+from the formula only make it weaker, so an actual configuration would
+satisfy the CNF.
+
+The 50 formulas are UNSAT. Their LRAT refutations are independently
+replayed. The semantic verifier reconstructs all 332 cores, recomputes the
+50 indices, rebuilds each formula without importing the generator, compares
+clause multisets, checks every unary totalizer shape, and replays every
+LRAT proof. Its aggregate receipt is
+\begin{verbatim}
+cases_reconstructed=332
+cnfs_verified=50
+clauses_verified=9100515
+totalizer_merges_verified=79574
+totalizer_shapes_verified=83
+totalizer_states_verified=108839
+lrat_proofs_replayed=50
+status=PASS
+\end{verbatim}
+This excludes all 50 survivors and proves the proposition.
+\end{proof}
+
+\section{The full-color bridge}\label{sec:bridge}
+
+The terminal statements interact more strongly than scalar averaging
+suggests.
+
+\begin{lemma}\label{lem:bridge}
+Every $H\in\cF(4,37)$ has at least 192 edges.
+\end{lemma}
+
+\begin{proof}
+Suppose $e(H)\le191$. If a vertex had degree at most nine, at least 27
+of its nonneighbors would induce a member of $\cF(3,27)$, contrary to
+Theorem~\ref{thm:o27}. Hence $\delta(H)\ge10$. Since
+$2e(H)/37<11$, there is a degree-ten vertex $v$.
+
+Put
+\[
+ A=N_H(v),\qquad
+ B=V(H)\setminus(A\cup\{v\}),\qquad
+ M=45-e(H[A]).
+\]
+Thus $|A|=10$ and $|B|=26$. The 11-set
+$\{v\}\cup A$ has $10+45-M$ target edges. By
+$D_9(11)=39$,
+\begin{equation}\label{eq:M-lower}
+ M\ge16.
+\end{equation}
+
+For $a\in A$, put $D_a=N_H(a)\cap B$. If
+$F=\comp{H[A]}$, minimum degree gives
+\[
+ 10\le d_H(a)=1+9-d_F(a)+|D_a|,
+\]
+so $|D_a|\ge d_F(a)$. Therefore
+\begin{equation}\label{eq:cross-M}
+ e_H(A,B)=\sum_{a\in A}|D_a|\ge2M.
+\end{equation}
+The graph $H[B]$ belongs to $\cF(3,26)$ because $v$ is target-anticomplete
+to $B$. Theorem~\ref{thm:o26} gives $e(H[B])\ge121$. Keeping the
+missing-edge variable throughout,
+\[
+\begin{aligned}
+ e(H)
+ &=10+(45-M)+e_H(A,B)+e(H[B])\\
+ &\ge10+(45-M)+2M+121\\
+ &=176+M\\
+ &\ge192,
+\end{aligned}
+\]
+contrary to the assumption. This proves the lemma.
+\end{proof}
+
+\begin{remark}
+It is invalid to replace the last display by
+$10+29+32+121$: the inequality $e(H[A])\le29$ points in the wrong
+direction for a lower bound. The variable $M$ is needed because the
+cross-edge gain $2M$ compensates for the shell term $45-M$.
+\end{remark}
+
+\section{Completion of the proof}\label{sec:final}
+
+Insert Theorems~\ref{thm:o26} and \ref{thm:o27} and
+Lemma~\ref{lem:bridge} into Proposition~\ref{prop:recurrence}. Along the
+degree-eight diagonal one obtains
+\begin{equation}\label{eq:diagonal}
+\begin{array}{c|ccccc}
+(a,n)&(4,37)&(5,46)&(6,55)&(7,64)&(8,73)\\ \hline
+B(a,n)&192&227&264&301&338.
+\end{array}
+\end{equation}
+Table~\ref{tab:margins} gives all outer packing margins. The symbol
+$\emptycert$ denotes a certified empty residual family.
+
+\begin{table}[ht]
+\centering
+\caption{Margins $B(8-j,81-d-9j)-E_{d,j}$.}
+\label{tab:margins}
+\footnotesize
+\begin{tabular}{c@{\qquad}ccccc}
+\toprule
+$d$&$j=0$&$j=1$&$j=2$&$j=3$&$j=4$\\
+\midrule
+0&79&82&$\emptycert$&$\emptycert$&$\emptycert$\\
+1&66&69&$\emptycert$&$\emptycert$&$\emptycert$\\
+2&56&55&72&$\emptycert$&$\emptycert$\\
+3&43&42&45&$\emptycert$&$\emptycert$\\
+4&35&34&35&$\emptycert$&$\emptycert$\\
+5&24&23&22&$\emptycert$&$\emptycert$\\
+6&18&17&16&17&$\emptycert$\\
+7&9&8&7&6&$\emptycert$\\
+8&5&4&3&2&3\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Choose a least color graph $G$ and a minimum-degree vertex $v$. By
+\eqref{eq:least}, its degree $d$ lies in $\{0,\ldots,8\}$. Every entry
+of the corresponding row in Table~\ref{tab:margins} is positive or
+certifies an empty no-next-block family. Applying
+\eqref{eq:packing-test} successively forces five disjoint target copies
+of $K_9$ in the nonneighbor set of $v$. This contradicts
+Lemma~\ref{lem:five-block}. Therefore the assumed coloring does not
+exist.
+\end{proof}
+
+\section{Certificate semantics and trust boundary}\label{sec:trust}
+
+The proof has four distinct verification layers.
+\begin{enumerate}[label=\textup{V\arabic*.},leftmargin=3em]
+\item \textbf{Human reduction.} Sections~\ref{sec:colored}--\ref{sec:final}
+connect an arbitrary coloring to finite graph and incidence families.
+\item \textbf{Catalog completeness.} Canonical graph streams are generated
+with nauty's \texttt{geng} \cite{McKayPiperno2014}. Independent programs
+check every graph property, count, and graph6 digest used in the paper.
+\item \textbf{Finite exclusion.} Rational duals are checked over exact
+fractions. Solver-free searches enumerate declared states and use
+deterministic recurrences. The order-$27$ branch uses checked LRAT
+refutations \cite{CruzFilipeEtAl2017}.
+\item \textbf{Independent reconstruction.} Separate source rebuilds the
+Boolean semantics, compares generated clauses as multisets, and checks
+the catalog classifications. These programs do not treat solver logs as
+proofs.
+\end{enumerate}
+
+The order-$27$ certificate is a relaxation: it omits some consequences of
+the full coloring. This direction is sound because every genuine
+configuration satisfies the retained clauses. UNSAT excludes a genuine
+configuration; SAT would not by itself construct a coloring.
+
+The order-$26$, level-64 theorem is solver-free. Its independent CaDiCaL
+run checks the same 101,880 raw row-size states using a separately written
+Boolean encoding and incremental totalizers. It returns 101,880 UNSAT,
+zero SAT, and zero UNKNOWN, with classification SHA-256
+\texttt{e68dfcaf336ff575e0091a757e60874b81cd79966b418df2e}%
+\allowbreak\texttt{6487eb698ade331}.
+This audit is deliberately not a premise of Proposition~\ref{prop:o26-finite}.
+
+\section{Reproducibility and data availability}\label{sec:repro}
+
+The release repository contains:
+\begin{itemize}[leftmargin=2em]
+\item all theorem notes and verifier source;
+\item graph and shell generators with pinned catalog hashes;
+\item exact rational-dual data and semantic checkers;
+\item deterministic solver-free replay programs;
+\item four order-$27$ LRAT shards with manifests and checksums;
+\item corruption tests and a single dependency-ordered replay entry point;
+\item the source and PDF of this paper.
+\end{itemize}
+
+The public repository location is
+\[
+ \text{\url{https://github.com/Robby955/erdos-617-fixed-cases}}.
+\]
+The fixed-$r=9$ files are under \path{r9/}. The four large certificate
+archives are attached to release tag
+\texttt{fixed-r9-2026-07-21}. Their names, sizes, and SHA-256 values are
+recorded in \path{r9/ASSET_INDEX.json}. The dependency-ordered release
+replay passed from the exact public directory layout.
+
+The order-$27$ package currently has four manifest SHA-256 values:
+\begingroup
+\scriptsize
+\begin{verbatim}
+f332adb9327c02b2b9964a1d781baae75d27371a83995dc3c1f7393b35c09cba
+0df642bb21e52310ec19f479d5ec62fe179a0b075738643bb165baeef7dcda40
+7427d8c307411374f332056bdd3638ff26c9d70c6c1283458d87f6313fd1bc2f
+e1cc2b4b6f2643d16bc3ba64d50e7e1e9cf73d7043a19f632571bf328c158d1d
+\end{verbatim}
+\endgroup
+The release verifier also rejects modified manifests, same-size formula
+mutations, truncated formulas, false source hashes, and truncated LRAT
+proofs.
+
+\section{AI-use disclosure}\label{sec:ai}
+
+OpenAI GPT 5.6 Sol was used substantially for proof exploration,
+intermediate counterexample searches, adversarial criticism, verification
+programs, audit planning, research-note organization, and manuscript
+drafting. This use was not limited to copy editing.
+
+Model agreement is not treated as mathematical review. The retained claims
+are tied to explicit semantics, exact calculations, deterministic finite
+searches or replayed proof certificates, independent reconstructions,
+hashes, and corruption tests. The author selected the proof program,
+decided which arguments and computations were retained, checked the final
+implication chain, and assumes responsibility for every claim and error.
+
+\section{Scope and nonclaims}\label{sec:nonclaims}
+
+Theorem~\ref{thm:main} is a fixed-parameter result. It does not imply the
+case $r=10$ and does not settle Erd\H{o}s Problem 617 for arbitrary $r$.
+No Lean formalization is claimed. At the date on the title page, the
+preprint has not received external mathematical review.
+
+\appendix
+\section{Dependency map}\label{app:dependencies}
+
+\begin{table}[ht]
+\centering
+\caption{Logical and computational dependencies.}
+\footnotesize
+\begin{tabular}{@{}L{3.25cm} L{4.7cm} L{3.7cm}@{}}
+\toprule
+result&human dependency&finite dependency\\
+\midrule
+$P_3(26)\ge121$&degree split; core--shell incidence lemmas&
+core levels $56$--$64$, exact duals, solver-free replays\\
+$\cP_3(27)=\varnothing$&two-row lemma; regularity; degree-sum 13&
+332-core catalog and 50 LRAT refutations\\
+\addlinespace[0.3em]
+$P_4(37)\ge192$&Theorems~\ref{thm:o26}, \ref{thm:o27};
+the $M$-variable argument&integer arithmetic verifier\\
+all 45 outer cells&recursive bound; representative selection&
+exact integer recurrence replay\\
+Theorem~\ref{thm:main}&least-color reduction; five-block exclusion&
+the preceding dependency closure\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Canonical proof notes and replay commands are listed in
+\path{output/ERDOS_617_R9_RELEASE_HANDOFF.md}. That handoff records
+the exact release commits, artifact locations, tool versions, and
+nonclaims. Historical checkpoint notes are not authoritative after the
+release commit.
+
+\enlargethispage{10\baselineskip}
+\begingroup
+\footnotesize
+\bibliographystyle{amsplain}
+\bibliography{references}
+\endgroup
+
+\end{document}

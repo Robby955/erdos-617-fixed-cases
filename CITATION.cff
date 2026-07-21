@@ -7,11 +7,4 @@ authors:
     given-names: "Robert"
 repository-code: "https://github.com/Robby955/erdos-617-fixed-cases"
 url: "https://github.com/Robby955/erdos-617-fixed-cases"
-date-released: 2026-07-20
-preferred-citation:
-  type: article
-  authors:
-    - family-names: "Sneiderman"
-      given-names: "Robert"
-  title: "The seven- and eight-color cases of an Erdos-Gyarfas balanced-coloring problem"
-  year: 2026
+date-released: 2026-07-21

@@ -1,0 +1,61 @@
+{
+  "replayed_at": "2026-07-20",
+  "semantic_duals": {
+    "status": "PASS",
+    "cores": 2,
+    "shells": 1147,
+    "pairs": 2294,
+    "verified_duals": 2142,
+    "complement_pairs": 152,
+    "core_catalog_sha256": "d86a3b06e752d86a723cafdbefc5030b8f993794de5f03e34193f9495953fc65",
+    "shell_catalog_sha256": "5529c3fbabe7ba673cf52baca23dcbac6b6a09a31e97b8db5fa3c5ef7b9b0132",
+    "semantic_sha256": "e6e3487f1ea47e8fb254de021102e6139cbb297c92d1fd739137d8c41454ad45",
+    "complement_sha256": "f5a0febbfb028eb99aa4201df31232ec46ded7f1c4299011d753d29b031532fb",
+    "data_sha256": "d80b2e95446ca6771c6c64591c43addc256e49c4bf099e8e09e7c648ad013796"
+  },
+  "generator_replay": {
+    "status": "PASS",
+    "byte_identical": true,
+    "data_sha256": "d80b2e95446ca6771c6c64591c43addc256e49c4bf099e8e09e7c648ad013796"
+  },
+  "scalar_replay": {
+    "status": "PASS",
+    "raw_states": 38342,
+    "feasible_states": 11706,
+    "classification_sha256": "95c95dd18f15be8887e0d302ae5173cae87a7891d48faaf5754de16bf37c876c"
+  },
+  "orbit_replay": {
+    "status": "PASS",
+    "unsat": 11706,
+    "sat": 0,
+    "orbit_representatives": 164021520,
+    "candidate_orbits": 5073750,
+    "demand_states": 108285865,
+    "demand_transitions": 107883823,
+    "classification_sha256": "16d6bc92eb29c884f33da831a5f6aac24aad03dcee44eb51755681efdbdcd408",
+    "orbit_receipt_sha256": "cc53bf5ec3d04d68a5a0962eeb2e19bc8f9f4b5e78a6379a9c140b702cffb441"
+  },
+  "orbit_self_test": {
+    "status": "PASS",
+    "size_comparisons": 450,
+    "representatives_checked": 1237252,
+    "receipt_sha256": "b4a5736b62f0f497b89a29ddb43758d9cf217b2157b39725c0ad7a65f4c4b61a"
+  },
+  "z3_audit": {
+    "status": "PASS",
+    "states": 38342,
+    "unsat": 38342,
+    "sat": 0,
+    "unknown": 0,
+    "classification_sha256": "4cc50b307cff16d76f896f639b57b24dcfe8c0f5b9069f0d3442b9649a808274"
+  },
+  "corruption_tests": {
+    "status": "PASS",
+    "tests": 12
+  },
+  "static_checks": {
+    "python_compile": "PASS",
+    "ruff": "PASS",
+    "mypy_strict": "PASS"
+  }
+}

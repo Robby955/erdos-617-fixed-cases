@@ -1,0 +1,82 @@
+{
+  "schema": "erdos617-r9-m64-replay-receipts-v1",
+  "created_at": "2026-07-21",
+  "theorem_scope": "fixed-r9-order26-degree9-m64",
+  "package_status": "locally_proved",
+  "exact_dual_semantics": {
+    "status": "PASS",
+    "cores": 1,
+    "shells": 7454,
+    "pairs": 7454,
+    "certified_pairs": 6892,
+    "uncertified_pairs": 562,
+    "semantic_sha256": "d77700d00082ebc0370822fcf4f58393891a936cd71a0e1223873fc4f0c43a57",
+    "uncertified_pair_sha256": "96303541e4dfaf31fab4a61ebefea1390e2cc53f90b2b238e43eb5923638036e",
+    "data_sha256": "4710a3e7761bcfe319a3af94c92fb228cb98eba0ea2d2ff9753568389ea6465c"
+  },
+  "byte_identical_dual_regeneration": {
+    "status": "PASS",
+    "lines": 6893,
+    "bytes": 3050034,
+    "data_sha256": "4710a3e7761bcfe319a3af94c92fb228cb98eba0ea2d2ff9753568389ea6465c"
+  },
+  "scalar_reduction": {
+    "status": "PASS",
+    "complement_pairs": 562,
+    "raw_states": 101880,
+    "scalar_feasible_states": 10639,
+    "classification_sha256": "c3f369569d4fa8cbc19dd8043e8445dfd723f068c85922e2420c5e270354afcc",
+    "frontier_sha256": "c7d527a52b042e6a900252254634b1ee573b1edf72e562312ec6e9b947b0ff92"
+  },
+  "three_hub_exclusion": {
+    "status": "PASS",
+    "states": 4,
+    "excluded": 4,
+    "receipt_sha256": "35a6958c0aca067069497558ea0e09ee90ae00e5bb1903c73c6960cfe402241e"
+  },
+  "orbit_self_test": {
+    "status": "PASS",
+    "orbit_representatives": 21904,
+    "transport_checks": 1344,
+    "profile_sha256": "f80bfba50c8705a6b9f61cbcc837d31e71f049aacbf14be99f4ce33f823fe300",
+    "receipt_sha256": "4efc93c4f62b002cd638cb3faffe323c369f3299acd4937b018cadaac38028cd"
+  },
+  "solver_free_orbit_replay": {
+    "status": "PASS",
+    "states": 10635,
+    "unsat": 10635,
+    "sat": 0,
+    "orbit_representatives": 3883026,
+    "candidate_orbits": 498326,
+    "demand_states": 299684034,
+    "demand_transitions": 299609210,
+    "classification_sha256": "cd3805257b22201ab5bc0752ad4a691f48c3f13181cffbee0621b48e5b024820",
+    "receipt_sha256": "310705ec896fd69e29f337e259b225873b736c9c223bb95e0bb78835bccfe7bc"
+  },
+  "independent_cadical_audit": {
+    "status": "PASS",
+    "receipt_path": "research/erdos-617-r6/artifacts/r9-order26-m64/cadical_receipt.json",
+    "raw_states": 101880,
+    "unsat": 101880,
+    "sat": 0,
+    "unknown": 0,
+    "classification_sha256": "e68dfcaf336ff575e0091a757e60874b81cd79966b418df2e6487eb698ade331",
+    "receipt_sha256": "d08cee42dcfbab41f8caaa3fec7a7133059577d63ec7a02ebe81db496a04c218",
+    "wall_seconds": 41.997
+  },
+  "corruption_tests": {
+    "status": "PASS",
+    "tests": 17
+  },
+  "static_checks": {
+    "status": "PASS",
+    "py_compile": "PASS",
+    "ruff": "PASS",
+    "mypy_strict": "PASS"
+  },
+  "nonclaims": [
+    "This receipt records local computer-assisted verification.",
+    "It is not external mathematical review.",
+    "It does not prove Erdős Problem 617 for arbitrary r."
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "replayed_at": "2026-07-21",
+  "package_status": "locally_proved",
+  "semantic_duals": {
+    "status": "PASS",
+    "cores": 1,
+    "shells": 2245,
+    "pairs": 2245,
+    "verified_duals": 1911,
+    "complement_pairs": 334,
+    "core_catalog_sha256": "20302c025a85684c659534cc704508b0311c33282dc8d0b19b683fa033855044",
+    "shell_catalog_sha256": "f5e13567a0a977da594eacdaa8b945ba416f13ad507121bb90b91c8f100c43b7",
+    "semantic_sha256": "877eca5a4a64b1a1484f1036faeb3dbfdc5033c8b6f39b4af8593af86a025acf",
+    "complement_sha256": "f0e775bc61c40d56c54e221f6f47d216939671c6ac2d65c62eace6fa480ebd2b",
+    "data_sha256": "57ef4123b3053689f0dd72aa256bf2975c069aa0d0785e2269e74c513ae52a2f"
+  },
+  "generator_replay": {
+    "status": "PASS",
+    "byte_identical": true,
+    "lines": 1912,
+    "bytes": 942286,
+    "data_sha256": "57ef4123b3053689f0dd72aa256bf2975c069aa0d0785e2269e74c513ae52a2f"
+  },
+  "scalar_replay": {
+    "status": "PASS",
+    "complement_pairs": 334,
+    "excluded_pairs": 321,
+    "surviving_pairs": 13,
+    "raw_states": 44504,
+    "feasible_states": 10715,
+    "cover13_removed_states": 4,
+    "cover13_removed_sha256": "41e6c2ac2d22f6dfe43a28458091b39d3bac7991a76d93c9e31d73aa71dc9127",
+    "classification_sha256": "675f090f8a175d22e327186c69f578dbeda7fba113ec0e644465a0a4f1260b20"
+  },
+  "orbit_replay": {
+    "status": "PASS",
+    "states": 10715,
+    "unsat": 10715,
+    "sat": 0,
+    "orbit_representatives": 40203600,
+    "candidate_orbits": 2658674,
+    "demand_states": 363118868,
+    "demand_transitions": 362801242,
+    "classification_sha256": "05b98ab8efd125a447a92e1e5d63b0531430dd3a715449c363c0f87cfb7660e0",
+    "orbit_receipt_sha256": "16ce28c3f5ca0e2c1930aa9def97adcefbdac65339420cd0295209a092be7a35"
+  },
+  "orbit_self_test": {
+    "status": "PASS",
+    "size_comparisons": 225,
+    "representatives_checked": 201601,
+    "transport_checks": 95592,
+    "profile_sha256": "1dc0a1229bee184d2facb4ee0f24e1bb593595a539a6dcca23c83de6d9685908",
+    "receipt_sha256": "92c6fef2b543fe40e919e38016e4698181c5a495338d1f101f62afbd9af6c45d"
+  },
+  "z3_unpinned_reconstruction": {
+    "status": "PASS",
+    "source_sha256": "46cb9507cbdf168e2498a37f95eb9009989b3f66be304c333a225864aa6de346",
+    "chunks": 598,
+    "chunk_size": 128,
+    "states": 44504,
+    "unsat": 44504,
+    "sat": 0,
+    "unknown": 0,
+    "classification_sha256": "81e6fdb89bde8d4b1663fee7cca85cd4bbf3e8091ec1746ec045d8faa2357f2f",
+    "exit_code": 0,
+    "wall_seconds": 5115
+  },
+  "z3_pinned_replay": {
+    "status": "PASS",
+    "source_sha256": "01bbafc947100044964b044564e5da6be018d97daad8ab9adcfcccf8d84c36cd",
+    "started_at_utc": "2026-07-21T04:13:00Z",
+    "ended_at_utc": "2026-07-21T05:25:06Z",
+    "workers": 16,
+    "chunk_size": 16,
+    "chunks": 2980,
+    "states": 44504,
+    "unsat": 44504,
+    "sat": 0,
+    "unknown": 0,
+    "classification_sha256": "81e6fdb89bde8d4b1663fee7cca85cd4bbf3e8091ec1746ec045d8faa2357f2f",
+    "exit_code": 0,
+    "wall_seconds": 4273.96
+  },
+  "corruption_tests": {
+    "status": "PASS",
+    "tests": 18
+  },
+  "static_checks": {
+    "python_compile": "PASS",
+    "ruff": "PASS",
+    "mypy_strict": "PASS"
+  }
+}

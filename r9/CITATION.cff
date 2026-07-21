@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite the manuscript and the fixed-r9 repository release."
+title: "The Nine-Color Case of an Erdos-Gyarfas Balanced-Coloring Problem"
+type: article
+authors:
+  - family-names: "Sneiderman"
+    given-names: "Robert"
+repository-code: "https://github.com/Robby955/erdos-617-fixed-cases"
+url: "https://github.com/Robby955/erdos-617-fixed-cases/tree/main/r9"
+date-released: 2026-07-21
+year: 2026

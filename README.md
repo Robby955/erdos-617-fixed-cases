@@ -1,10 +1,10 @@
 # Fixed-case proof claims for Erdős Problem 617
 
-This repository contains four fixed-parameter proof claims related to
+This repository contains five fixed-parameter proof claims related to
 [Erdős Problem 617](https://www.erdosproblems.com/617), an edge-coloring
 problem of Erdős and Gyárfás.
 
-**Latest release:** [PDF downloads, scope, and verification notes](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20)
+**Latest release:** [fixed r = 9 paper, proof package, and certificate assets](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21)
 
 ## Claims
 
@@ -27,7 +27,14 @@ problem of Erdős and Gyárfás.
 [TeX source](r7-r8/main.tex) |
 [Replay instructions](r7-r8/README.md)
 
-These claims address only r = 5, 6, 7, 8. They do not settle the statement
+- **r = 9:** Every nine-coloring of the edges of K₈₂ has ten vertices
+  whose induced K₁₀ omits at least one color.
+
+[r = 9 PDF](r9/erdos-617-r9.pdf) |
+[TeX source](r9/main.tex) |
+[Replay instructions](r9/README.md)
+
+These claims address only r = 5, 6, 7, 8, 9. They do not settle the statement
 for every r ≥ 3.
 
 ## Review status
@@ -37,10 +44,10 @@ completed external mathematical review. Submission to the proof-claim forum
 on Erdős Problems does not certify correctness.
 
 The r = 5, 6 arguments are non-computational. Small programs were used during
-development, but their output is not a premise in either proof. The r = 7, 8
-arguments are computer-assisted. Their finite premises, semantic checkers,
+development, but their output is not a premise in either proof. The r = 7, 8,
+9 arguments are computer-assisted. Their finite premises, semantic checkers,
 manifests, replay commands, and proof artifacts are included under
-[`r7-r8/`](r7-r8/).
+[`r7-r8/`](r7-r8/) and [`r9/`](r9/).
 
 ## AI disclosure
 
