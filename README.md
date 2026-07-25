@@ -61,3 +61,11 @@ of the r = 5, 6, 7, 8 manuscripts.
 
 Please open a GitHub issue identifying the exact page, lemma, and claimed gap.
 Corrections and revised versions will be recorded in this repository.
+
+## Consolidated draft, r = 5 to 9
+
+`erdos-617-r5-r9-consolidated-DRAFT.pdf` combines the five fixed cases into
+one manuscript. It is a DRAFT, not a submission and not a published paper.
+It states no result that the four case papers in this repository do not
+already state, and it has not been externally reviewed. The per-case papers
+and their replay packages remain the authoritative artifacts.
