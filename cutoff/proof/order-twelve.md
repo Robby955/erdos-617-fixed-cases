@@ -4,11 +4,11 @@ Robert Sneiderman · 24 November 2026
 
 **Theorem.** Every twelve-coloring of the edges of $K_{145}$ has thirteen vertices whose induced complete graph misses a color.
 
-The new local bound is 409 target edges on the 61 vertices in the five-row case, against a cap of 408. Two further local bounds, 283 edges on 47 vertices and 358 on 59 vertices, close the other cases. The proof uses earlier four-row certificates. The calculations have two integer implementations. Lean verifies the thirteen-vertex witness in Section 4. [Forward calculation](verify_order_twelve.py) · [Budget-first replay](replay_order_twelve.py) · [Lean proof of the witness](OrderTwelveCollision.lean)
+In the five-row case, the 61 vertices span at least 409 edges of the target color. The global coloring permits at most 408. Two further local bounds, 283 edges on 47 vertices and 358 on 59 vertices, close the other cases. The proof uses earlier four-row certificates. The calculations have two integer implementations. Lean verifies the thirteen-vertex witness in Section 4. [Forward calculation](verify_order_twelve.py) · [Budget-first replay](replay_order_twelve.py) · [Lean proof of the witness](OrderTwelveCollision.lean)
 
-## 1. Inputs and deletion
+## 1. Local edge bounds and neighborhood deletion
 
-Call a coloring balanced if every thirteen vertices see all twelve colors. Work inside a putative balanced coloring. Fix a target color $a$ and use its graph for degrees, neighborhoods, cliques and independence. A set of type $(s,n)$ has $n$ vertices, independence number at most $s$, and no target $K_{12}$. Write $f(s,n)$ for a lower bound on its target edge count. The earlier order bounds on the size of such sets are $N(0)=0,\ N(1)=11,\ N(2)\le23,\ N(3)\le35,\ N(4)\le48$. Only upper bounds are needed. The last two follow from the three-row theorem and $P(4)$ at twelve. [Two- and three-row results, Sections 6 and 8](overfull-core.md)
+Call a coloring balanced if every thirteen vertices see all twelve colors. Suppose the coloring is balanced. Fix a target color $a$ and use its graph for degrees, neighborhoods, cliques and independence. A set of type $(s,n)$ has $n$ vertices, independence number at most $s$, and no target $K_{12}$. Write $f(s,n)$ for a lower bound on its target edge count. The earlier order bounds on the size of such sets are $N(0)=0,\ N(1)=11,\ N(2)\le23,\ N(3)\le35,\ N(4)\le48$. Only upper bounds are needed. The last two follow from the three-row theorem and $P(4)$ at twelve. [Two- and three-row results, Sections 6 and 8](overfull-core.md)
 
 **The 48-vertex input.** In a set of type $(4,48)$ every degree is at least twelve by $N(3)$. The four-row certificates at order twelve exclude every case in which the minimum total of $d-12$ on an independent quartet is at most three. Section 2 of the same argument shows that either such a quartet exists or some other color partitions the 48 vertices into twelve independent quartets for the target. The latter partition gives a total degree of at least $48\cdot12+12\cdot4=624$. Thus $f(4,48)\ge312$. The 102 profiles surviving the earlier census all have quartet weight at least four. [Four-row argument and census](four-row-descent.md) · [Prerequisite verifier](verify_four_row_descent.py)
 
@@ -58,7 +58,7 @@ $$
 $$
 The first expression inside the minimum counts the target neighbors in the two rows. For the last term, every missed point has the $\ell-p$ hits as common neighbors with the assigned vertex. By (2) all $p$ misses have weight at least $\ell-p-2-q(y)$. The row can spend at most $D-\ell a$ above its baseline. Full joins ($p=0$) are permitted only for $b>0$.
 
-Try nondecreasing lists of misses on the row, of length at most $3+b+a$ by the root degree. For the $z$ smallest misses we need
+Enumerate the nondecreasing lists of misses on the row. Their length is at most $3+b+a$ by the root degree. For the $z$ smallest misses we need
 $$
              p_1+\cdots+p_z+\binom z2\ \ge\ 11(z-b-1).            \tag{6}
 $$
@@ -74,7 +74,7 @@ Charge the row its $D$, the cost (5) of each positive miss count, and this full-
 
 Ninety profiles exceed 23. Only $k=B=0$ remains. The second implementation instead splits a budget of 23 among the rows and maximizes how many ordinary vertices the rows can accept. It tests 434 choices with the roots of each weight labelled. Only the same profile survives, with capacity three. [Minimum-charge verifier](verify_order_twelve.py) · [Maximum-count verifier](replay_order_twelve.py)
 
-## 4. The last profile needs six distinct rows
+## 4. Six exterior vertices and five cliques
 
 All five rows now have eleven vertices. Two exterior vertices cannot both miss at most four points of the same row. That row and the two vertices would form a thirteen-set with at most $4+4+1=9$ edges available for the eleven nontarget colors.
 
@@ -86,7 +86,7 @@ Take a vertex $y$ meeting three roots. If it missed at least five points in each
 
 Hence each of the six exterior vertices misses at most four points of some row. No two can use the same row, and there are only five. This contradiction proves $f(5,61)\ge409$.
 
-## 5. The other three stops
+## 5. Edge bounds on 47 and 59 vertices
 
 Two smaller bounds are needed. For $(4,47)$ under a cap of 282, minimum degree below eleven contradicts $N(3)$. Degree eleven leaves 35 vertices and costs at least $66+11$ by (1), giving at least $208+77=285$. The degree sum now forces twelve-regularity. For $(5,59)$ under a cap of 357, degree at most nine leaves more than 48 vertices. Degree ten costs at least $55+312$, and degree eleven costs at least $66+11+283=360$ once the 47-vertex bound is proved. A higher minimum degree than twelve exceeds the cap.
 
@@ -116,7 +116,7 @@ The first four stops exceed the known order bounds. The remaining comparisons fr
 
 With just the 48- and 61-vertex inputs, the same recurrence gives 474, 539 and 606 at the three later stops in question. The 47- and 59-vertex improvements supply the strict inequalities. All eleven stops are excluded, proving the theorem.
 
-**Reproduction.** Run the following from the campaign directory with Python 3.10 or newer. The four-row verifier reads the existing certificate files alongside it. The two order-twelve scripts use the standard library and import no code from one another.
+**Reproduction.** Run the following from the directory containing the scripts with Python 3.10 or newer. The four-row verifier reads the existing certificate files alongside it. The two order-twelve scripts use the standard library and import no code from one another.
 
 ```sh
 python3 -B verify_four_row_descent.py 12

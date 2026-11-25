@@ -10,12 +10,12 @@ The two preceding manuscripts follow this supplement in the PDF. References to t
 
 ## 1. Parameters and a count of independent transversals
 
-Assume every color graph has independence number at most $r$. Use the notation of the 320 supplement. The ordinary cliques $C_i$ lie in original parts $R_i$. Write $b_i=|R_i|-r,\ d_i=r-|C_i|,\ x_i=d_i/r,\ y_i=e_J(C_i,V\setminus R_i)/r^2$. Before the width selection, at most 1,777 parts have been omitted. All remaining $b_i\le r/256$. Write
+Assume every color graph has independence number at most $r$. Use the notation of [Appendix F](cutoff-320.md). The ordinary cliques $C_i$ lie in original parts $R_i$. Write $b_i=|R_i|-r,\ d_i=r-|C_i|,\ x_i=d_i/r,\ y_i=e_J(C_i,V\setminus R_i)/r^2$. Before the width selection, at most 1,777 parts have been omitted. All remaining $b_i\le r/256$. Write
 $$
  K=1800,\quad R=2^{19},\quad f=7/30,\quad
  \alpha=29/250,\quad\beta=19/125,\quad S=2^{135/2}.
 $$
-Use the level selection in §1 of the 320 supplement with these $\alpha,\beta,K,S$. Its integral bound is $1+1/\alpha+9/(2\beta)<\log(S/K)$. Indeed $1/\beta>1/(4\alpha)$ and $\log(S/K)=(113/2)\log 2+\log(256/225)>(113/2)(6931/10000)+31/256$. We obtain $K\le s<S,\ h=s-1,\ \rho=f/s,\ \rho_0=f/K$. For the $r-h$ remaining rows, put $D=\sum d_i,\ \sigma=\sum d_i^2,\ w=\sigma/r$. The guarantees are
+Use the level selection in §1 of [Appendix F](cutoff-320.md) with these $\alpha,\beta,K,S$. Its integral bound is $1+1/\alpha+9/(2\beta)<\log(S/K)$. Indeed $1/\beta>1/(4\alpha)$ and $\log(S/K)=(113/2)\log 2+\log(256/225)>(113/2)(6931/10000)+31/256$. We obtain $K\le s<S,\ h=s-1,\ \rho=f/s,\ \rho_0=f/K$. For the $r-h$ remaining rows, put $D=\sum d_i,\ \sigma=\sum d_i^2,\ w=\sigma/r$. The guarantees are
 $$
  \gamma=\alpha/f,\quad g=2\beta/f,\quad \kappa=\beta^2/f,\qquad
  y_i\le\gamma\rho,\quad d_i\le g\rho r,\quad
@@ -47,7 +47,7 @@ Base §3 now gives auxiliary cliques with arbitrary lists of size $r/10$ admitti
 
 ## 3. Using the labels of edges into a row
 
-The other colors constrain every set of $z$ exterior vertices of target degrees $j_y$ into a clique of deficit $d$. The 320 supplement, (4)–(5), gives
+The other colors constrain every set of $z$ exterior vertices of target degrees $j_y$ into a clique of deficit $d$. [Appendix F](cutoff-320.md), (4)–(5), gives
 $$
  \sum_y(j_y+d)\le(r-1)d+z(z+1)/2,\qquad
  b^2/2+(b-d)v_0-J_d\le\lambda d^2+v_0^2/2,                         \tag{3}
@@ -71,7 +71,7 @@ All successful uniques and all moderate senders are eligible. Let $A$ be their e
 $$
        0\le\vartheta\le\ell\kappa,\qquad (c-\ell\kappa\rho_0)r\le m\le sr .
 $$
-Let $v_i$ be the expected number of marks from moderate senders assigned in advance to row $i$ of degree above $\rho r$. Applying (3) to the strong senders and the marked moderates gives, exactly as on the last page of the 320 supplement,
+Let $v_i$ be the expected number of marks from moderate senders assigned in advance to row $i$ of degree above $\rho r$. Applying (3) to the strong senders and the marked moderates gives, as in §5 of [Appendix F](cutoff-320.md),
 $$
                   rL_0+\rho r m\le rD+\ell\sigma+\sum_i v_i^2+m.       \tag{4}
 $$
@@ -79,7 +79,7 @@ Indeed the extra charge just proved is available also at $v_0=v_i$. The variance
 
 ## 4. Counting repairs and retaining the unsampled shortage
 
-Write $W=G\cup\{\text{marked senders}\}$. Use $E_i,F_i,n_i,Q,Q_F,T$ from §4 of the 320 supplement. Thus $E_i$ counts expected target edges between $C_i$ and $W$, $F_i$ counts expected target incidences from other rows' representatives, and $n_i$ counts expected loads exceeding $\rho r$. In particular
+Write $W=G\cup\{\text{marked senders}\}$. Use $E_i,F_i,n_i,Q,Q_F,T$ from §4 of [Appendix F](cutoff-320.md). Thus $E_i$ counts expected target edges between $C_i$ and $W$, $F_i$ counts expected target incidences from other rows' representatives, and $n_i$ counts expected loads exceeding $\rho r$. In particular
 $$
  Q=\sum n_i(E_i+F_i)/r,\quad Q_F=\sum n_iF_i/r,\quad T=\sum N_iE_i/r.
 $$
@@ -92,7 +92,7 @@ $$
  \mathbb E P_*&\le (4/3)Q+jT+\chi w^2+243r. &&
 \end{aligned}                                                        \tag{5}
 $$
-For the first line $F_i\le y_i r^2/512$ follows from $2jg\rho_0<1/512$. For the second, $\rho r n_i\le E_i+F_i$ gives Cauchy–Schwarz, and $e_J(C_i,C_k)\le r+d_i d_k$ gives $F_i\le10r+jU_*wd_i$, since $\sum N_i\le9r$. The same two-clique bound on distinct-row representative pairs contributes at most $243r+\chi w^2$. Same-row and representative-to-exterior conflicts together contribute $jT$ by the same-row count in the 320 supplement. The $4Q/3$ comes from intersecting arcs. Thus the right side of (5) bounds repairs at the base probability and the corresponding expression at each new thinning probability.
+For the first line $F_i\le y_i r^2/512$ follows from $2jg\rho_0<1/512$. For the second, $\rho r n_i\le E_i+F_i$ gives Cauchy–Schwarz, and $e_J(C_i,C_k)\le r+d_i d_k$ gives $F_i\le10r+jU_*wd_i$, since $\sum N_i\le9r$. The same two-clique bound on distinct-row representative pairs contributes at most $243r+\chi w^2$. Same-row and representative-to-exterior conflicts together contribute $jT$ by the same-row count in [Appendix F](cutoff-320.md). The $4Q/3$ comes from intersecting arcs. Thus the right side of (5) bounds repairs at the base probability and the corresponding expression at each new thinning probability.
 
 Test rows independently with probabilities $\pi_i=(a n_i+bN_i)/r$, where $a=199/100,\ b=1217/1000$. These are at most one by (5) and $a(513\gamma/512+1/256+g\rho_0)+2bg\rho_0<1$. Put
 $$
@@ -160,4 +160,4 @@ $$
 $$
 Here $\sum_{i>k_0} i^{-2}\le 1/k_0$ and $\sum_{i\le m_0}1/i<32$. Also $s\max_{i>k_0}x_i\le9970(q/(k_0+1)+2^{-44})<2\beta$. Thus these deficits pass both updated deficit tests by that width.
 
-For a remaining numerical obstruction take $x_i=4/(25i)$ and $y_i=1/(100i)$ on $1\le i\le2^{36}$, zero elsewhere. These arrays obey the two aggregate budgets in the 320 supplement with $P/r=39/10$. After any 4,095 deletions the remaining $y_i$ still sum to at least $\log((2^{36}+1)/4096)/100>1/320000$. Nevertheless after any $h\le2^{32}$ deletions the squared tail times $h+1$ is at least $(4/25)^2(1-(h+1)/(2^{36}+1))>(4/25)^2(14/15)>\beta^2$. This follows by integrating $t^{-2}$ after deleting the largest terms. Realizability of this joint profile under the full coloring constraints is open here. So are the general conjecture and the project's remaining $r=19$ case. [Research handoff](../README.md)
+For a remaining numerical obstruction take $x_i=4/(25i)$ and $y_i=1/(100i)$ on $1\le i\le2^{36}$, zero elsewhere. These arrays obey the two aggregate budgets in [Appendix F](cutoff-320.md) with $P/r=39/10$. After any 4,095 deletions the remaining $y_i$ still sum to at least $\log((2^{36}+1)/4096)/100>1/320000$. Nevertheless after any $h\le2^{32}$ deletions the squared tail times $h+1$ is at least $(4/25)^2(1-(h+1)/(2^{36}+1))>(4/25)^2(14/15)>\beta^2$. This follows by integrating $t^{-2}$ after deleting the largest terms. Realizability of this joint profile under the full coloring constraints is open here. So are the general conjecture and the project's remaining $r=19$ case. [Research handoff](../README.md)

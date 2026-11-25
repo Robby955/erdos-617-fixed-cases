@@ -10,15 +10,15 @@ For the profile, in row $i\le m$ the deficit is between the floor and ceiling of
 
 The fixed packing for $2^{24}\le r<2^{53}$, the general conjecture for all $r\ge3$, and the project's $r=19$ case remain open here. The text uses the sampling and signed cut arguments of the preceding manuscripts. Independent mathematical review of the combined argument is pending. [218 supplement](cutoff-218.md) · [Exact arithmetic](verify_cutoff_190.py) · [Local Lean lemmas](Profile24.lean) · [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
-## 1. Count the source of a large star once
+## 1. Distinct sources of large stars
 
-Assume a counterexample. Fix a sparsest color $J$. Every color has independence number at most $r$ and every monochromatic clique has size at most $r$. Use the partition $R_i$ and qualifying destinations from §1 of the 218 supplement, including its first pruning stage at $r/4$. For each first-stage deletion record its source, one qualifying destination, and the *current* edges from that source into that destination. All recorded edge sets are disjoint. There are $pr$ sources. The preceding star bound gives at most
+Assume a counterexample. Fix a sparsest color $J$. Every color has independence number at most $r$ and every monochromatic clique has size at most $r$. Use the partition $R_i$ and qualifying destinations from §1 of [Appendix D](cutoff-218.md), including its first pruning stage at $r/4$. For each first-stage deletion record its source, one qualifying destination, and the *current* edges from that source into that destination. All recorded edge sets are disjoint. There are $pr$ sources. The preceding star bound gives at most
 $$
  \omega r=\frac{5}{1464}r
 $$
 recorded sources per qualifying destination. Indeed its budget $U_i\le r^2/1200$ pays more than $(61/250)r$ per source. The upper bound on $p$ is $p_*=125/61$.
 
-Use total interpart degree threshold $\tau r$, $\tau=99/200$, in the second pruning stage, with $tr$ deletions. Put $Z=1-p/4-\tau t\ge0$. Trim oversized parts to $r$, take a maximal family of $q$ jointly independent pairs in different parts, one pair per chosen part, and remove their neighbors in the unchosen parts. Each remaining list in an unchosen part is a clique. Use the two independent representative draws in the 218 supplement with short-list cutoff $Lr$, $L=497/500$. Omit chosen parts, short lists and unqualified destinations.
+Use total interpart degree threshold $\tau r$, $\tau=99/200$, in the second pruning stage, with $tr$ deletions. Put $Z=1-p/4-\tau t\ge0$. Trim oversized parts to $r$, take a maximal family of $q$ jointly independent pairs in different parts, one pair per chosen part, and remove their neighbors in the unchosen parts. Each remaining list in an unchosen part is a clique. Use the two independent representative draws in [Appendix D](cutoff-218.md) with short-list cutoff $Lr$, $L=497/500$. Omit chosen parts, short lists and unqualified destinations.
 
 Write $d_i=r-|C_i|,\ x_i=d_i/r$. Let $y_i' r^2$ count the edges of $J$ from $C_i$ outside $R_i$ after excluding the recorded edges. This discount is used only for bounding degrees and numbers of heavy senders. Write $b_i=|R_i|-r$. The budgets are
 $$
@@ -29,7 +29,7 @@ Indeed the original interpart edges have at most $2r^2$ endpoint incidences. Eac
 
 For the first budget the padded draws give $q\le(1/2+p+t+Z)/(1-2\tau)$. In a short list of length $zr$, $0\le z<L$, the excess after paying $2\tau(1-z/L)r$ is at least $r\min(1-2\tau,1-L)$, by linearity in $z$. Thus the number of short lists is at most $D_*/\min(1-2\tau,1-L)$. On the trapezoid $0\le p\le p_*,\ t\ge0,\ Z\ge0$, the four corners give $D_*<18/5$ and fewer than $2399$ omitted parts, including the at most 728 unqualified ones. Let $e_0$ be the actual omission count.
 
-For the width, use the threshold proof of the 218 supplement with $y_i'$ replacing $y_i$. Give row $i$ weight $\max(y_i',\alpha x_i/(2\beta))$. With $s(z)=\max(K,e_0+1+\#\{\text{weights}>z\})$, integrate as in its §2. The integral costs at most $1+Y_*/\alpha+D_*/\beta$. In the following table $\alpha,\beta$ are displayed in thousandths. Choose a band containing $Y_*$.
+For the width, use the threshold proof of [Appendix D](cutoff-218.md) with $y_i'$ replacing $y_i$. Give row $i$ weight $\max(y_i',\alpha x_i/(2\beta))$. With $s(z)=\max(K,e_0+1+\#\{\text{weights}>z\})$, integrate as in its §2. The integral costs at most $1+Y_*/\alpha+D_*/\beta$. In the following table $\alpha,\beta$ are displayed in thousandths. Choose a band containing $Y_*$.
 
 | Band for $Y_*$ | $K$ | $b$ | $1000\alpha$ | $1000\beta$ |
 | --- | ---: | ---: | ---: | ---: |
@@ -55,13 +55,13 @@ $$
 $$
 The same argument gives a separate restriction theorem. If $1\le h\le r,\ r\ge2^{20}$ and $h^2/r\le100/3199$, no set of $hr+1$ vertices can have target independence at most $h$ and independence at most $r$ in every other color in a counterexample.
 
-Inter-clique edges are undiscounted, so $4\cdot61^2A/K<1$ supplies independent representatives on arbitrary ordinary lists of size at least $r/61$, by the counting lemma in the 289 supplement. In particular independent $h+1$ vertices of $G$ would extend. For the later temporary ordinary restriction remove the vertices whose foreign degree from unrecorded edges exceeds $r/44$. At most $44y_i'r$ points are removed from $C_i$. Each surviving point has at most $\omega r$ incident recorded edges, since each recorded source offers it one edge. Thus the temporary rows have size at least $255r/256$ and degree from each survivor outside its original clique at most $r/32$. The two numerical inequalities are $(g+44\gamma)\rho_0<1/256$ and $1/44+g\rho_0+1/256+\omega<1/32$.
+Inter-clique edges are undiscounted, so $4\cdot61^2A/K<1$ supplies independent representatives on arbitrary ordinary lists of size at least $r/61$, by the counting lemma in [Appendix E](cutoff-289.md). In particular independent $h+1$ vertices of $G$ would extend. For the later temporary ordinary restriction remove the vertices whose foreign degree from unrecorded edges exceeds $r/44$. At most $44y_i'r$ points are removed from $C_i$. Each surviving point has at most $\omega r$ incident recorded edges, since each recorded source offers it one edge. Thus the temporary rows have size at least $255r/256$ and degree from each survivor outside its original clique at most $r/32$. The two numerical inequalities are $(g+44\gamma)\rho_0<1/256$ and $1/44+g\rho_0+1/256+\omega<1/32$.
 
 For (3), suppose $\Delta\le cr$, $c=1/8$. Take $hr+1$ points of $G$ if available and otherwise take $G$. The target independence cap there is $h$. In the restriction theorem take the given $hr+1$ points instead. Apply the stability calculation of base §3 on these auxiliary points. Normalize edge counts by $r^2$ and lengths by $r$. Write $u_i=(r-|R_i^{a}|)_+/r$ for raw positive deficits of the auxiliary parts and $x$ for their total interpart edge count in these units. With $I=2^{-20}$ we have
 $$
  x\le \xi,\qquad \sum u_i\le D,\qquad 2x+\sum u_i^2\le T .
 $$
-For (3) use $\xi=c^2+I,\ D=c+\xi/[2(1-I)],\ T=(2+1/799)c^2+3I$. These are the 289 supplement's estimates using $h\ge799,\ h^2/r<I$. The sum bound follows by charging the overfull parts to the other colors and adding the net deficit. For the restriction theorem use $\xi=100/3199,\ D=\xi/[2(1-I)],\ T=2\xi+I$. In fact the target excess over the balanced $h$-part floor on $hr+1$ is at most $r\binom h2-(r-h)$, by the other $r-1$ Turán floors. The balanced sum of squared deviations from $r$ is one, and the net deficit is negative. These facts give the displayed bounds also when $h=1$.
+For (3) use $\xi=c^2+I,\ D=c+\xi/[2(1-I)],\ T=(2+1/799)c^2+3I$. These are [Appendix E](cutoff-289.md)'s estimates using $h\ge799,\ h^2/r<I$. The sum bound follows by charging the overfull parts to the other colors and adding the net deficit. For the restriction theorem use $\xi=100/3199,\ D=\xi/[2(1-I)],\ T=2\xi+I$. In fact the target excess over the balanced $h$-part floor on $hr+1$ is at most $r\binom h2-(r-h)$, by the other $r-1$ Turán floors. The balanced sum of squared deviations from $r$ is one, and the net deficit is negative. These facts give the displayed bounds also when $h=1$.
 
 Prune auxiliary vertices of current interpart degree above $\tau_a r$. If the number pruned is $zr$, then $0\le z\le x/\tau_a$ and the remaining interpart edge count is at most $x-\tau_a z$. The final normalized positive deficits have sum at most $D'=D+\xi/\tau_a$, and each is at most
 $$
@@ -80,7 +80,7 @@ Here $w>D$. For one exterior point put $w=1-\theta_a$. The prescribed representa
 
 As in base §3, every exterior point must have a large row. Points with a unique large row join it completely, and two such points for the same row are adjacent. Otherwise the preceding extension produces one too many independent vertices. Adjoin these points to their rows; the enlarged rows remain cliques. For $P$ remaining exterior vertices the enlarged deficits add to $P-1$, since the order is exactly one more than the number of rows times $r$. Each remaining point has at least two large rows before enlargement.
 
-## 3. Charge an arrival at its own row
+## 3. Edge counts at the destination row
 
 Set $q_0=1/10000$. In an enlarged row with deficit $dr$, price a large arrival at $(kd+q_0)r$. Write $a=kd+q_0$ and $\theta=\theta_a$ or $\theta_o$ according to the row. If the row has $n>0$ large arrivals, then $(n+1)/(2r)-d\le a$. To see this let $t=2(d+a)<1$. With at least $\lfloor tr\rfloor$ arrivals, the one-clique capacity (base (4)) on that many actual vertices requires $\theta u<(1-u)d+u^2/2+u/(2r)$, $u=\lfloor tr\rfloor/r$. At $t$ the difference before rounding is
 $$
@@ -99,9 +99,9 @@ $$
 $$
 Each further arrival has positive net charge. The checker tests every ordered row type in both applications. The prices used in these tests dominate the prices after enlargement. Summing the one-clique capacities gives $rP\le(r-1)(P-1)$, impossible. When $P=0$ the nonnegative deficits already contradict their sum. This proves (3) and the restriction theorem.
 
-## 4. Recover the cost of uniquely assigned senders
+## 4. The edge bound for uniquely assigned senders
 
-Use the marks, retries and circular arcs of the 218 supplement, with their original target edges. Its symbols $N_i,n_i,E_i,F_i,Q,T_1,H_E$ denote respectively the number of uniquely strong senders at a row, its expected heavy-load count, its expected exterior cut, the incidences from foreign representatives, and the three quantities in its repair bound $\mathcal R=(4/3)Q+jT_1+H_E$. Here $j=(1+80\rho_0)/(1-g\rho_0)$. Write $\sigma=\sum d_i^2,\ w=\sigma/r,\ l=(\Delta-m)/(\rho r)$, where $m$ is the expected number of marks. Thus $w\le\kappa\rho r$. Retained vertices have degree at most $r/4$ into every other retained clique, as required by the arcs.
+Use the marks, retries and circular arcs of [Appendix D](cutoff-218.md), with their original target edges. Its symbols $N_i,n_i,E_i,F_i,Q,T_1,H_E$ denote respectively the number of uniquely strong senders at a row, its expected heavy-load count, its expected exterior cut, the incidences from foreign representatives, and the three quantities in its repair bound $\mathcal R=(4/3)Q+jT_1+H_E$. Here $j=(1+80\rho_0)/(1-g\rho_0)$. Write $\sigma=\sum d_i^2,\ w=\sigma/r,\ l=(\Delta-m)/(\rho r)$, where $m$ is the expected number of marks. Thus $w\le\kappa\rho r$. Retained vertices have degree at most $r/4$ into every other retained clique, as required by the arcs.
 
 In counting $n_i$, allow one sender for each recorded source at destination $i$. There are at most $\omega r$ there and $pr$ in total. The represented points lie in true cliques, so all their inter-clique edges are charged in $y_i'$. Thus $F_i\le(2jg\rho_0)y_i'r^2\le y_i'r^2/512$. The heavy-load bound in the 218 proof becomes
 $$
@@ -119,7 +119,7 @@ $$
  k_1&=(4/3)/Y,& b_1&=j(1+1/k_1),\qquad V=aM_0+9b_1/K .
  \end{aligned}
 $$
-For any upper bound $W$ with $\sum_i N_i d_i/r\le W\rho r$, the 218 supplement's tested-edge inequality gives $\mathcal R\le P(W,l)\rho^2r^2$, where
+For any upper bound $W$ with $\sum_i N_i d_i/r\le W\rho r$, [Appendix D](cutoff-218.md)'s tested-edge inequality gives $\mathcal R\le P(W,l)\rho^2r^2$, where
 $$
  P(W,l)=k_1(b_1W+l)^2\left(\tfrac12+\frac{a^2\kappa}{4Y}\right)
  +k_1\eta\left(\frac{(1+V)^2+V/K}{2}+\frac1{2K}\right).
@@ -128,7 +128,7 @@ Indeed $B_\pi+(\Delta-m)\le a\sqrt{\kappa Q}+(b_1W+l)\rho r$ for the test $\pi_i
 
 The first pass uses $W=2\kappa$, since $N_i\le2d_i$. Set $Z_1=8P(2\kappa,0)+2\eta$. Let $A_0$ denote expected eligibility and $L_0=\sum d_i+\Delta+1-A_0$ expected failures before thinning. When $A_0>\Delta$, the base oversampling bound gives $\sum d_i-L_0\le Z_1\rho^2r$, since $l=0$ and $Z_1\rho_0^2<\min(c/128,1/16)$. When $A_0\le\Delta$, $L_0\ge\sum d_i+1$.
 
-For a unique sender let $q_y$ be its neighbor fraction in the assigned row. At zero moderate assignments, the 289 supplement's row calculation keeps an extra $37\rho r\sum_y(1-q_y)$ on the left of its capacity bound. With $\lambda=501/1000$, that left side, including $rL_0$, is at most $r\sum d_i+\lambda\sigma$. Also $\sum_{y\ {\rm unique\ at}\ i}q_y\le d_i/(1-g\rho_0)$ and $d_i\le g\rho r$. Consequently
+For a unique sender let $q_y$ be its neighbor fraction in the assigned row. At zero moderate assignments, [Appendix E](cutoff-289.md)'s row calculation keeps an extra $37\rho r\sum_y(1-q_y)$ on the left of its capacity bound. With $\lambda=501/1000$, that left side, including $rL_0$, is at most $r\sum d_i+\lambda\sigma$. Also $\sum_{y\ {\rm unique\ at}\ i}q_y\le d_i/(1-g\rho_0)$ and $d_i\le g\rho r$. Consequently
 $$
  \frac1r\sum_i N_i d_i
  \le \frac{w}{1-g\rho_0}+
@@ -140,7 +140,7 @@ $$
 $$
 This uses the actual missing target edges that make retries succeed. A large number of successful retries would contradict the first oversampling bound.
 
-Repeat the signed cut with $W_1$. Put $Z_2=8P(W_1,0)+2\eta$ and $\epsilon(l)=P(W_1,l)+gl+l^2/2+\eta(1/2+1/(2K))$. Discarding the extra retry charge in the last capacity inequality gives $0\le l\le\lambda\kappa$. By the one-row and oversampling comparisons of the 218 supplement the required inequality is
+Repeat the signed cut with $W_1$. Put $Z_2=8P(W_1,0)+2\eta$ and $\epsilon(l)=P(W_1,l)+gl+l^2/2+\eta(1/2+1/(2K))$. Discarding the extra retry charge in the last capacity inequality gives $0\le l\le\lambda\kappa$. By the one-row and oversampling comparisons of [Appendix D](cutoff-218.md) the required inequality is
 $$
  (1-\epsilon(l))(c-\lambda\kappa\rho_0)+l-\lambda\kappa
                  -Z_2\rho_0-\frac1{fRK^2}\le0 .

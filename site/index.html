@@ -25,15 +25,15 @@
           <p class="byline">Robert Sneiderman and OpenAI GPT-6.2 Astra</p>
           <p class="abstract">Color every edge of a complete graph on <span class="math"><i>r</i>² + 1</span> vertices with <i>r</i> colors. Erdős and Gyárfás asked whether some <span class="math"><i>r</i> + 1</span> vertices must miss a color.</p>
           <p class="result">We prove this for every <span class="math"><i>r</i> ≥ 255 · 2<sup>136</sup></span>. The proof is formalized in Lean.</p>
-          <div class="reading"><a class="paper-link" href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/paper.pdf">Read the paper <span>PDF</span></a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v2/cutoff/proof/BalancedColoringCutoff.lean#L53-L57">Lean theorem</a></div>
+          <div class="reading"><a class="paper-link" href="/paper.pdf">Read the paper <span>PDF</span></a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v3/cutoff/proof/BalancedColoringCutoff.lean#L53-L57">Lean theorem</a></div>
         </div>
         <figure aria-labelledby="figure-title">
-          <h2 id="figure-title">Why one extra vertex matters</h2>
+          <h2 id="figure-title">A three-color example</h2>
           <canvas id="graph" width="480" height="294" role="img" aria-label="Nine vertices in a three-by-three grid, joined by edges in three colors.">In the nine-point example, every four vertices see all three colors.</canvas>
           <div class="controls" role="group" aria-label="Three-color example">
             <button type="button" aria-pressed="true" data-mode="grid">9 vertices</button>
-            <button type="button" aria-pressed="false" data-mode="ten">Add a tenth</button>
-            <button type="button" aria-pressed="false" data-mode="witness">Show the four</button>
+            <button type="button" aria-pressed="false" data-mode="ten">10 vertices</button>
+            <button type="button" aria-pressed="false" data-mode="witness">Highlight A, E, I, J</button>
           </div>
           <figcaption id="caption" aria-live="polite">Every four of these nine vertices span all three colors.</figcaption>
         </figure>
@@ -41,14 +41,14 @@
       <section id="proof">
         <h2>The proof</h2>
         <div class="section-text">
-          <p>Suppose every set of <span class="math"><i>r</i> + 1</span> vertices sees every color. Choose the color with the fewest edges. Most of its edges lie in rows, and inside those rows we find cliques. We try to choose one vertex from each clique, then add enough outside vertices to reach <span class="math"><i>r</i> + 1</span>. Each blocked choice costs edges. At large orders those costs exceed the number available.</p>
-          <p>Theorem A gives the simpler bound <span class="math"><i>r</i> ≥ 2<sup>144</sup></span>. Appendix I sharpens it by a factor of 255/256 and follows the final contradiction into Lean. Lean, Lean4Lean and Nanoda accepted the same proof export. Independent mathematical review of the paper is pending.</p>
+          <p>Suppose every set of <span class="math"><i>r</i> + 1</span> vertices sees every color. Fix a color with the fewest edges. Most of its edges lie within parts of a partition. We extract cliques of that color and seek one vertex from each, with enough vertices outside the cliques to reach <span class="math"><i>r</i> + 1</span>. At the stated cutoff, the edges needed to block every such choice exceed the number available.</p>
+          <p>Theorem A gives the simpler bound <span class="math"><i>r</i> ≥ 2<sup>144</sup></span>. The cutoff in Appendix I is 255/256 of that value. Lean, Lean4Lean and Nanoda accepted the same proof export. Independent mathematical review of the paper is pending.</p>
           <ul class="resources">
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/overview.pdf">Two-page overview</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v2/cutoff/proof/formal-cutoff.md">Lean proof guide</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/kernel-replay.txt">Kernel replay log</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/lean-and-paper.zip">Source archive</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/corollary.pdf">Sharper bound</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/overview.pdf">Two-page overview</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v3/cutoff/proof/formal-cutoff.md">Lean proof guide</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/kernel-replay.txt">Kernel replay log</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/lean-and-paper.zip">Source archive</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/corollary.pdf">Sharper bound</a></li>
           </ul>
         </div>
       </section>
@@ -62,16 +62,20 @@
       <section id="history">
         <h2>Research history</h2>
         <div class="section-text">
-          <p>I started with five colors in July 2026, looking for six vertices that miss a color among the 325 edges on 26 vertices. Working with OpenAI models, I went on to six, seven, eight and nine colors.</p>
+          <p>I began with the five-color case in July 2026. I wanted to find six vertices missing a color in every coloring of the edges on 26 vertices. Working with OpenAI models, I went on to six, seven, eight and nine colors.</p>
           <dl class="timeline"><dt>1999</dt><dd>Erdős and Gyárfás published the conjecture and proved it for three and four colors. <a href="https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf">Original paper</a></dd>
-        <dt>20–21 July 2026</dt><dd>I released my proof manuscripts for five through eight colors on July 20 and for nine on July 21. Ramazan Kara separately released a machine verification of the five-color case that credits my proof. <span class="refs"><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20">Five through eight</a> · <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21">Nine</a> · <a href="https://github.com/RamazanKara/erdos-617-r5-formal-verification">Kara’s verification</a></span></dd>
-        <dt>August 2026</dt><dd>Terpstra Research released arguments for ten and eleven colors. <a href="https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.1">Release and audit notes</a></dd>
-        <dt>17 October 2026</dt><dd>Hai Xia and Stefan Szeider posted a separate computational proof for five colors. Their October 17 version does not cite my July release. <a href="https://arxiv.org/html/2610.24484v1">October paper, version 1</a></dd>
-        <dt>November 2026</dt><dd>Our November paper gives a separate argument at twelve colors. The large-color theorem has an end-to-end Lean proof. <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/paper.pdf">Full manuscript</a></dd></dl>
+        <dt>13 July 2026</dt><dd>Nick Winter released a candidate proof for five colors in Lean, with SAT certificates. <a href="https://github.com/nwinter/erdos-617-r5/releases/tag/v1.1-public">Five-color release</a></dd>
+        <dt>18 July 2026</dt><dd>I posted my five- and six-color proofs. <a href="https://github.com/Robby955/erdos-617-fixed-cases/commit/c19ce7e">Both manuscripts</a> · <a href="https://www.erdosproblems.com/forum/thread/617/proof-claims#proof-claim-83">Erdős Problems posts</a></dd>
+        <dt>20–21 July 2026</dt><dd>I released my proof manuscripts for five through eight colors on July 20 and for nine on July 21. <span class="refs"><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20">Five through eight</a> · <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21">Nine</a></span></dd>
+        <dt>21–31 July 2026</dt><dd>Conner Silverstein, Anthony Rose and Nick Winter posted their five-color arguments on the Erdős Problems forum on July 21, 25 and 31, respectively. On July 24, Ramazan Kara released a machine verification based on my five-color proof. <a href="https://www.erdosproblems.com/forum/thread/617/proof-claims#proof-claim-173">Dated posts</a> · <a href="https://github.com/RamazanKara/erdos-617-r5-formal-verification/releases/tag/e058-r5">Kara’s verification</a></dd>
+        <dt>1 August 2026</dt><dd>Winter’s project proved the six-color theorem in Lean. Its authors credit my manuscript for the proof route and intermediate propositions. <a href="https://github.com/nwinter/erdos-617-r5/blob/32f1bfe6759299ef3a1c6e8b4c3c637528a9881b/reviews/sneiderman-r6.md#L620-L641">Six-color proof and attribution</a></dd>
+        <dt>11 August 2026</dt><dd>Adam Lee Terpstra directed the computer-assisted proofs for ten and eleven colors produced with OpenAI Codex. <a href="https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.0">First release</a> · <a href="https://github.com/terpstra-research/erdos-617-r10-r11/blob/v0.1.1/README.md#authorship-and-direction">Author credits and review status</a></dd>
+        <dt>17 October 2026</dt><dd>Hai Xia and Stefan Szeider posted a separate computational proof for five colors. Version 1 does not cite my July manuscript. <a href="https://arxiv.org/html/2610.24484v1">October paper, version 1</a></dd>
+        <dt>November 2026</dt><dd>Our paper proves an explicit cutoff in Lean and gives a separate argument for twelve colors. <a href="/paper.pdf">Full manuscript</a></dd></dl>
         </div>
       </section>
     </article>
   </main>
-  <footer class="wrap"><span>Robert Sneiderman</span><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v2">Paper and source code</a></footer>
+  <footer class="wrap"><span>Robert Sneiderman</span><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v3">Paper and source code</a></footer>
 </body>
 </html>

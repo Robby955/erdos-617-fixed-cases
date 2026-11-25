@@ -6,7 +6,7 @@ Robert Sneiderman’s research notes · 23 November 2026
 
 The bound applies to every coloring. It improves the previous bound $2^{165}$ by a factor of $524{,}288$. Two ingredients control discarded parts. A weighted independent transversal charges missing representatives to short lists. The ordered partition supplies distinct edge incidences for the surplus in oversized chosen parts. The combined proof awaits independent review. The conjecture for every $r\ge3$ remains open. [Preceding proof, §§3–5](cutoff-165.md) · [Numerical certificate](verify_weighted_width.py) · [Local Lean lemmas](WeightedWidth.lean) · [Combined PDF](../paper.pdf)
 
-## 1. Count the unused part of the stability bound
+## 1. The residual in the stability inequality
 
 Suppose a counterexample exists. Choose a sparsest color $J$, and call its edges target edges. Each color has independence number at most $r$, and every monochromatic clique has at most $r$ vertices. Write $p_k(n)$ for the minimum number of edges on $n$ vertices with independence number at most $k$, the sum of the internal binomial coefficients of $k$ balanced parts.
 
@@ -23,9 +23,9 @@ A destination qualifies if $b_i\le r/256$ and $U_i\le r^2/1200$. At most 728 par
 $$
  p\le p_*(1-v),\qquad Z=1-p/4-\tau t\ge v,\qquad p_*=125/61.
 $$
-Set $Y_*=2-p/2-\tau t$. For any family of surviving cliques, charge each clique its target edges outside its raw part, excluding the recorded stars. If $y_i'r^2$ is this count at clique $i$, then $\sum y_i'\le Y_*-2v$. Indeed the original incidence count is at most $2(1-v)r^2$. Both ends of a recorded edge disappear from the sum, and at least one end of each second-stage edge disappears. Edges between surviving cliques are fully counted. [First-stage count](cutoff-218.md#1-choosing-rows-with-less-total-deficit) · [Recorded edges](cutoff-190.md#1-count-the-source-of-a-large-star-once)
+Set $Y_*=2-p/2-\tau t$. For any family of surviving cliques, charge each clique its target edges outside its raw part, excluding the recorded stars. If $y_i'r^2$ is this count at clique $i$, then $\sum y_i'\le Y_*-2v$. Indeed the original incidence count is at most $2(1-v)r^2$. Both ends of a recorded edge disappear from the sum, and at least one end of each second-stage edge disappears. Edges between surviving cliques are fully counted. [First-stage count](cutoff-218.md#1-choosing-rows-with-less-total-deficit) · [Recorded edges](cutoff-190.md#1-distinct-sources-of-large-stars)
 
-## 2. Give missing representatives to the short lists
+## 2. Missing representatives in short lists
 
 Before trimming any part, choose a maximal family of $q$ pairs, one pair in each of $q$ distinct surviving parts, with all $2q$ endpoints independent. Delete their neighbors in the unchosen parts. Each remaining list is a clique by maximality. Write $m_i\le r$ for its size. Set $d=1-2\tau=1/200$, $L=(1+2\tau)/2=399/400$, and $b=\lfloor Lr\rfloor$. Since $(L-2\tau)r>1$, we have $b>2\lfloor\tau r\rfloor$.
 
@@ -54,7 +54,7 @@ $$
             -\frac{d-1/256}{2\beta}\,n .                                \tag{3}
 $$
 
-## 3. Integrate both endpoints of the width test
+## 3. Endpoint bounds for the width integral
 
 Take $K=1120,\ K'=K+2n$. Give each ordinary row weight $a_i=\max(y_i',\alpha x_i/(2\beta))$, reusing $a_i$ only in this section. Set aside the $K'-e_0-1$ largest weights. There are at least $K'/4$ such rows, because $e_0+1\le729+n$ and $729\le3K/4$. Put $Q_i=\alpha x_i^2/(4\beta^2)\le a_i^2/\alpha$. For the rows still under consideration define
 $$
@@ -103,14 +103,14 @@ $$
  2(\vartheta-ke-q_0)(1+k)>1,\quad
  2(\vartheta-ke-q_0)q_0>(\vartheta+e+1/2)I,\quad 2((1+k)e+q_0)<1 .
 $$
-The one-clique capacity applied to $\lfloor2((1+k)d_i+q_0)r\rfloor$ arrivals then gives $(n+1)/(2r)-d_i\le kd_i+q_0$ for the actual count $n>0$, including rounding as in §3 of the 190 supplement.
+The one-clique capacity applied to $\lfloor2((1+k)d_i+q_0)r\rfloor$ arrivals then gives $(n+1)/(2r)-d_i\le kd_i+q_0$ for the actual count $n>0$, including rounding as in §3 of [Appendix C](cutoff-190.md).
 
 For a point with two large rows let $j$ be the number of auxiliary ones, let $e_1,e_2$ be the individual caps before enlargement, and set $U=D_j+(2-j)o$. If their combined degrees were at most $(1+kU+2q_0)r$, the two lists of nonneighbors would have product larger than the entire target cut between these cliques. For each ordered pair of types the checker verifies positive factors and
 $$
  (1-e_1-\vartheta_1)(\vartheta_1-e_2-kU-2q_0)>
                   \min(e_1e_2,U^2/4)+I .
 $$
-The minimum product at fixed combined degree is at an endpoint by concavity. The two-clique capacity bounds the normalized cut by the right side. Compatible representatives would extend with the point. Its net contribution after prices must therefore exceed $r$. Any three large arrivals also pay more than $r$ net, since $j\theta_a+(3-j)\theta_o-k(D_j+(3-j)o)-3q_0>1$ for $0\le j\le3$. Every additional arrival contributes positively. Summing the one-clique capacities gives $rP\le(r-1)(P-1)$, impossible. For $P=0$ the sum of deficits is already impossible. This proves the claimed shortage. [Attachment prices and rounding](cutoff-190.md#3-charge-an-arrival-at-its-own-row)
+The minimum product at fixed combined degree is at an endpoint by concavity. The two-clique capacity bounds the normalized cut by the right side. Compatible representatives would extend with the point. Its net contribution after prices must therefore exceed $r$. Any three large arrivals also pay more than $r$ net, since $j\theta_a+(3-j)\theta_o-k(D_j+(3-j)o)-3q_0>1$ for $0\le j\le3$. Every additional arrival contributes positively. Summing the one-clique capacities gives $rP\le(r-1)(P-1)$, impossible. For $P=0$ the sum of deficits is already impossible. This proves the claimed shortage. [Attachment prices and rounding](cutoff-190.md#3-edge-counts-at-the-destination-row)
 
 ## 5. The five width bands and the final signed cut
 
@@ -128,12 +128,12 @@ For each band the checker clips the pruning trapezoid by its two boundary lines.
 
 The first band also identifies a limit of these constants. At the relaxed boundary $p=125/61,\ Z=0$, we have $Y_*=119/244,\ t=11900/12139$. For $r=2^{145}$, the sufficient width cost there exceeds $\log(S/K)$ by more than $0.159$ when $S=2^{(145-14)/4}$. Whether actual edge incidences can consume that entire budget is a separate question.
 
-Apply the marked-sender and excess-arc construction of §5 of the 165 supplement. The per-destination degree bound is $r/4$ between retained cliques. A retained row has at most $\omega r$ recorded sources, and $D+1/2+p<7,\ 2D<9$. The ordinary extension for excess arcs requires $1-X_0/K-3/4-f>1/41$, which holds. Change the unique-sender retry probability to $100\rho<1$. The success probability at neighbor fraction $q_y>1/2$ is $(1-q_y)(1+100\rho q_y)$. The marginal probability of a given representative is at most $j/r$ for
+Apply the marked-sender and excess-arc construction of §5 of [Appendix B](cutoff-165.md). The per-destination degree bound is $r/4$ between retained cliques. A retained row has at most $\omega r$ recorded sources, and $D+1/2+p<7,\ 2D<9$. The ordinary extension for excess arcs requires $1-X_0/K-3/4-f>1/41$, which holds. Change the unique-sender retry probability to $100\rho<1$. The success probability at neighbor fraction $q_y>1/2$ is $(1-q_y)(1+100\rho q_y)$. The marginal probability of a given representative is at most $j/r$ for
 $$
  \gamma=A/f,\quad g=X_0/f,\quad \kappa=B/f,\quad
  j=(1+100\rho_0)/(1-g\rho_0).
 $$
-The retry surplus is at least $37\rho r(1-q_y)$ by $50(1-\rho_0)-1-g>37$. The excess-arc conflict coefficient stays $4/3$ and the variance coefficient stays $\lambda=501/1000$, since $2g\rho_0/(1-g\rho_0)<1/1000$. [Excess arcs and tested cut](cutoff-165.md#5-charge-only-the-excess-of-a-heavy-load) · [Retry calculation](cutoff-289.md#3-using-the-labels-of-edges-into-a-row)
+The retry surplus is at least $37\rho r(1-q_y)$ by $50(1-\rho_0)-1-g>37$. The excess-arc conflict coefficient stays $4/3$ and the variance coefficient stays $\lambda=501/1000$, since $2g\rho_0/(1-g\rho_0)<1/1000$. [Excess arcs and tested cut](cutoff-165.md#5-the-excess-above-the-load-threshold) · [Retry calculation](cutoff-289.md#3-using-the-labels-of-edges-into-a-row)
 
 Here are the remaining inputs to that signed cut. Put $\eta'=1/(Rf^2)$, $y_{\rm hi}$ equal to the upper end of the band, and
 $$
@@ -143,7 +143,7 @@ $$
  V'&=a(513 y_{\rm hi}/(512f)+7/K)+9b_1/K .
  \end{aligned}
 $$
-The heavy-load count at each row is at most $n_*r$, using $2jg\rho_0<1/512$. The tests $an_*+2b_1g\rho_0<1,\ a>4/3,\ a\kappa<2$ give valid row probabilities and the square estimate of the 165 supplement. Its repair bound in units of $\rho^2r^2$ is
+The heavy-load count at each row is at most $n_*r$, using $2jg\rho_0<1/512$. The tests $an_*+2b_1g\rho_0<1,\ a>4/3,\ a\kappa<2$ give valid row probabilities and the square estimate of [Appendix B](cutoff-165.md). Its repair bound in units of $\rho^2r^2$ is
 $$
  {\cal P}(W',l)=\frac{k'(b_1W'+l)^2}{2-a\kappa}
  +k'\eta'\left(\frac{(1+V')^2+V'/K}{2}+\frac1{2K}\right).
@@ -158,6 +158,6 @@ $$
  (1-\epsilon(l))(c-\lambda\kappa\rho_0)+l-\lambda\kappa
                  -Z_2\rho_0-1/(fRK^2)\le0 .                              \tag{5}
 $$
-These reductions use the shortage from §4 and the same surplus coefficient 37. [Two applications of the signed cut](cutoff-190.md#4-recover-the-cost-of-uniquely-assigned-senders)
+These reductions use the shortage from §4 and the same surplus coefficient 37. [Two applications of the signed cut](cutoff-190.md#4-the-edge-bound-for-uniquely-assigned-senders)
 
 Divide $w\in[0,1]$ in (4) into 128 closed intervals per band. Use the maximum of each of its first three right sides separately on each interval for $A,X_0,B$. The checker uses these upper bounds throughout, verifies $0<\epsilon(l)<1$ at both endpoints of the $l$ interval, and verifies all the list, degree and probability conditions above. The left side of (5) is concave in $l$, since $c-\lambda\kappa\rho_0>0$. All $5\cdot128\cdot2=1280$ endpoint values exceed $0.0003327$, contradicting (5). This proves the theorem subject to the cited earlier arguments. The exact computation certifies the constants and tests the discarded-incidence bound on all 1,024 labelled five-vertex target graphs with every choice of omitted raw parts. Five local inequalities are checked in Lean. The general combinatorial argument is in the manuscript.

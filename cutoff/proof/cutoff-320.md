@@ -8,7 +8,7 @@ The base manuscript, *A large-order bound for the Erdős–Gyárfás balanced co
 
 ## 1. Selecting the ordinary rows
 
-Assume a counterexample and fix a sparsest hue $J$. All degrees and cuts below count $J$-edges. Every color has independence number at most $r$. By §1 of the base manuscript, on all $r^2+1$ vertices there are $r$ original parts $R_i$, with $b_i=|R_i|-r$, $O=\sum (b_i)_+\le r/2$ and at most $X\le r(r-1)$ edges between parts. In the pruning step $P\le4X/r$ vertices are removed at current cross degree greater than $r/4$. Outside at most 1,649 omitted parts one obtains cliques $C_i\subset R_i$. Set $d_i=r-|C_i|$, $x_i=d_i/r$ and $y_i=e_J(C_i,V\setminus R_i)/r^2$. The extraction gives
+Assume a counterexample and fix a sparsest hue $J$. All degrees and cuts below count $J$-edges. Every color has independence number at most $r$. By §1 of [Appendix G](balanced-coloring.md), on all $r^2+1$ vertices there are $r$ original parts $R_i$, with $b_i=|R_i|-r$, $O=\sum (b_i)_+\le r/2$ and at most $X\le r(r-1)$ edges between parts. In the pruning step $P\le4X/r$ vertices are removed at current cross degree greater than $r/4$. Outside at most 1,649 omitted parts one obtains cliques $C_i\subset R_i$. Set $d_i=r-|C_i|$, $x_i=d_i/r$ and $y_i=e_J(C_i,V\setminus R_i)/r^2$. The extraction gives
 $$
  \sum x_i\le P/r+1/2,\qquad
  \sum y_i\le 2X/r^2-P/(4r)\le2-P/(4r).                       \tag{1}
@@ -50,7 +50,7 @@ $$
  \exp(1)<2719/1000,\quad r\ge2^{20}.
 $$
 
-Let $G$ consist of the exterior points of degree at most $\rho r$ in every ordinary row and let $\Delta=hr-|G|$. We claim $\Delta>cr$ for $c=121/2000$. The reduction in §3 of the base manuscript applies with the following verifications. First, $h+1$ independent points of $G$ leave fraction at least $1-g\rho-f>1/61$ in each row. Second, $h\ge K-1$, $h^2/r<1/(RK^2)<2^{-40}$. Thus the auxiliary part bound in that section is
+Let $G$ consist of the exterior points of degree at most $\rho r$ in every ordinary row and let $\Delta=hr-|G|$. We claim $\Delta>cr$ for $c=121/2000$. The reduction in §3 of [Appendix G](balanced-coloring.md) applies with the following verifications. First, $h+1$ independent points of $G$ leave fraction at least $1-g\rho-f>1/61$ in each row. Second, $h\ge K-1$, $h^2/r<1/(RK^2)<2^{-40}$. Thus the auxiliary part bound in that section is
 $$
  (2+1/(K-1))c^2+3\cdot2^{-40}<(43/500)^2 .
 $$
@@ -62,7 +62,7 @@ $$
 $$
 With $\theta=93/250$, both $255/256-\theta-f-4/32$ and $255/256-2\theta-f$ exceed $1/61$. These are the two ordinary list sizes used by the extension in §3. Its contradiction gives the claimed shortage. For the circular-arc extension in §4, the available fraction is $1-g\rho-3/4-f>1/61$. This verifies the ordinary list condition at every use.
 
-## 3. What a strong assignment pays
+## 3. An edge bound for strong assignments
 
 Return to the original ordinary cliques. There are $D+\Delta+1$ exterior vertices outside $G$. As in the base manuscript, assign a vertex with degree greater than $r/2$ in at least two ordinary rows to two such rows. Assign a vertex with just one such row to it. The remaining vertices outside $G$ are called moderate. In a row of deficit $d$, write $b$ for the count of strong assignments. For any $z$ exterior points of row degrees $j_y$, the original colors give
 $$
@@ -93,7 +93,7 @@ $$
 
 ## 4. Counting the repairs
 
-Use the three representative conflicts and the circular arcs of §4 of the base manuscript. The arcs still have length four times the load on $3r$ positions. Loads are at most $3r/4$, and §2 above verifies that the repaired graph on $W$ has independence at most $h$. Write $E_i=\mathbb E e_J(C_i,W)$, $F_i$ for the expected incidences into $C_i$ from representatives in other rows with multiplicity, $n_i$ for the expected count of loads greater than $\rho r$ in row $i$, and $N_i$ for the number of uniquely assigned strong senders there. Put
+Use the three representative conflicts and the circular arcs of §4 of [Appendix G](balanced-coloring.md). The arcs still have length four times the load on $3r$ positions. Loads are at most $3r/4$, and §2 above verifies that the repaired graph on $W$ has independence at most $h$. Write $E_i=\mathbb E e_J(C_i,W)$, $F_i$ for the expected incidences into $C_i$ from representatives in other rows with multiplicity, $n_i$ for the expected count of loads greater than $\rho r$ in row $i$, and $N_i$ for the number of uniquely assigned strong senders there. Put
 $$
  Q=\sum n_i(E_i+F_i)/r,\quad Q_F=\sum n_iF_i/r,\quad
  T=\sum N_iE_i/r,\quad B_n=\sum n_i d_i/r .
@@ -114,7 +114,7 @@ $$
 
 ## 5. The expected cut and the contradiction
 
-The signed cut identity in §5 of the base manuscript gives, for rows tested independently of the repairs with probabilities $\pi_i$,
+The signed cut identity in §5 of [Appendix G](balanced-coloring.md) gives, for rows tested independently of the repairs with probabilities $\pi_i$,
 $$
  \sum\pi_iE_i\le\mathbb E P_*+r\mathbb E\binom H2+
               \tfrac12(B_\pi+u)^2+m/2 ,
@@ -150,7 +150,7 @@ $$
                  \eta(1/2+1/(2K))<3/8 .                       \tag{9}
 $$
 
-If $A>\Delta$, oversample using $z'=\min(A-\Delta,\Delta/128,r/16)$ and $p'=(\Delta+z')/A<2p$. The heavy counts and representative incidences scale linearly, $G$ is fixed, and therefore $Q'\le4Q,\ T'\le2T$. By (7)–(8), the expected repair cost is at most $4(33/100)\rho^2r^2$. The oversampling Turán floor from §5 of the base manuscript gives at least $rz'/2-rs^2$, using $h\le r/4$, $z'\le r/16$, and variance at most $sr$. It follows that $z'/r\le(8\cdot33/100+2\eta)\rho^2<(8/3)\rho^2$. This is below both $c/128$ and $1/16$, so $z'=A-\Delta$. Including $A\le\Delta$, we have $L\ge D-(8/3)\rho^2r$.
+If $A>\Delta$, oversample using $z'=\min(A-\Delta,\Delta/128,r/16)$ and $p'=(\Delta+z')/A<2p$. The heavy counts and representative incidences scale linearly, $G$ is fixed, and therefore $Q'\le4Q,\ T'\le2T$. By (7)–(8), the expected repair cost is at most $4(33/100)\rho^2r^2$. The oversampling Turán floor from §5 of [Appendix G](balanced-coloring.md) gives at least $rz'/2-rs^2$, using $h\le r/4$, $z'\le r/16$, and variance at most $sr$. It follows that $z'/r\le(8\cdot33/100+2\eta)\rho^2<(8/3)\rho^2$. This is below both $c/128$ and $1/16$, so $z'=A-\Delta$. Including $A\le\Delta$, we have $L\ge D-(8/3)\rho^2r$.
 
 Assign each moderate sender in advance to a row of degree above $\rho r$. The count $V_i$ of its marked assignments there has mean $v_i$, variance at most $v_i$, and $\sum v_i\le m$. Since $\rho r v_i\le E_i$, (9) gives $v_i\le(3/8)\rho r$. Apply (4) to the $b_i'$ strong assignments and the $V_i$ marked moderate assignments in each row. On the left the strong senders supply $rL$, the marks supply $\rho r m$, and the moderate deficits supply $\sum d_i v_i$, in addition to the strong surplus $J_{d_i}$. On the right $\sum b_i'/2\le D$ absorbs the subtraction of $D$ from $(r-1)D$. Moving the deficits and surplus across and applying (5) with $v_0=v_i$ gives
 $$

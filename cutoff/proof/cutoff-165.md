@@ -8,9 +8,9 @@ Robert Sneiderman’s research notes · 22 November 2026
 
 For $m\le r<43{,}000{,}000$, a surviving profile would have one to four chosen pairs. Their target neighborhoods must remove more than $9r/50$ distinct vertices from at least six retained original parts during the pair step. For $33{,}000{,}000\le r<43{,}000{,}000$ a single pair must meet at least fourteen ordinary parts. Existence in the remaining interval is open. The all-order conjecture and the project's case $r=19$ remain open. The proof of Theorem 1 is human-readable and awaits independent review. [Previous supplement](cutoff-190.md) · [Fixed extraction](cutoff-218.md) · [Exact checker](verify_cutoff_165.py) · [Local Lean lemmas](FixedRowCharges.lean) · [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
-## 1. Where the stars in the original extraction can end
+## 1. Destinations of the recorded stars
 
-Assume a counterexample. Fix its sparsest color $J$. Every color has independence number at most $r$. In the stability partition $R_i$, put $b_i=|R_i|-r$, and let $\mu_i$ be the number of internal pairs missing $J$. Write $X$ for the number of interpart edges of $J$, and $\eta$ for its excess over the complementary Turán floor $p_r(r^2+1)$. The base manuscript gives $\mu=\sum\mu_i\le\eta\le\binom r2$, $\sum b_i=1$, $\sum(b_i)_+\le r/2$, and $X=\eta+\mu-(\sum b_i^2-1)/2$. A destination qualifies when $b_i\le r/256$ and $U_i=\mu_i-(r-1)b_i\le r^2/1200$. At most 728 parts fail. At most $\omega r$ exterior vertices originally have more than $r/4$ target neighbors in any given qualifying part, where $\omega=5/1464$. These are the estimates of §1 of the 218 supplement.
+Assume a counterexample. Fix its sparsest color $J$. Every color has independence number at most $r$. In the stability partition $R_i$, put $b_i=|R_i|-r$, and let $\mu_i$ be the number of internal pairs missing $J$. Write $X$ for the number of interpart edges of $J$, and $\eta$ for its excess over the complementary Turán floor $p_r(r^2+1)$. The base manuscript gives $\mu=\sum\mu_i\le\eta\le\binom r2$, $\sum b_i=1$, $\sum(b_i)_+\le r/2$, and $X=\eta+\mu-(\sum b_i^2-1)/2$. A destination qualifies when $b_i\le r/256$ and $U_i=\mu_i-(r-1)b_i\le r^2/1200$. At most 728 parts fail. At most $\omega r$ exterior vertices originally have more than $r/4$ target neighbors in any given qualifying part, where $\omega=5/1464$. These are the estimates of §1 of [Appendix D](cutoff-218.md).
 
 Keep that extraction unchanged. A first-stage removal has more than $r/4$ current edges to a qualifying foreign part. A second-stage removal has current total interpart degree above $\tau r$, with $\tau=47/100$. Put $pr,tr$ for the numbers removed and $Z=1-p/4-\tau t$. Trim parts to $r$, select the original maximal family of $q$ jointly target-independent pairs in distinct parts, and delete their neighbors in unchosen parts. Ordinary cliques $C_i$ come from qualifying unchosen lists of size at least $Lr$, $L=19/20$. Write $x_i=1-|C_i|/r$, $y_i=e_J(C_i,V\setminus R_i)/r^2$ and $D=\sum x_i$.
 
@@ -24,14 +24,14 @@ Let $F$ be the number of short unchosen lists and $W=\sum_{\rm short}(1-|C_i^{\r
 $$
  p\le P+\omega(q+F),\qquad q\le W+Z/L^2,\qquad W\le F.
 $$
-The middle inequality is the second representative draw in §1 of the 218 supplement. The deficit of each short list in units of $r$ is exactly $1-L+L(1-|C_i^{\rm list}|/(Lr))$. Subtracting these deficits from $1/2+p+t+2\tau q$ pays for their omission. With $c=1-1/(4\tau)$, $C_0=1/2+1/\tau+c(609/1000)$, and $e=1/\tau-2\tau/L^2$, this gives
+The middle inequality is the second representative draw in §1 of [Appendix D](cutoff-218.md). The deficit of each short list in units of $r$ is exactly $1-L+L(1-|C_i^{\rm list}|/(Lr))$. Subtracting these deficits from $1/2+p+t+2\tau q$ pays for their omission. With $c=1-1/(4\tau)$, $C_0=1/2+1/\tau+c(609/1000)$, and $e=1/\tau-2\tau/L^2$, this gives
 $$
  D\le C_0+c\omega q-(1-L-c\omega)F-(L-2\tau)W-eZ
  \le C_0-(1-2\tau-2c\omega)q.                                      \tag{1}
 $$
 For the last step, $1-L-c\omega>0$, $L>2\tau$, and $e>(1-2\tau-c\omega)/L^2$. The certificate in §2 gives $D>8/3$ throughout the feasible range. Equation (1) implies $q\le4$, then $F\le5$ by its first inequality, and consequently $p<16/25$.
 
-## 2. The pair neighborhoods must remove vertices from ordinary parts
+## 2. Pair neighborhoods in ordinary parts
 
 Let $S$ consist of the first- and second-stage sources in the original parts that eventually yield ordinary rows. Write $a_i r=|S\cap R_i|$ there and $p_Rr,t_Rr$ for the two removal counts in $S$. Let $B_Rr=\sum_{\rm ordinary}(b_i-a_i r)_+$ count subsequent trims there and $O_Er=\sum_{\rm omitted}(b_i)_+$. Write $U$ for the number of vertices removed from ordinary parts by the pair neighborhoods alone, in units of $r$.
 
@@ -66,11 +66,11 @@ In the two upper surviving bands, substituting 2.800 and 2.840 on the left of (2
 
 For each integer interval $[a,b]$ in the certificate, $T(r)/r\ge T(a)/b$. The checker calculates $T(a)$ by grouping identical integer quotients. The blocks cover every integer through $8m-1$. For $r\ge8m$, $T(r)/r\ge(\sum_{j=4}^{255}1/j+16\log2)/5-1/8>2.856$. This proves Theorem 2 without a monotonicity assumption on the normalized sum. [Floor certificate and fixed-row inequalities](verify_cutoff_165.py)
 
-## 3. Choose pairs before trimming for the general theorem
+## 3. Pair selection before trimming
 
-We may now choose rows for an arbitrary counterexample. Use the same first-stage pruning of the sparsest color. Write $pr$ for the count and keep the recorded stars of §1 of the 190 supplement. Prune next at total interpart degree $\tau r$, now $\tau=43/100$, with $tr$ removals. Write $Z=1-p/4-\tau t$, $V_2=\sum(b_i/r)^2$ and $Y_*=2-p/2-\tau t$. The actual remaining interpart count in units of $r^2$ is at most $z=Z-V_2/2$ by the stability identity. Choose a maximal family of $q$ jointly independent pairs in distinct surviving parts **before trimming any part**. Remove their neighbors from the unchosen parts. Each resulting list is a clique by maximality and already has size at most $r$.
+We may now choose rows for an arbitrary counterexample. Use the same first-stage pruning of the sparsest color. Write $pr$ for the count and keep the recorded stars of §1 of [Appendix C](cutoff-190.md). Prune next at total interpart degree $\tau r$, now $\tau=43/100$, with $tr$ removals. Write $Z=1-p/4-\tau t$, $V_2=\sum(b_i/r)^2$ and $Y_*=2-p/2-\tau t$. The actual remaining interpart count in units of $r^2$ is at most $z=Z-V_2/2$ by the stability identity. Choose a maximal family of $q$ jointly independent pairs in distinct surviving parts **before trimming any part**. Remove their neighbors from the unchosen parts. Each resulting list is a clique by maximality and already has size at most $r$.
 
-Put $L=124/125$ and $O_Q=\sum_{\rm chosen}(b_i)_+/r$. The total deficit across unchosen lists in units of $r$ is at most $p+t+O_Q+2\tau q$. Indeed deleting a whole chosen *surviving* part costs at most $r+(b_i)_+$, the original order is $r^2+1$, and the pair endpoints have remaining interpart degree at most $\tau r$. Use the two padded draws from the 218 supplement. The first gives $q\le(1/2+p+t+Z)/(1-2\tau)$. In the second, $q\le W+z/L^2$, with $W$ defined as in §1. Omit chosen, short and unqualified parts. For ordinary deficits $D=\sum x_i$ and discounted foreign counts $Y=\sum y_i'$ of the 190 supplement we obtain
+Put $L=124/125$ and $O_Q=\sum_{\rm chosen}(b_i)_+/r$. The total deficit across unchosen lists in units of $r$ is at most $p+t+O_Q+2\tau q$. Indeed deleting a whole chosen *surviving* part costs at most $r+(b_i)_+$, the original order is $r^2+1$, and the pair endpoints have remaining interpart degree at most $\tau r$. Use the two padded draws from [Appendix D](cutoff-218.md). The first gives $q\le(1/2+p+t+Z)/(1-2\tau)$. In the second, $q\le W+z/L^2$, with $W$ defined as in §1. Omit chosen, short and unqualified parts. For ordinary deficits $D=\sum x_i$ and discounted foreign counts $Y=\sum y_i'$ of [Appendix C](cutoff-190.md) we obtain
 $$
  D\le p+t+O_Q-(1-2\tau)q+z/L^2,\qquad Y\le Y_*-V_2.              \tag{3}
 $$
@@ -83,9 +83,9 @@ $$
 $$
 For a separate unweighted bound, each short list pays its $2\tau$ multiple in the second draw with at least $\min(1-L,1-2\tau)$ left. Thus $D\le D_*=1/2+p+t+2\tau Z/L^2<3.7$, and the number of short lists is at most $D_*/\min(1-L,1-2\tau)$. With the chosen and unqualified parts this gives $e_0+1<K/2$ for the total omission count $e_0$ and $K=2560$. The four corners of the trapezoid $0\le p\le125/61,\ t\ge0,\ Z\ge0$ suffice for both checks.
 
-## 4. Use the rows omitted at the minimum width
+## 4. Omitted rows at minimum width
 
-Give each ordinary row weight $a_i=\max(y_i',\alpha x_i/(2\beta))$. Set aside the $K-e_0-1$ heaviest ordinary rows. For the rest put $s(z)=K+\#\{i:a_i>z\}$ and $C(z)=\sum_{a_i\le z}x_i^2/z$. If $s(z)z/\alpha+\alpha C(z)/(4\beta^2)<1$, the width proof of the 218 supplement gives $h=s(z)-1$ omitted slots and $v=s(z)z/\alpha$, with
+Give each ordinary row weight $a_i=\max(y_i',\alpha x_i/(2\beta))$. Set aside the $K-e_0-1$ heaviest ordinary rows. For the rest put $s(z)=K+\#\{i:a_i>z\}$ and $C(z)=\sum_{a_i\le z}x_i^2/z$. If $s(z)z/\alpha+\alpha C(z)/(4\beta^2)<1$, the width proof of [Appendix D](cutoff-218.md) gives $h=s(z)-1$ omitted slots and $v=s(z)z/\alpha$, with
 $$
  s\max y_i'\le\alpha v,\qquad s\max x_i\le2\beta v,\qquad
  s\sum x_i^2\le4\beta^2v(1-v).                                      \tag{5}
@@ -98,13 +98,13 @@ $$
 $$
 It follows that $r\ge Rs^4$ throughout the claimed range.
 
-## 5. Charge only the excess of a heavy load
+## 5. The excess above the load threshold
 
-Use the actual target edges, exterior set $G$, unique-sender trials and marked vertices of the 190 supplement. Set $f=7/30,\ \rho=f/s,\ \rho_0=f/K$ and $c=1/8$. Its auxiliary argument gives $\Delta=hr-|G|>cr$ under (5) and the list checks below. The new extraction has the same per-destination degree and recorded-star bounds needed there. The untrimmed deficit bound gives $\sum x_i+1/2+p<7$ and $2\sum x_i<9$, as needed in its estimates of sender counts.
+Use the actual target edges, exterior set $G$, unique-sender trials and marked vertices of [Appendix C](cutoff-190.md). Set $f=7/30,\ \rho=f/s,\ \rho_0=f/K$ and $c=1/8$. Its auxiliary argument gives $\Delta=hr-|G|>cr$ under (5) and the list checks below. The new extraction has the same per-destination degree and recorded-star bounds needed there. The untrimmed deficit bound gives $\sum x_i+1/2+p<7$ and $2\sum x_i<9$, as needed in its estimates of sender counts.
 
 In an unrepresented row the original load $t_{xi}$ of a marked vertex $x$ is its own target degree into that row plus the degree of its representative there, if present. It is zero in its represented row or when unmarked, and at most $3r/4$. Place an arc of length $(t_{xi}-\rho r)_+$, for positive lengths only, on a circle of circumference $3r/4$, with independent uniform starts. In an independent set of $h+1$ exterior points of the repaired graph, the excess arcs in an unrepresented row are disjoint and have total length at most $3r/4$. The baseline loads of all these points cost at most $(h+1)\rho r=fr$, including the points of $G$. Exactly the same ordinary lists can therefore be filled as in the 190 proof. Real half-open arcs allow nonintegral lengths.
 
-Write $E_i$ for the expected true cut from the sampled exterior set to row $i$, $F_i$ for expected loads from representatives in other rows, $n_i$ for the expected number of heavy loads and $N_i$ for the number of unique strong senders. With the notation of §4 of the 218 supplement set
+Write $E_i$ for the expected true cut from the sampled exterior set to row $i$, $F_i$ for expected loads from representatives in other rows, $n_i$ for the expected number of heavy loads and $N_i$ for the number of unique strong senders. With the notation of §4 of [Appendix D](cutoff-218.md) set
 $$
  Q=\sum n_i(E_i+F_i)/r,\quad H=\rho\sum n_i^2,\quad
  T=\sum N_iE_i/r,\quad H_E=j^2\sum_{i<k}N_iN_k e_J(C_i,C_k)/r^2.
@@ -115,7 +115,7 @@ $$
 $$
 This bound scales by at most four when the thinning probability increases from $p_0$ to $p_1\le2p_0$. Indeed $n_i$ is linear in the probability. The other factor $E_i+F_i-\rho r n_i$ is a nonnegative constant from $G$ plus the probability times a nonnegative coefficient, since each marked trial's counted incidences dominate $\rho r$ times its heavy indicator. Thus $Q-H$ scales by at most four, $T$ by two and $H_E$ stays fixed.
 
-For bounds $A,X_0,B$ on the three left sides of (5), put $\gamma=A/f,\ g=X_0/f,\ \kappa=B/f$, $j=(1+80\rho_0)/(1-g\rho_0)$, and $\eta_0=1/(Rf^2)$. The 190 supplement gives
+For bounds $A,X_0,B$ on the three left sides of (5), put $\gamma=A/f,\ g=X_0/f,\ \kappa=B/f$, $j=(1+80\rho_0)/(1-g\rho_0)$, and $\eta_0=1/(Rf^2)$. [Appendix C](cutoff-190.md) gives
 $$
  n_i/r\le z_*=513\gamma/512+1/256+g\rho_0+\omega,\qquad
  \sum n_i\le M_0 sr,\quad M_0=513Y_{\rm hi}/(512 f)+7/K .
@@ -125,7 +125,7 @@ $$
  a=\min(5/2,(249/250)/z_*),\quad k=(4/3)/(a-4/3),\quad
  b_1=j(1+1/k),\quad V=aM_0+9b_1/K.
 $$
-All tested probabilities $(a n_i+b_1N_i)/r$ are at most one. Suppose $\sum N_i d_i/r\le W\rho r$, where $d_i=x_i r$, and put $l=(\Delta-m_0)/(\rho r)$ for expected mark count $m_0$. By Cauchy, $\sum n_i d_i/r\le\sqrt{\kappa H}$. The tested cut pays $aQ+b_1T+(b_1/j)^2H_E$ in actual edges as in (5)–(6) of the 218 supplement. After deducting repairs, it leaves $(a-4/3)(Q-H)+aH$, together with $(b_1-j)T+((b_1/j)^2-1)H_E$, on the left. On the right the squared term is at most $(a\sqrt{\kappa H}+(b_1 W+l)\rho r)^2/2$. For $a\kappa<2$, completing the square gives
+All tested probabilities $(a n_i+b_1N_i)/r$ are at most one. Suppose $\sum N_i d_i/r\le W\rho r$, where $d_i=x_i r$, and put $l=(\Delta-m_0)/(\rho r)$ for expected mark count $m_0$. By Cauchy, $\sum n_i d_i/r\le\sqrt{\kappa H}$. The tested cut pays $aQ+b_1T+(b_1/j)^2H_E$ in actual edges as in (5)–(6) of [Appendix D](cutoff-218.md). After deducting repairs, it leaves $(a-4/3)(Q-H)+aH$, together with $(b_1-j)T+((b_1/j)^2-1)H_E$, on the left. On the right the squared term is at most $(a\sqrt{\kappa H}+(b_1 W+l)\rho r)^2/2$. For $a\kappa<2$, completing the square gives
 $$
  \tfrac12(a\sqrt\kappa\,x+z)^2-a x^2\le z^2/(2-a\kappa).
 $$
@@ -134,7 +134,7 @@ $$
  P(W,l)=\frac{k(b_1W+l)^2}{2-a\kappa}
        +k\eta_0\left(\frac{(1+V)^2+V/K}{2}+\frac1{2K}\right).
 $$
-All other steps in the two applications of the signed cut in §4 of the 190 supplement use only this repair bound, its oversampling version and the unchanged one-row capacities.
+All other steps in the two applications of the signed cut in §4 of [Appendix C](cutoff-190.md) use only this repair bound, its oversampling version and the unchanged one-row capacities.
 
 The table uses $K=2560$ throughout; $b$ is the exponent of $R$.
 
@@ -150,7 +150,7 @@ The table uses $K=2560$ throughout; $b$ is the exponent of $R$.
 | 11/8 to 13/8 | 16 | 676 | 872 |
 | 13/8 to 2 | 17 | 680 | 880 |
 
-The width cost is affine on each clipped trapezoid, so its vertices suffice. In each band divide $v\in[0,1]$ into 96 equal intervals, bounding the three quantities in (5) separately by their maxima on each interval. For completeness write $\lambda=501/1000$, $Z_1=8P(2\kappa,0)+2\eta_0$, and use the 190 supplement's retry estimate
+The width cost is affine on each clipped trapezoid, so its vertices suffice. In each band divide $v\in[0,1]$ into 96 equal intervals, bounding the three quantities in (5) separately by their maxima on each interval. For completeness write $\lambda=501/1000$, $Z_1=8P(2\kappa,0)+2\eta_0$, and use [Appendix C](cutoff-190.md)'s retry estimate
 $$
  W_1=\left((1-g\rho_0)^{-1}+\lambda g/37\right)\kappa
        +g Z_1\rho_0/37 .

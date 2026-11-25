@@ -6,7 +6,7 @@ date: 24 November 2026
 
 **Abstract.** Erdős and Gyárfás asked whether every $r$-coloring of the edges of $K_{r^2+1}$ contains $r+1$ vertices that miss a color. We prove their conjecture for every $r\ge 2^{144}$ and, by a different argument, for $r=12$. Together with the fixed cases through eleven, this leaves only $13\le r<2^{144}$ as possible exceptions. At large orders the proof extracts monochromatic cliques in a sparsest color and bounds the cost of choosing representatives from them. At twelve colors, six exterior vertices would each need a different row, and only five rows are available.
 
-## Why one extra vertex matters
+## The affine-plane construction
 
 The conjecture has a sharp boundary for infinitely many $r$. Take the $r^2$ points of an affine plane of prime-power order $r$. Color each pair by the direction of the line joining it, then merge two of the $r+1$ direction colors. Every set of $r+1$ points still sees every color. Indeed, in each direction the plane splits into $r$ parallel lines, so two of the chosen points lie on the same line. Erdős and Gyárfás conjectured that on adding just one point, **every** coloring must lose this property. They proved the cases $r=3,4$. [Original paper, Conjecture 1 and Lemmas 1–2](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 

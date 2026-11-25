@@ -60,7 +60,7 @@ Here $H_n\ge\log(n+1)+(1-1/(n+1))/2$, by the trapezoid bound for the integral of
 
 ## 2. Choosing the width
 
-Put $K=2500,\ R=2^{19},\ f=7/30,\ \alpha=1/6,\ \beta=11/60,\ S=2^{199/4}$. As in the 320 supplement, give a row weight $a_i=\max(y_i,\alpha x_i/(2\beta))$. Set
+Put $K=2500,\ R=2^{19},\ f=7/30,\ \alpha=1/6,\ \beta=11/60,\ S=2^{199/4}$. As in [Appendix F](cutoff-320.md), give a row weight $a_i=\max(y_i,\alpha x_i/(2\beta))$. Set
 $$
  s(z)=\max\{K,e+1+\#\{a_i>z\}\},\qquad C(z)=\sum_{a_i\le z} x_i^2/z .
 $$
@@ -75,14 +75,14 @@ The last bound follows by multiplying $C(z)<4\beta^2(1-v)/\alpha$ by $sz$. In pa
 
 ## 3. The exterior shortage
 
-In §§3–4 let $s\ge s_0\ge800,\ \rho=f/s,\ \rho_0=f/s_0$, and suppose $r\ge R_0s^4$. Write $G$ for the exterior points sending at most $\rho r$ edges to every ordinary clique. Put $\Delta=hr-|G|$. In the two applications below, the ordinary lists, temporary outside-degree bounds and arc extensions of the 289 supplement hold. Section 5 supplies their exact numerical checks. We strengthen its shortage to
+In §§3–4 let $s\ge s_0\ge800,\ \rho=f/s,\ \rho_0=f/s_0$, and suppose $r\ge R_0s^4$. Write $G$ for the exterior points sending at most $\rho r$ edges to every ordinary clique. Put $\Delta=hr-|G|$. In the two applications below, the ordinary lists, temporary outside-degree bounds and arc extensions of [Appendix E](cutoff-289.md) hold. Section 5 supplies their exact numerical checks. We strengthen its shortage to
 $$
                               \Delta> c r,\qquad c=89/1000 .              \tag{4}
 $$
 
-Suppose $\Delta\le cr$. The auxiliary construction in §2 of the 289 supplement applies to a subset of $G$ of size $hr+1$ if available, and to $G$ otherwise. In either case $h\ge799,\ h^2/r<2^{-20},\ r\ge2^{20}$. Put $\xi=c^2+2^{-20}$. A raw auxiliary deficit divided by $r$ is bounded above by $d_*=c+\xi/(2(1-2^{-20}))$, since the other colors pay for the oversized auxiliary parts. For a raw positive deficit $d$ in units of $r$, twice the auxiliary cross edge count divided by $r^2$ is at most $M_*-d^2$, where $M_*=(2+1/799)c^2+3\cdot2^{-20}$. Prune at interpart degree $\tau_a r$, with $\tau_a=27/200$. The final normalized deficit is at most $d_*+(M_*-d_*^2)/(2\tau_a)<\delta=3/25$, since $d_*<\tau_a$. The auxiliary rows are cliques and their $r/10$ lists have independent representatives by $1-\delta-2\tau_a>1/2,\ 100\xi<1$.
+Suppose $\Delta\le cr$. The auxiliary construction in §2 of [Appendix E](cutoff-289.md) applies to a subset of $G$ of size $hr+1$ if available, and to $G$ otherwise. In either case $h\ge799,\ h^2/r<2^{-20},\ r\ge2^{20}$. Put $\xi=c^2+2^{-20}$. A raw auxiliary deficit divided by $r$ is bounded above by $d_*=c+\xi/(2(1-2^{-20}))$, since the other colors pay for the oversized auxiliary parts. For a raw positive deficit $d$ in units of $r$, twice the auxiliary cross edge count divided by $r^2$ is at most $M_*-d^2$, where $M_*=(2+1/799)c^2+3\cdot2^{-20}$. Prune at interpart degree $\tau_a r$, with $\tau_a=27/200$. The final normalized deficit is at most $d_*+(M_*-d_*^2)/(2\tau_a)<\delta=3/25$, since $d_*<\tau_a$. The auxiliary rows are cliques and their $r/10$ lists have independent representatives by $1-\delta-2\tau_a>1/2,\ 100\xi<1$.
 
-Use the ordinary temporary restriction of the 289 supplement, of size at least $255r/256$ and outside-clique degree at most $r/32$. Set $\theta=93/250$ for a large attachment. In the extension from base §3 we need at most **three** prescribed representatives, or two independent exterior points. Indeed the auxiliary fractions $1-\delta-\theta-3\tau_a$ and $1-\delta-2\theta$ exceed $1/10$. The ordinary fractions $255/256-\theta-f-3/32$ and $255/256-2\theta-f$ exceed $1/61$. As in the base proof, every exterior point has a large attachment. Those having a unique one form a clique with their respective row and may be adjoined there. The remaining $P_0$ exterior points each have at least two large attachments before enlargement, and the enlarged row deficits sum to $P_0-1$.
+Use the ordinary temporary restriction of [Appendix E](cutoff-289.md), of size at least $255r/256$ and outside-clique degree at most $r/32$. Set $\theta=93/250$ for a large attachment. In the extension from base §3 we need at most **three** prescribed representatives, or two independent exterior points. Indeed the auxiliary fractions $1-\delta-\theta-3\tau_a$ and $1-\delta-2\theta$ exceed $1/10$. The ordinary fractions $255/256-\theta-f-3/32$ and $255/256-2\theta-f$ exceed $1/61$. As in the base proof, every exterior point has a large attachment. Those having a unique one form a clique with their respective row and may be adjoined there. The remaining $P_0$ exterior points each have at least two large attachments before enlargement, and the enlarged row deficits sum to $P_0-1$.
 
 For an enlarged row with normalized deficit $d\in[0,\delta]$, let $z$ count assigned large arrivals (one per large attachment). Retain the $dr$ contribution per arrival in the other-color capacity inequality (base (4)). We claim $(z+1)/(2r)-d\le a_0=53/500$ whenever $z>0$. Otherwise there are at least $\lfloor tr\rfloor$ arrivals with $t=2(d+a_0)$. For $u=\lfloor tr\rfloor/r$, their degrees exceed $\theta r$ and capacity would give $\theta u<(1-u)d+u^2/2+u/(2r)$. But
 $$
@@ -93,11 +93,11 @@ The right side exceeds $(\theta+2\delta+a_0)2^{-20}$, covering the rounding and 
 
 For a point with two large attachments, if their normalized degree sum before enlargement is at most $1+2a_0$, its two nonneighbor lists have product at least $r^2(1-\delta-\theta)(\theta-\delta-2a_0)>r+\delta^2r^2$. This is the concave-product endpoint bound of base §3; it exceeds the actual two-clique cut, so a compatible pair would extend. With three large attachments, if all three lists have size at least $21r/100$, the expected number of conflicts is below one by $3(1/r+\delta^2)<(21/100)^2$. Otherwise the normalized net charge exceeds $1-\delta-21/100+2\theta-3a_0>1$. Four or more pay at least $4(\theta-a_0)>1$. Summing the row capacities would now give $rP_0\le(r-1)(P_0-1)$. This proves (4), including the case $P_0=0$ which already contradicts the deficit sum.
 
-## 4. Pay for conflicts with the same tested edges
+## 4. Conflict bounds from the tested edges
 
-We give the changed part of the sampling proof. Write $s\max y_i\le A,\ s\max x_i\le X_0,\ s\sum x_i^2\le B,\ \sum y_i\le Y_0$. Put $\gamma=A/f,\ g=X_0/f,\ \kappa=B/f,\ w=\sum d_i^2/r$. Then $w\le\kappa\rho r$. In both applications $\sum d_i\le9r/2,\ \sum(b_i)_+\le r/2$. All definitions of marks, loads and arcs are as in §§3–4 of the 289 supplement. We recall those needed here.
+We give the changed part of the sampling proof. Write $s\max y_i\le A,\ s\max x_i\le X_0,\ s\sum x_i^2\le B,\ \sum y_i\le Y_0$. Put $\gamma=A/f,\ g=X_0/f,\ \kappa=B/f,\ w=\sum d_i^2/r$. Then $w\le\kappa\rho r$. In both applications $\sum d_i\le9r/2,\ \sum(b_i)_+\le r/2$. All definitions of marks, loads and arcs are as in §§3–4 of [Appendix E](cutoff-289.md). We recall those needed here.
 
-The strong senders have degree greater than $r/2$ in a row. Those with a unique strong row get one uniform draw there and may retry with probability $80\rho$ after drawing a neighbor. Let $N_i$ count unique strong senders in row $i$. Write $m$ for the expected number of marks, $u=\Delta-m$, and $l=u/(\rho r)$. The two cases of the 289 supplement use
+The strong senders have degree greater than $r/2$ in a row. Those with a unique strong row get one uniform draw there and may retry with probability $80\rho$ after drawing a neighbor. Let $N_i$ count unique strong senders in row $i$. Write $m$ for the expected number of marks, $u=\Delta-m$, and $l=u/(\rho r)$. The two cases of [Appendix E](cutoff-289.md) use
 $$
  (U_*,\lambda_*)=(41/40,501/1000)\ \text{or}\ (2,0).
 $$
@@ -115,7 +115,7 @@ $$
 $$
 These follow respectively from $2jg\rho_0\le1/512$, summation, and Cauchy–Schwarz.
 
-Let $e_{ik}=e_J(C_i,C_k)$ for $i\ne k$. Define $H_E=j^2\sum_{i<k}N_iN_k e_{ik}/r^2$. This bounds distinct-row representative conflicts by independence. The within-row conflict count and circular arcs from the 320 supplement give an upper bound
+Let $e_{ik}=e_J(C_i,C_k)$ for $i\ne k$. Define $H_E=j^2\sum_{i<k}N_iN_k e_{ik}/r^2$. This bounds distinct-row representative conflicts by independence. The within-row conflict count and circular arcs from [Appendix F](cutoff-320.md) give an upper bound
 $$
                        \mathcal R=(4/3)Q+jT+H_E
 $$
@@ -162,12 +162,12 @@ For one tested row, the signed cut adds at most $ud_i+u^2/2+m/2+r\binom{s}{2}$ b
 $$
  \epsilon(l)=P(l)+gl+l^2/2+\eta(1/2+1/(2s_0)).
 $$
-When oversampling is necessary $l=0$. At up to twice the original thinning probability the same three conflict terms are bounded by $4\mathcal R$, since $Q'\le4Q,\ T'\le2T$, and $H_E$ bounds representative-pair conflicts at either probability. The oversampling floor of base §5 and the final row inequality of the 289 supplement now require
+When oversampling is necessary $l=0$. At up to twice the original thinning probability the same three conflict terms are bounded by $4\mathcal R$, since $Q'\le4Q,\ T'\le2T$, and $H_E$ bounds representative-pair conflicts at either probability. The oversampling floor of base §5 and the final row inequality of [Appendix E](cutoff-289.md) now require
 $$
  (1-\epsilon(l))(c-\lambda_*\kappa\rho_0)+l-\lambda_*\kappa
        -(8P(0)+2\eta)\rho_0-\frac1{fR_0s_0^2}\le0.                    \tag{7}
 $$
-Specifically $Z_0=8P(0)+2\eta$ bounds the oversampling excess divided by $\rho^2r$, since $Z_0\rho_0^2<\min(c/128,1/16)$. The lower bound on failed senders retains $u$ and the moderate quadratic sum is at most $\epsilon(l)\rho r m$, as in (6) of the 289 supplement. The left side of (7) is concave in $l$; it suffices to check $0,\lambda_*\kappa$ in the first branch and $0$ in the second.
+Specifically $Z_0=8P(0)+2\eta$ bounds the oversampling excess divided by $\rho^2r$, since $Z_0\rho_0^2<\min(c/128,1/16)$. The lower bound on failed senders retains $u$ and the moderate quadratic sum is at most $\epsilon(l)\rho r m$, as in (6) of [Appendix E](cutoff-289.md). The left side of (7) is concave in $l$; it suffices to check $0,\lambda_*\kappa$ in the first branch and $0$ in the second.
 
 ## 5. Exact certificates and the earlier mixed profile
 
@@ -178,7 +178,7 @@ $$
 $$
 These upper bounds apply throughout the interval, including when $\kappa$ is small. The checker verifies the ordinary transversal test $4\cdot61^2\gamma\rho_0<1$, temporary row sizes and outside degrees, the circular-arc list fraction, both retry bounds, validity of the row tests, $\epsilon<1$, the oversampling cap, and (7). Every one of the 192 rational endpoint values on the left of (7) exceeds $1/1000$. This contradiction proves Theorem 1. [Exact arithmetic](verify_cutoff_218.py)
 
-For Theorem 3 use the *original* total-degree pruning threshold $r/4$ in the 320 supplement and keep its original cut and deficit definitions. With $P$ deletions, its normalized residual interpart edge count is at most $1-P/(4r)$. The padded draw with $r$ positions in §1 shows
+For Theorem 3 use the *original* total-degree pruning threshold $r/4$ in [Appendix F](cutoff-320.md) and keep its original cut and deficit definitions. With $P$ deletions, its normalized residual interpart edge count is at most $1-P/(4r)$. The padded draw with $r$ positions in §1 shows
 $$
  q/2\le P/r+1/2+1-P/(4r)\le9/2 .
 $$

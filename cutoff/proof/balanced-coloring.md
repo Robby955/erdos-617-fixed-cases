@@ -199,7 +199,7 @@ $$
                          L\ge D-1110w^2/r-32000s^2.                     \tag{10}
 $$
 
-## 6. The last capacity inequality
+## 6. The capacity inequality
 
 Assign each moderate sender in advance to a row where its degree exceeds $\rho r$. Let $v_i$ count those marked in the base sample at row $i$, with mean $\bar v_i$. Since $\rho r\bar v_i\le E_i$, (2) and (9) give
 $$

@@ -4,11 +4,11 @@
 
 **Theorem.** For every integer $r\ge2^{144}$, every $r$-coloring of the edges of $K_{r^2+1}$ contains $r+1$ vertices missing a color.
 
-We use the five bands, sampling constants and signed-cut inequality of the [weighted transversal argument](weighted-width.md). A first-stage deletion spends part of the very budget used to count unqualified destinations. Keeping both uses in the same inequality allows more rows to contribute at the upper endpoint of the width integral. [Exact checker](verify_retained_width.py)
+We use the five bands, sampling constants and signed-cut inequality of the [weighted transversal argument](weighted-width.md). The incidence count for first-stage deletions also bounds the number of unqualified destinations. This joint bound increases the contribution of the retained rows at the upper endpoint of the width integral. [Exact checker](verify_retained_width.py)
 
-Lean proves that every feasible pair of real pruning parameters belongs to a band with width margin greater than $7/10000$. It also checks the reserved-row endpoint inequality. The [Lean proof guide](formal-cutoff.md) also covers the extraction of rows and the width integral. [Formal width comparisons](RetainedWidth.lean)
+Lean proves that every feasible pair of real pruning parameters belongs to a band with width margin greater than $7/10000$. It checks the endpoint inequality for the reserved rows. The [Lean proof guide](formal-cutoff.md) describes the row extraction and width integral. [Formal width comparisons](RetainedWidth.lean)
 
-## 1. Count the destinations still available to omit
+## 1. An upper bound on omitted destinations
 
 Retain the preceding notation. The raw parts $R_i$ have size $r+b_i$. Let $U_i$ be the number of their internal nontarget pairs minus $(r-1)b_i$. Then $U_i\ge0$, $\sum U_i\le r^2/2$, and $\sum(b_i)_+\le r/2$. A destination qualifies when $b_i\le r/256$ and $U_i\le r^2/1200$. In the first stage, exactly $pr$ vertices are deleted. Assign each to its recorded qualifying destination. At one such destination the preceding star count bounds the number of assigned sources by $U_i/((61/250)r)$. Summing only over qualifying destinations shows that they consume at least $(61/250)pr^2$ of the total $U_i$.
 
@@ -23,9 +23,9 @@ $$
 $$
 In particular $0<\lambda<1$, $\lambda_n\ge\lambda-n/K$, and $\lambda_n\ge\min(\lambda,1/2)$.
 
-## 2. Integrate the excess at the upper endpoint
+## 2. The upper endpoint of the width integral
 
-In one of the five preceding bands let $b,\alpha,\beta$ be its constants. Set $S=2^{(144-b)/4}$, $\ell=\alpha/S$, and $H=\alpha/K'$. The checker verifies $S>8K'$ throughout. Retain the row weights $a_i$, the nonnegative coefficients $Q_i\le a_i^2/\alpha$ and the function $F(z)$ of Section 3 of the preceding proof. Assume $F(z)\ge1$ on $[\ell,H]$. Put $u=\max a_i/H$ over the rows still in the integral, with value zero for an empty family. The rows set aside contribute at least $\lambda_n u$ to the available budget, since each has weight at least $uH$ and costs at least $uH/\alpha$.
+In one of the five preceding bands let $b,\alpha,\beta$ be its constants. Set $S=2^{(144-b)/4}$, $\ell=\alpha/S$, and $H=\alpha/K'$. The checker verifies $S>8K'$ throughout. Retain the row weights $a_i$, the nonnegative coefficients $Q_i\le a_i^2/\alpha$ and the function $F(z)$ of [Appendix A, §3](weighted-width.md#3-endpoint-bounds-for-the-width-integral). Assume $F(z)\ge1$ on $[\ell,H]$. Put $u=\max a_i/H$ over the rows still in the integral, with value zero for an empty family. The rows set aside contribute at least $\lambda_n u$ to the available budget, since each has weight at least $uH$ and costs at least $uH/\alpha$.
 
 Write $A=\sum_iQ_i/H$ for the remaining rows. For $t\ge u$ and $t\le1$, the formula for the integral gives $F(tH)=t+A/t$. If $u\le1$, the integral of the remaining row terms above $H$, with respect to $dz/z$, is $A$. The integral below $\ell$ is at least one by the previous lower-endpoint argument. That unit pays exactly for the base term's integral on $[0,H]$. For any $h\in[\max(u,\ell/H),1]$ we can now count both the tail $A$ and the excess over one on $[hH,H]$. The additional saving, beyond the rows set aside, is at least
 $$
@@ -69,6 +69,6 @@ The pruning domain is $0\le p\le125/61$, $t_0\ge0$, $p/4+\tau t_0\le1$. Clip it 
 | 0.68 to 1 | 15 | 0.130541 |
 | 1 to 2 | 17 | 0.460849 |
 
-Thus (2) fails in every band. Some width succeeds, giving precisely the normalized cut and deficit bounds (4) of the preceding proof with $K\le s<S$ and $2^b s^4<2^{144}\le r$. The shortage argument and the signed cut then apply. All 1,280 exact signed-cut endpoints exceed $0.0003327$ with their original parameters. The earlier first-band obstruction at $2^{145}$ applied to a coarser budget. The proof here covers the same boundary by accounting for the rows kept and the endpoint excess even at that boundary. $\square$
+Thus (2) fails in every band. There is a width satisfying the normalized cut and deficit bounds (4) of [Appendix A](weighted-width.md) with $K\le s<S$ and $2^b s^4<2^{144}\le r$. The shortage argument and the signed cut then apply. All 1,280 exact signed-cut endpoints exceed $0.0003327$ with their original parameters. $\square$
 
 At exponent 143 the present sufficient comparison at $p=125/61,\ p/4+\tau t_0=1$ has margin below $-0.17125$ in the first band. Improving the constants, the saving in (2), or the feasible domain could change this comparison. Whether a coloring realizes that boundary is open. [Rational endpoint check](verify_retained_width.py)

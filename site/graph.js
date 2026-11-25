@@ -9,7 +9,7 @@ const palette = ["#be572d", "#137d6a", "#2956ad"];
 const witness = new Set([0, 4, 8, 9]);
 const captions = {
   grid: "Every four of these nine vertices span all three colors.",
-  ten: "Join J to the nine original points in blue. Can you find four vertices joined only by blue edges?",
+  ten: "The nine edges from J to the grid are blue.",
   witness: "A, E, I and J span six blue edges. Both green and orange are missing."
 };
 

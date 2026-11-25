@@ -2,6 +2,7 @@
 
 import argparse
 import re
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -10,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PROOF = ROOT / "proof"
 REPOSITORY = "https://github.com/Robby955/erdos-617-fixed-cases"
-RELEASE_TAG = "cutoff-2026-11-25-v2"
+RELEASE_TAG = "cutoff-2026-11-25-v3"
 CHAPTERS = [
     ("retained-width", "The cutoff at $2^{144}$", None),
     ("order-twelve", "The twelve-color theorem", None),
@@ -62,7 +63,7 @@ def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> s
             return f"[{label}](#retained-width)"
         # A PDF file link can open adjacent source files when the package is downloaded.
         relative = path.relative_to(ROOT)
-        if target.name.startswith("github-") or target.name == "retained-width-corollary.pdf":
+        if not target.name.startswith("review-"):
             suffix = f"#{fragment}" if fragment else ""
             return f"[{label}]({REPOSITORY}/blob/{RELEASE_TAG}/cutoff/{relative.as_posix()}{suffix})"
         name = relative.as_posix() if target.parent == ROOT else Path(filename).name
@@ -70,15 +71,16 @@ def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> s
     return re.sub(r"(?<!!)\[([^\[\]\n]+)\]\(([^)\s]+)\)", resolve, text)
 
 
-def build(kind: str, edition: str = "review") -> None:
+def build(kind: str, edition: str = "github") -> None:
     target = {"paper": ROOT / "paper.pdf", "overview": ROOT / "overview.pdf",
               "twelve": PROOF / "order-twelve.pdf",
               "corollary": PROOF / "retained-width-corollary.pdf"}[kind]
     metadata = []
     if edition == "github" and kind != "corollary":
-        target = target.with_name("github-" + target.name)
         metadata = ["-M", "author=Robert Sneiderman and OpenAI GPT-6.2 Astra",
                     "-M", f"date={24 if kind == 'twelve' else 25} November 2026"]
+    elif edition == "review" and kind != "corollary":
+        target = target.with_name("review-" + target.name)
     manuscript = "paper.md" if edition == "github" else "paper-review.md"
     front = (ROOT / manuscript).read_text().replace("<!-- pagebreak -->", r"\newpage")
     if kind == "corollary":
@@ -102,14 +104,14 @@ def build(kind: str, edition: str = "review") -> None:
         chapters = [chapter_text(*chapter) for chapter in CHAPTERS] if kind == "paper" else []
         if edition == "github" and kind == "paper":
             corollary = (PROOF / "retained-width-corollary.md").read_text().split("\n", 1)[1]
-            guide = (PROOF / "formal-cutoff.md").read_text().split("## Read the statement", 1)[1]
+            guide = (PROOF / "formal-cutoff.md").read_text().split("## Theorem statement", 1)[1]
             guide = guide.split("## Verification record,", 1)[0]
-            guide = guide.replace("## How the last contradiction works",
-                                  "\\newpage\n\n## How the last contradiction works")
+            guide = guide.replace("## The signed-cut inequality",
+                                  "\\newpage\n\n## The signed-cut inequality")
             chapters.append(
                 "\n\n\\newpage\n\n# Appendix I. The sharper cutoff and its Lean proof {#formal-proof}\n\n"
                 + corollary + "\n## The formal statement\n" + guide
-                + "\n[Build instructions and verification record](formal-cutoff.md#reproduce-the-proof)\n"
+                + "\n[Build instructions and verification record](formal-cutoff.md#verification-commands)\n"
             )
         anchors = set(re.findall(r"\{#([\w-]+)\}", "\n".join(chapters)))
         front = prepare_links(front, ROOT, target, anchors)
@@ -121,7 +123,6 @@ def build(kind: str, edition: str = "review") -> None:
             front,
         )
         if kind == "overview":
-            front = front.replace("The next two chapters", "The first two proof chapters of the full paper")
             paper = f"{REPOSITORY}/releases/download/{RELEASE_TAG}/paper.pdf" if edition == "github" else "paper.pdf"
             front += f"\n\n[Download the complete paper]({paper})\n"
         front += "".join(prepare_links(s, PROOF, target, anchors) for s in chapters)
@@ -137,11 +138,16 @@ def build(kind: str, edition: str = "review") -> None:
             "-V", r"header-includes=\usepackage{graphicx}\setlength{\emergencystretch}{2em}",
             *metadata, "-o", str(target),
         ], check=True, cwd=target.parent)
+    if edition == "github" and kind != "corollary":
+        shutil.copyfile(target, target.with_name("github-" + target.name))
+        site = ROOT.parent / "site"
+        if kind == "paper" and (site / "index.html").is_file():
+            shutil.copyfile(target, site / "paper.pdf")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("target", choices=("paper", "overview", "twelve", "corollary"))
-    parser.add_argument("--edition", choices=("review", "github"), default="review")
+    parser.add_argument("--edition", choices=("review", "github"), default="github")
     args = parser.parse_args()
     build(args.target, args.edition)

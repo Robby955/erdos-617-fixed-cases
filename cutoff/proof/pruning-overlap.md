@@ -1,6 +1,6 @@
 # Which edge ends are counted twice in Appendix A?
 
-The two counts in Appendix A, §2 can overlap only at a deleted vertex of a chosen oversized row. Each such vertex contributes at most $r/4$ in the first pruning stage or $199r/400$ in the second. This proves the paper’s allowance and gives a smaller one whenever the first stage deletes a vertex in those rows. [Appendix A, §2](weighted-width.md#2-give-missing-representatives-to-the-short-lists) · [Lean proof](PruningOverlap.lean)
+The two counts in Appendix A, §2 can overlap only at a deleted vertex of a chosen oversized row. Each such vertex contributes at most $r/4$ in the first pruning stage or $199r/400$ in the second. This proves the paper’s allowance and gives a smaller one whenever the first stage deletes a vertex in those rows. [Appendix A, §2](weighted-width.md#2-missing-representatives-in-short-lists) · [Lean proof](PruningOverlap.lean)
 
 ### Reconstructing the counts
 
@@ -37,7 +37,7 @@ Y\le Y_*-2v-2(1-1/r)O+\tau a-\tfrac{99}{400}a_1,
 \qquad Y_*=2-\tfrac{f}{2r}-\tau\tfrac{s}{r}.
 $$
 
-Lean's `overlap_pos_iff` identifies every positive duplicate. It is exactly the end at $x$ of an edge in $F$ whose other endpoint was in the deletion star of $x$. The declaration `incidence_budget` sums these charges. The normalized corollary takes the cross-edge upper bound and the forward-edge lower bound as explicit inputs. The overlap theorem itself needs neither input. The first-stage saving can vanish, so a lower cutoff would require further information about the coloring. [Graph inputs in Appendix A, §1](weighted-width.md#1-count-the-unused-part-of-the-stability-bound) · [Formal declarations](PruningOverlap.lean)
+Lean's `overlap_pos_iff` identifies every positive duplicate. It is exactly the end at $x$ of an edge in $F$ whose other endpoint was in the deletion star of $x$. The declaration `incidence_budget` sums these charges. The normalized corollary takes the cross-edge upper bound and the forward-edge lower bound as explicit inputs. The overlap theorem itself needs neither input. The first-stage saving can vanish, so a lower cutoff would require further information about the coloring. [Graph inputs in Appendix A, §1](weighted-width.md#1-the-residual-in-the-stability-inequality) · [Formal declarations](PruningOverlap.lean)
 
 ### A trace with positive overlap in both stages
 

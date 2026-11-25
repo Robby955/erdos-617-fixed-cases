@@ -6,7 +6,7 @@
 
 Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The November preprint gives an explicit cutoff of $2^{144}$ and a separate proof at twelve colors. Appendix I sharpens the cutoff to $255\cdot2^{136}$ by using the positive margins in all five width comparisons. [Corollary](cutoff/proof/retained-width-corollary.md) [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
-**[Research site](https://erdos617.com)** · **[Versioned release](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v2)** · **[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
+**[Research site](https://erdos617.com)** · **[Versioned release](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v3)** · **[Two-page overview](cutoff/overview.pdf)** · **[Full paper](cutoff/paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
 The Lean proof starts with an arbitrary coloring at the improved cutoff and produces the missing-color witness. It also proves that only finitely many orders can be counterexamples. [Theorem in Lean](cutoff/proof/BalancedColoringCutoff.lean) · [Proof and independent-kernel replay instructions](cutoff/proof/formal-cutoff.md)
 
