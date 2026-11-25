@@ -31,11 +31,21 @@ To check the Lean components, run the following from the directory containing th
 
 ```sh
 lake exe cache get
+lake env lean proof/RowExtraction.lean
 lake env lean proof/RetainedWidth.lean
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The main declarations are `Erdos617.RetainedWidth.width_for_every_pruning_pair` and `Erdos617.OrderTwelve.thirteen_vertex_witness`. Each depends only on `propext`, `Classical.choice`, and `Quot.sound`. The extraction from an arbitrary coloring, the integral estimate, and the full fixed-order reduction are in the mathematical manuscript. External mathematical review of both complete arguments is pending.
+Lean checks the choice of a row and its outgoing edge count, the five width comparisons, and the final thirteen-vertex witness. The complete extraction and pruning argument, the width integral, and the full twelve-color reduction are given in the manuscript. Both theorems await independent mathematical review.
+
+### Reading the cutoff proof
+
+1. **Start with the coloring on page 11.** Fix a color with the fewest edges and call it the target. Among the remaining vertices choose a pivot with the most nontarget neighbors. Those neighbors form the set left for later rows. The other vertices form the current row. Every vertex in the row has at most as many nontarget neighbors as the pivot. Subtract its nontarget neighbors in the later set from both sides. Its nontarget neighbors inside the row are then bounded by its target neighbors in the later set. Sum over the row. Each internal nontarget edge is counted twice and each outgoing target edge once. Lean checks this for every choice of a maximum-degree pivot. [Appendix A, §1](proof/weighted-width.md#1-count-the-unused-part-of-the-stability-bound) · [Lean proof](proof/RowExtraction.lean) · [Füredi, equation (4)](https://arxiv.org/pdf/1501.03129#page=3)
+
+   On four vertices, let the only nontarget edges be *ab* and *cd*. With pivot *a*, only *b* is left for later. The internal edge *cd* has two ends, and its two outgoing target edges are *cb* and *db*. This attains equality.
+
+2. **Follow the same edges through pruning on pages 11–12, then turn to pages 3–5.** Appendix A, §2 asks which outgoing edge incidences have already been charged to a deleted vertex. This is the first calculation to check by hand. The cutoff chapter uses those budgets to choose a single collection of rows that controls both their size deficits and their edges to other rows. Lean checks the last five numerical comparisons once the pruning parameters are supplied. [Pruning and overlap](proof/weighted-width.md#2-give-missing-representatives-to-the-short-lists) · [Cutoff chapter](proof/retained-width.md) · [Lean comparisons](proof/RetainedWidth.lean)
+3. **Read the contradiction on pages 13–16.** If *h* rows were omitted, Appendix A, §4 shows that fewer than *hr* − 3*r*/20 exterior vertices have small target degree into every retained row. Section 5 uses that shortage to derive inequality (5), which requires a nonpositive value. Concavity and the exact computation give a strictly positive value throughout the allowed interval. A referee can check how the graph forces (5) before replaying its 1,280 endpoints. [Shortage and signed cut](proof/weighted-width.md#4-a-shortage-of-at-least-3r20) · [Two uses of the cut](proof/cutoff-190.md#4-recover-the-cost-of-uniquely-assigned-senders) · [Exact replay](proof/verify_retained_width.py)
 
 ### Earlier work
 
