@@ -33,13 +33,13 @@ To check the Lean components, run the following from the directory containing th
 lake exe cache get
 lake env lean proof/RowExtraction.lean
 lake env lean proof/PruningOverlap.lean
-lake env python3 -B proof/replay_pruning_kernels.py lists --lean-only
+lake env python3 -B proof/replay_pruning_kernels.py cliques --lean-only
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The November 25 formal supplement chooses the sparsest color, constructs all the raw rows and counts their outgoing target edges. After pruning it constructs the surviving cliques and proves the deficit estimate (2) from their vertices. Starting with a legal, stopped pruning history and the raw estimates, Lean proves all three inequalities (4) on those same cliques at the working scale $255\cdot2^{136}$. The full paper also uses a construction of the pruning history and a final exterior shortage and signed-cut contradiction. These steps still need to be connected in Lean before Theorem A has an end-to-end certificate. The twelve-color proof has its own exact checks and formal final witness. [Proof on the actual lists](proof/packing-lists.md) · [Width integral](proof/width-integral.md) · [Theorem A statement](proof/CutoffStatement.lean)
+The November 25 Lean supplement starts with an arbitrary coloring of the required order. It derives equation (1), constructs both stages of pruning and proves the three width estimates (4) from the original graph. In §4, failure of the exterior shortage now forces an actual auxiliary graph with $h$ surviving target cliques of at least $21r/25$ vertices each. The remaining graph arguments are the prescribed extensions, the enlargement and capacity counts proving the shortage, and the final signed cut. The working cutoff is $255\cdot2^{136}$. The twelve-color proof has its own exact checks and formal final witness. [New formal proof and precise frontier](proof/coloring-to-exterior.md) · [End-to-end cutoff statement](proof/CutoffStatement.lean)
 
-Run `lake env python3 -B proof/replay_pruning_kernels.py lists` to replay the colored-list proof with Lean’s kernel, Lean4Lean and Nanoda. The arguments `overlap` and `width` replay the earlier exports individually. [Replay script](proof/replay_pruning_kernels.py)
+Run `lake env python3 -B proof/replay_pruning_kernels.py cliques` to check the new proof with Lean’s kernel, Lean4Lean and Nanoda. Use `coloring` or `exterior` for the earlier stages in this supplement. The arguments `overlap`, `width` and `lists` verify the previous exports. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 

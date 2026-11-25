@@ -62,13 +62,62 @@ LIST_NAMES = (
 WIDTH_MODULES = ("RetainedWidth", "WeightedWidth", "WidthEndpoint", "WidthIntegral",
                  "RowWidth", "CommonWidth")
 
+LIST_MODULES = (*WIDTH_MODULES, "CutoffStatement", "PruningOverlap", "PartialTransversal",
+                "PackingLists", "ListDeficit", "ChosenRows", "ColoringLists", "PrunedWidth",
+                "RowExtraction", "OrderedRows", "RawColorBudget", "RawColorRows")
+
+COLORING_MODULES = (*LIST_MODULES, "RawEdgeIdentity", "PivotCross", "SparseColorCount",
+                    "RawMoments", "GlobalRowBudgets", "ExteriorRowEdges", "DestinationCost",
+                    "ConstructPruning", "ColoringWidth")
+COLORING_NAMES = tuple("Erdos617.ColoredLists." + name for name in (
+    "raw_edge_identity", "pivot_cross_count", "sparse_edge_cap", "raw_stability",
+    "global_raw_budgets", "exterior_row_edges", "destination_cost_of_cross_count",
+    "exists_pruning_trace", "FirstStageStopped.live_bound", "assigned_le_omega", "witness_or_prepared",
+))
+
+EXTERIOR_MODULES = (*COLORING_MODULES, "CountingTransversal", "OrdinaryRepresentatives",
+                    "OrdinaryTrim", "AuxiliaryColoring", "GraphPartitionCount", "AuxiliaryDeficit",
+                    "AuxiliaryMoments", "ExteriorAuxiliary")
+EXTERIOR_NAMES = (
+    "Erdos617.Transversal.exists_of_row_conflicts",
+    "Erdos617.ColoredLists.sublist_conflict_bound",
+    "Erdos617.ColoredLists.retained_representatives",
+    "Erdos617.ColoredLists.exterior_independence_cap",
+    "Erdos617.ColoredLists.temporary_row_bounds",
+    "Erdos617.ColoredLists.exists_auxiliary_coloring",
+    "Erdos617.GraphPartitionCount.pivot_edge_budget",
+    "Erdos617.GraphPartitionCount.pivot_missing_budget",
+    "Erdos617.GraphPartitionCount.auxiliary_deficit",
+    "Erdos617.AuxiliaryMoments.tangent_floor",
+    "Erdos617.AuxiliaryMoments.auxiliary_square_budget",
+    "Erdos617.AuxiliaryMoments.auxiliary_normalized",
+    "Erdos617.ColoredLists.witness_or_exterior_auxiliary",
+)
+
+CLIQUE_MODULES = (*EXTERIOR_MODULES, "AuxiliaryPeeling", "SublistEdges", "AuxiliaryRowFloor",
+                  "AuxiliaryCliques")
+CLIQUE_NAMES = (
+    "Erdos617.ColoredLists.witness_or_exterior_auxiliary",
+    "Erdos617.AuxiliaryPeeling.exists_live",
+    "Erdos617.Transversal.conflicts_le_induced_cross_edges",
+    "Erdos617.AuxiliaryMoments.deficit_plus_deletions",
+    "Erdos617.AuxiliaryMoments.live_row_floor",
+    "Erdos617.ColoredLists.surviving_auxiliary_cliques",
+    "Erdos617.ColoredLists.exists_surviving_auxiliary_cliques",
+    "Erdos617.ColoredLists.auxiliary_cliques_of_failed_shortage",
+)
+
 
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "lists":
-        modules = (*WIDTH_MODULES, "CutoffStatement", "PruningOverlap", "PartialTransversal",
-                   "PackingLists", "ListDeficit", "ChosenRows", "ColoringLists", "PrunedWidth",
-                   "RowExtraction", "OrderedRows", "RawColorBudget", "RawColorRows")
+    if part == "cliques":
+        modules, names = CLIQUE_MODULES, CLIQUE_NAMES
+    elif part == "exterior":
+        modules, names = EXTERIOR_MODULES, EXTERIOR_NAMES
+    elif part == "coloring":
+        modules, names = COLORING_MODULES, COLORING_NAMES
+    elif part == "lists":
+        modules = LIST_MODULES
         names = LIST_NAMES
     elif part == "width":
         modules = WIDTH_MODULES
@@ -117,7 +166,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)
