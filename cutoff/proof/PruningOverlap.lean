@@ -328,6 +328,39 @@ theorem normalized_ordinary_bound (chosen : Finset ℕ) (kept : Finset V) (legal
     ring
   linarith only [budget, refund, crossCap, rowFloor]
 
+/-- Each source spends its quota on fresh undirected target edges. This
+charges one end in both stages and gives the pruning parameter bound. -/
+theorem source_cost (legal : T.Legal) :
+    (r:ℝ)/4*T.firstSources.card + ((199/400:ℝ)*r)*T.secondSources.card ≤
+      T.crossGraph.edgeFinset.card := by
+  have per (x y : V) : T.sourceWeight x y + T.sourceWeight y x ≤
+      if T.crossGraph.Adj x y then (1:ℝ) else 0 := by
+    by_cases a : y ∈ T.star x
+    · have b : x ∉ T.star y := fun h ↦
+        (asymm (T.mem_star.mp h).2.2.1) (T.mem_star.mp a).2.2.1
+      rw [ite_eq_left (T.mem_star.mp a).1, show T.sourceWeight y x = 0 by simp [sourceWeight,b], add_zero]
+      exact T.source_le_one x y legal
+    · rw [show T.sourceWeight x y = 0 by simp [sourceWeight,a], zero_add]
+      by_cases b : x ∈ T.star y
+      · rw [ite_eq_left (T.crossGraph.adj_symm (T.mem_star.mp b).1)]
+        exact T.source_le_one y x legal
+      · simp [sourceWeight, b]; split <;> norm_num
+  have both := Finset.sum_le_sum (s := (univ:Finset V)) fun x _ ↦
+    Finset.sum_le_sum (s := (univ:Finset V)) fun y _ ↦ per x y
+  change _ ≤ countEnds T.crossGraph.Adj at both
+  simp only [Finset.sum_add_distrib] at both
+  rw [Finset.sum_comm (f := fun x y ↦ T.sourceWeight y x), T.all_ends] at both
+  simp_rw [T.source_total _ legal] at both
+  have quotaSum (x : V) : T.quota x =
+      (if x ∈ T.firstSources then (r:ℝ)/4 else 0) +
+      (if x ∈ T.secondSources then (199/400:ℝ)*r else 0) := by
+    by_cases f : T.time x < T.firstEnd
+    · simp [quota, firstSources, secondSources, f, not_le.mpr f]
+    · simp [quota, firstSources, secondSources, f, le_of_not_gt f]
+  simp_rw [quotaSum] at both
+  simp [Finset.sum_add_distrib, mul_comm] at both
+  linarith only [both]
+
 end Trace
 end
 end Erdos617.PruningOverlap

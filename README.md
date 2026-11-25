@@ -8,7 +8,7 @@ Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ c
 
 **[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
-The November 25 Lean supplement constructs a single threshold satisfying the three row estimates in the cutoff argument. The proof can be replayed with three kernels. [Formal proof and replay guide](cutoff/proof/width-integral.md)
+The November 25 Lean supplement constructs the raw rows from a sparsest color, follows the clique lists on a given pruning history and proves that a single threshold controls their sizes and cross-row edges. The guide states precisely which steps of the cutoff theorem can be replayed with three kernels. [Proof from the colored edges](cutoff/proof/packing-lists.md)
 
 ## July fixed-case releases
 

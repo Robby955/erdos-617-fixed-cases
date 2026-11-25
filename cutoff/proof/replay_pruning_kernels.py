@@ -1,4 +1,4 @@
-"""Compile and replay the Appendix A overlap or width proof in a pinned Lake environment."""
+"""Compile and replay the Appendix A pruning and width proofs in a pinned Lake environment."""
 
 import argparse
 import hashlib
@@ -31,12 +31,47 @@ WIDTH_NAMES = (
     "Erdos617.WidthIntegral.width_from_row_counts",
 )
 
+LIST_NAMES = (
+    "Erdos617.Transversal.exists_partial",
+    "Erdos617.PackingLists.exists_packing",
+    "Erdos617.PackingLists.real_representatives",
+    "Erdos617.PackingLists.pairs_le_shortfall",
+    "Erdos617.PackingLists.count_survivors",
+    "Erdos617.PackingLists.exists_list_bounds",
+    "Erdos617.PackingLists.chosen_oversize_bound",
+    "Erdos617.PackingLists.ListBounds.count_le",
+    "Erdos617.PackingLists.omitted_ordinary",
+    "Erdos617.PruningOverlap.Trace.source_cost",
+    "Erdos617.ColoredLists.balanced_iff",
+    "Erdos617.ColoredLists.caps_of_no_witness",
+    "Erdos617.ColoredLists.witness_or_lists",
+    "Erdos617.ColoredLists.incidence_total",
+    "Erdos617.ColoredLists.pruning_rates",
+    "Erdos617.ColoredLists.witness_or_width",
+    "Erdos617.RowExtraction.exists_ordered_rows",
+    "Erdos617.ColoredLists.witness_or_raw_rows",
+    "Erdos617.ColoredLists.edge_lower_of_independence",
+    "Erdos617.ColoredLists.sum_other_colors",
+    "Erdos617.ColoredLists.other_color_floor",
+    "Erdos617.ColoredLists.unused_nonneg_of_no_witness",
+    "Erdos617.ColoredLists.forward_total",
+    "Erdos617.ColoredLists.forward_floor_of_pivots",
+    "Erdos617.ColoredLists.witness_or_width_of_pivots",
+)
+
+WIDTH_MODULES = ("RetainedWidth", "WeightedWidth", "WidthEndpoint", "WidthIntegral",
+                 "RowWidth", "CommonWidth")
+
 
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "width":
-        modules = ("RetainedWidth", "WeightedWidth", "WidthEndpoint", "WidthIntegral",
-                   "RowWidth", "CommonWidth")
+    if part == "lists":
+        modules = (*WIDTH_MODULES, "CutoffStatement", "PruningOverlap", "PartialTransversal",
+                   "PackingLists", "ListDeficit", "ChosenRows", "ColoringLists", "PrunedWidth",
+                   "RowExtraction", "OrderedRows", "RawColorBudget", "RawColorRows")
+        names = LIST_NAMES
+    elif part == "width":
+        modules = WIDTH_MODULES
         names = WIDTH_NAMES
     else:
         modules = ("PruningOverlap",)
@@ -82,7 +117,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)
