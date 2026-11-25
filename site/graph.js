@@ -1,15 +1,16 @@
 const canvas = document.getElementById("graph");
-const ctx = canvas.getContext("2d");
+const context = canvas.getContext("2d");
 const caption = document.getElementById("caption");
-const buttons = [...document.querySelectorAll("[data-mode]")];
-const points = Array.from({length: 9}, (_, i) => [92 + (i % 3) * 120, 70 + Math.floor(i / 3) * 130]);
-points.push([475, 240]);
-const tones = ["#a34b32", "#235a4c", "#6268a0"];
+const controls = document.querySelectorAll("[data-mode]");
+
+const width = 480;
+const height = 294;
+const palette = ["#be572d", "#137d6a", "#2956ad"];
 const witness = new Set([0, 4, 8, 9]);
-const descriptions = {
-  grid: "In this three-color example, every four of the nine grid points see all three colors.",
-  ten: "The tenth vertex joins all nine grid points by violet edges. This gives one explicit coloring of the complete graph on ten vertices.",
-  witness: "The four highlighted vertices span six violet edges. Both green and rust are missing."
+const captions = {
+  grid: "Every four of these nine vertices span all three colors.",
+  ten: "Join J to the nine original points in blue. Can you find four vertices joined only by blue edges?",
+  witness: "A, E, I and J span six blue edges. Both green and orange are missing."
 };
 
 function edgeColor(i, j) {
@@ -20,47 +21,66 @@ function edgeColor(i, j) {
 }
 
 function draw(mode) {
-  const n = mode === "grid" ? 9 : 10;
+  const gridOnly = mode === "grid";
+  const highlight = mode === "witness";
+  const points = Array.from({length: 9}, (_, i) => [
+    (gridOnly ? 127 : 55) + (i % 3) * 113,
+    41 + Math.floor(i / 3) * 106
+  ]);
+  if (!gridOnly) points.push([418, 150]);
+
   const ratio = Math.max(1, window.devicePixelRatio || 1);
-  canvas.width = Math.round(560 * ratio);
-  canvas.height = Math.round(420 * ratio);
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  const selected = mode === "witness";
-  for (let pass = 0; pass < (selected ? 2 : 1); pass++) {
-    for (let i = 0; i < n; i++) {
-      for (let j = i + 1; j < n; j++) {
-        const chosen = selected && witness.has(i) && witness.has(j);
-        if (selected && Number(chosen) !== pass) continue;
+  canvas.width = Math.round(width * ratio);
+  canvas.height = Math.round(height * ratio);
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  // Draw the six witness edges last so the rest of the graph cannot obscure them.
+  for (const foreground of highlight ? [false, true] : [false]) {
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const chosen = highlight && witness.has(i) && witness.has(j);
+        if (chosen !== foreground) continue;
         const [x, y] = points[i];
         const [u, v] = points[j];
-        ctx.strokeStyle = tones[edgeColor(i, j)];
-        ctx.globalAlpha = selected ? (chosen ? 0.95 : 0.09) : (j === 9 ? 0.74 : 0.53);
-        ctx.lineWidth = chosen ? 3 : 1.5;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        // Bow long edges slightly so a third grid point never hides the connection.
-        const bend = Math.hypot(u - x, v - y) > 205 ? 0.065 : 0;
-        ctx.quadraticCurveTo((x + u) / 2 - bend * (v - y), (y + v) / 2 + bend * (u - x), u, v);
-        ctx.stroke();
+        const color = edgeColor(i, j);
+        context.strokeStyle = palette[color];
+        context.globalAlpha = highlight ? (chosen ? 1 : 0.12) : 0.77;
+        context.lineWidth = chosen ? 3.3 : 1.6;
+        context.beginPath();
+        context.moveTo(x, y);
+        // A long edge must remain visible when it passes a third vertex.
+        const bend = Math.hypot(u - x, v - y) > 188 ? 0.09 : 0;
+        context.quadraticCurveTo((x + u) / 2 - bend * (v - y),
+                                 (y + v) / 2 + bend * (u - x), u, v);
+        context.stroke();
       }
     }
   }
-  for (let i = 0; i < n; i++) {
-    const [x, y] = points[i];
-    const chosen = selected && witness.has(i);
-    ctx.globalAlpha = selected && !chosen ? 0.35 : 1;
-    ctx.beginPath();
-    ctx.arc(x, y, chosen || i === 9 ? 9 : 6, 0, Math.PI * 2);
-    ctx.fillStyle = chosen ? tones[2] : "#242821";
-    ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "#f6f4e9";
-    ctx.stroke();
+  points.forEach(([x, y], i) => {
+    const chosen = highlight && witness.has(i);
+    context.globalAlpha = highlight && !chosen ? 0.44 : 1;
+    context.beginPath();
+    context.arc(x, y, chosen ? 6.7 : 5.5, 0, 2 * Math.PI);
+    context.fillStyle = chosen ? palette[2] : "#172328";
+    context.fill();
+    context.strokeStyle = "#fff";
+    context.lineWidth = 1.6;
+    context.stroke();
+    const letter = String.fromCharCode(65 + i);
+    context.font = '550 15px "Instrument Sans", Arial, sans-serif';
+    context.lineWidth = 4;
+    context.strokeText(letter, x + 8, y - 9);
+    context.fillText(letter, x + 8, y - 9);
+  });
+  context.globalAlpha = 1;
+  caption.textContent = captions[mode];
+  canvas.setAttribute("aria-label", captions[mode]);
+  for (const button of controls) {
+    button.setAttribute("aria-pressed", String(button.dataset.mode === mode));
   }
-  ctx.globalAlpha = 1;
-  caption.textContent = descriptions[mode];
-  canvas.setAttribute("aria-label", descriptions[mode]);
-  buttons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.mode === mode)));
 }
-buttons.forEach(button => button.addEventListener("click", () => draw(button.dataset.mode)));
+
+for (const button of controls) {
+  button.addEventListener("click", () => draw(button.dataset.mode));
+}
 draw("grid");
+document.fonts.ready.then(() => draw(document.querySelector('[data-mode][aria-pressed="true"]').dataset.mode));
