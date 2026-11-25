@@ -1,4 +1,4 @@
-"""Compile and replay the Appendix A pruning and width proofs in a pinned Lake environment."""
+"""Compile and replay the Appendix A graph and width proofs in a pinned Lake environment."""
 
 import argparse
 import hashlib
@@ -107,10 +107,68 @@ CLIQUE_NAMES = (
     "Erdos617.ColoredLists.auxiliary_cliques_of_failed_shortage",
 )
 
+ENLARGEMENT_MODULES = (*CLIQUE_MODULES, "PrescribedProducts", "EdgeProductTransversal",
+                       "PrescribedListCounts", "AuxiliaryExtension", "OrdinaryExtension",
+                       "ColoredAuxiliaryExtension", "PrescribedCompletion", "UniqueAttachment",
+                       "AttachmentArena", "OmittedRepresentatives", "ColoredAttachment",
+                       "ColoringEnlargement")
+ENLARGEMENT_NAMES = (
+    "Erdos617.Transversal.exists_of_edge_products",
+    "Erdos617.PrescribedProducts.two_exterior_product",
+    "Erdos617.PrescribedProducts.one_exterior_product",
+    "Erdos617.PrescribedLists.auxiliary_representatives",
+    "Erdos617.ColoredLists.colored_auxiliary_representatives",
+    "Erdos617.ColoredLists.extend_prescribed_ordinary",
+    "Erdos617.ColoredLists.complete_prescribed_rows",
+    "Erdos617.UniqueAttachment.two_row_rectangle",
+    "Erdos617.UniqueAttachment.enlarged_deficit_sum",
+    "Erdos617.ColoredLists.actual_can_extend",
+    "Erdos617.ColoredLists.witness_or_shortage_or_enlargement",
+)
+
+SHORTAGE_MODULES = (*ENLARGEMENT_MODULES, "AuxiliaryDeficitCaps", "TaggedDeficitCaps",
+                    "CliqueArrivalPrice", "MultipleArrivalPrice", "ArrivalSummation",
+                    "SenderPayment", "ExteriorShortage")
+SHORTAGE_NAMES = (
+    "Erdos617.ColoredLists.clique_arrival_capacity",
+    "Erdos617.ColoredLists.clique_pair_capacity",
+    "Erdos617.AuxiliaryMoments.peeled_deficit_cap",
+    "Erdos617.ColoredLists.tagged_deficit_cap",
+    "Erdos617.ColoredLists.clique_arrival_price_in_edges",
+    "Erdos617.ColoredLists.two_large_row_price",
+    "Erdos617.ColoredLists.three_large_rows_price",
+    "Erdos617.ColoredLists.arrival_sum_contradiction",
+    "Erdos617.ColoredLists.priced_arena_impossible",
+    "Erdos617.ColoredLists.excludes_enlarged_rows",
+    "Erdos617.ColoredLists.witness_or_exterior_shortage",
+)
+
+SENDER_MODULES = (*SHORTAGE_MODULES, "StrongRowCharge", "SenderDestinations",
+                  "HeavyRowSenders", "SenderPopulation", "SenderRetry", "RetainedSenders")
+SENDER_NAMES = (
+    "Erdos617.ColoredLists.witness_or_exterior_shortage",
+    "Erdos617.ColoredLists.mem_senderSet",
+    "Erdos617.ColoredLists.sender_ledger",
+    "Erdos617.ColoredLists.retained_heavy_senders",
+    "Erdos617.ColoredLists.retained_row_charge",
+    "Erdos617.ColoredLists.distinct_sender_shortfall",
+    "Erdos617.SenderRetry.mass_one",
+    "Erdos617.SenderRetry.mass_nonnegative",
+    "Erdos617.SenderRetry.success_probability",
+    "Erdos617.SenderRetry.output_atom",
+    "Erdos617.ColoredLists.retained_retry_surplus",
+)
+
 
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "cliques":
+    if part == "senders":
+        modules, names = SENDER_MODULES, SENDER_NAMES
+    elif part == "shortage":
+        modules, names = SHORTAGE_MODULES, SHORTAGE_NAMES
+    elif part == "enlargement":
+        modules, names = ENLARGEMENT_MODULES, ENLARGEMENT_NAMES
+    elif part == "cliques":
         modules, names = CLIQUE_MODULES, CLIQUE_NAMES
     elif part == "exterior":
         modules, names = EXTERIOR_MODULES, EXTERIOR_NAMES
@@ -166,7 +224,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)

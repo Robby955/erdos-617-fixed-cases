@@ -57,7 +57,7 @@ Even if every deletion occurred in that row, at least $21r/25$ of its vertices s
 
 Suppose two vertices of a surviving auxiliary row were nonadjacent. In every other row they would together exclude at most $2(43/200)r$ vertices, leaving at least $41r/100$ common nonneighbors. Each such row has at most $X_a$ conflicting pairs with the other rows. The inequality $4X_a<(2r/5)^2$ lets us choose one independent representative from each of them. Together with the two original vertices, that gives $h+1$ independent auxiliary vertices, contradicting the proved cap of $h$. All $h$ surviving rows are therefore cliques in the original target color. [Conflict pairs counted on unordered edges](SublistEdges.lean) · [Clique construction on the chosen auxiliary set](AuxiliaryCliques.lean)
 
-The next step in §4 involves prescribed exterior vertices. Two independent exterior vertices, or one exterior vertex with up to two compatible representatives, have to extend across the other unfilled rows under the paper’s attachment thresholds. The row-enlargement and capacity counts then give the contradiction proving the shortage. Section 5 still needs the graph argument that implies its signed inequality (5). The numerical test of the endpoints is available separately. [Manuscript after the clique construction](weighted-width.md#4-a-shortage-of-at-least-3r20) · [Endpoint checker](verify_retained_width.py)
+The subsequent supplement proves the prescribed extensions, enlarges the cliques and sums the capacity inequalities to obtain the strict shortage. In §5 the graph derivation of the final signed inequality (5) remains open in Lean. [Strict shortage proof and verification](exterior-shortage.md) · [Final cut in the manuscript](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut)
 
 ## Replaying the proof
 
@@ -73,7 +73,7 @@ The final command verifies the auxiliary clique construction and the theorem fro
 
 ### Verification record, 25 November 2026
 
-The three replays accepted the exports below. Each named theorem uses only `propext`, `Classical.choice` and `Quot.sound`. Declaration totals include imported dependencies.
+The three replays at local revision `58d9efc` accepted the exports below. Each named theorem uses only `propext`, `Classical.choice` and `Quot.sound`. Declaration totals include imported dependencies.
 
 | Replay | Named theorems | Declarations | Export SHA-256 |
 | --- | ---: | ---: | --- |

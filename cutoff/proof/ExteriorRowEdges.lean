@@ -63,10 +63,10 @@ private theorem signed_floor (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
 /-- Target edges from Z into A spend the unused nontarget allowance of A.
 All vertices of Z are outside A. The argument also applies to an empty Z
 or a row smaller than r. -/
-private theorem adjoining_bound (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
+private theorem adjoining_bound_counted (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
     (j : Fin r) (A Z : Finset V) (hr : 2 ≤ r) (no : ¬Witness color) (dis : Disjoint A Z) :
     ends (targetGraph color j) Z A ≤ ends (targetGraph color j)ᶜ A A / 2 -
-      ((r:ℝ)-1)*((A.card:ℝ)-r)+(1+(A.card:ℝ)-r)*(Z.card:ℝ)+(Z.card:ℝ)*((Z.card:ℝ)-1)/2 := by
+      ((r:ℝ)-1)*((A.card:ℝ)-r)+(1+(A.card:ℝ)-r)*(Z.card:ℝ)+ends (targetGraph color j)ᶜ Z Z/2 := by
   let G := targetGraph color j
   have lower := signed_floor color j (A ∪ Z) hr no
   rw [card_union_of_disjoint dis, Nat.cast_add] at lower
@@ -78,11 +78,60 @@ private theorem adjoining_bound (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
     calc _ = ends Gᶜ A A + ends Gᶜ A Z + (ends Gᶜ Z A + ends Gᶜ Z Z) := by
            simp only [ends, Finset.sum_union dis,sum_add_distrib]
          _ = _ := by rw [ends_symm Gᶜ A Z]; ring
-  have cap := ends_le_distinct Gᶜ Z
   have cross := off_row G A Z dis
   change ((r:ℝ)-1)*((A.card:ℝ)+Z.card-r) ≤ (Gᶜ.induce ((A ∪ Z:Finset V):Set V)).edgeFinset.card at lower
   change ends G Z A ≤ ends Gᶜ A A / 2 - _ + _ + _
-  linarith only [lower,count,split,cap,cross]
+  linarith only [lower,count,split,cross]
+
+private theorem adjoining_bound (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
+    (j : Fin r) (A Z : Finset V) (hr : 2 ≤ r) (no : ¬Witness color) (dis : Disjoint A Z) :
+    ends (targetGraph color j) Z A ≤ ends (targetGraph color j)ᶜ A A / 2 -
+      ((r:ℝ)-1)*((A.card:ℝ)-r)+(1+(A.card:ℝ)-r)*(Z.card:ℝ)+(Z.card:ℝ)*((Z.card:ℝ)-1)/2 := by
+  linarith only [adjoining_bound_counted color j A Z hr no dis,
+    ends_le_distinct (targetGraph color j)ᶜ Z]
+
+private theorem clique_missing_zero (G : SimpleGraph V) (A : Finset V)
+    (cl : G.IsClique (A:Set V)) : ends Gᶜ A A = 0 := by
+  apply sum_eq_zero
+  intro x hx
+  apply sum_eq_zero
+  intro y hy
+  apply ite_eq_right
+  rintro ⟨ne,non⟩
+  exact non (cl hx hy ne)
+
+/-- One-clique capacity for any set of exterior arrivals, including an
+empty set. The deficit is counted once for every arrival. -/
+theorem clique_arrival_capacity (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
+    (j : Fin r) (C Z : Finset V) (hr : 2 ≤ r) (no : ¬Witness color)
+    (dis : Disjoint C Z) (cl : (targetGraph color j).IsClique (C:Set V)) :
+    let d := (r:ℝ)-C.card
+    (∑ x ∈ Z, ((C.filter ((targetGraph color j).Adj x)).card:ℝ)) + (Z.card:ℝ)*d ≤
+      ((r:ℝ)-1)*d + (Z.card:ℝ)*((Z.card:ℝ)+1)/2 := by
+  dsimp only
+  have bound := adjoining_bound color j C Z hr no dis
+  rw [clique_missing_zero _ _ cl] at bound
+  have degree : ends (targetGraph color j) Z C =
+      ∑ x ∈ Z, ((C.filter ((targetGraph color j).Adj x)).card:ℝ) := by simp [ends]
+  rw [degree] at bound
+  linarith only [bound]
+
+/-- Two disjoint target cliques with vertex deficits d and e have at most
+r−d−e+de target edges between them. Each actual edge is counted once. -/
+theorem clique_pair_capacity (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
+    (j : Fin r) (C D : Finset V) (hr : 2 ≤ r) (no : ¬Witness color)
+    (dis : Disjoint C D) (cl : (targetGraph color j).IsClique (C:Set V))
+    (cl' : (targetGraph color j).IsClique (D:Set V)) :
+    let d := (r:ℝ)-C.card
+    let e := (r:ℝ)-D.card
+    (∑ x ∈ D, ((C.filter ((targetGraph color j).Adj x)).card:ℝ)) ≤ (r:ℝ)-d-e+d*e := by
+  dsimp only
+  have bound := adjoining_bound_counted color j C D hr no dis
+  rw [clique_missing_zero _ _ cl,clique_missing_zero _ _ cl'] at bound
+  have degree : ends (targetGraph color j) D C =
+      ∑ x ∈ D, ((C.filter ((targetGraph color j).Adj x)).card:ℝ) := by simp [ends]
+  rw [degree] at bound
+  linarith only [bound]
 
 /-- The ordered-star count in the original coloring of a destination row
 and an arbitrary set of exterior vertices. -/

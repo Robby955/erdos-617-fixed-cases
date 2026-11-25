@@ -33,13 +33,13 @@ To check the Lean components, run the following from the directory containing th
 lake exe cache get
 lake env lean proof/RowExtraction.lean
 lake env lean proof/PruningOverlap.lean
-lake env python3 -B proof/replay_pruning_kernels.py cliques --lean-only
+lake env python3 -B proof/replay_pruning_kernels.py shortage --lean-only
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The November 25 Lean supplement starts with an arbitrary coloring of the required order. It derives equation (1), constructs both stages of pruning and proves the three width estimates (4) from the original graph. In §4, failure of the exterior shortage now forces an actual auxiliary graph with $h$ surviving target cliques of at least $21r/25$ vertices each. The remaining graph arguments are the prescribed extensions, the enlargement and capacity counts proving the shortage, and the final signed cut. The working cutoff is $255\cdot2^{136}$. The twelve-color proof has its own exact checks and formal final witness. [New formal proof and precise frontier](proof/coloring-to-exterior.md) · [End-to-end cutoff statement](proof/CutoffStatement.lean)
+The November 25 Lean supplement now covers Appendix A through the strict exterior shortage in §4 at the working cutoff $255\cdot2^{136}$. From an arbitrary coloring, it either finds a missing-color witness or constructs the row selection and proves $hr-|G|>3r/20$ for the exterior set in §5. The Lean sources also give the original sender counts and the trial law for one sender. The remaining graph argument uses the joint marked sample, its conflict repair and the final signed cut. The twelve-color proof has its own exact checks and formal final witness. [Exterior shortage and proof frontier](proof/exterior-shortage.md) · [End-to-end cutoff statement](proof/CutoffStatement.lean)
 
-Run `lake env python3 -B proof/replay_pruning_kernels.py cliques` to check the new proof with Lean’s kernel, Lean4Lean and Nanoda. Use `coloring` or `exterior` for the earlier stages in this supplement. The arguments `overlap`, `width` and `lists` verify the previous exports. [Replay script](proof/replay_pruning_kernels.py)
+Run `lake env python3 -B proof/replay_pruning_kernels.py shortage` to check the §4 theorem with Lean’s kernel, Lean4Lean and Nanoda. Use `enlargement` for the extension and clique-enlargement argument, or `senders` for the initial §5 results. The earlier exports can be replayed from the revisions specified in their supplements. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 

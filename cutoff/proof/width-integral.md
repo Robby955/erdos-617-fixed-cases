@@ -41,7 +41,7 @@ At the successful level let $s=m+\#\{i:a_i>t\}$ and $w=st/m$. The two individual
 
 ## What the coloring still has to supply
 
-The row theorem takes a pruning domain, a row count and two aggregate counts. A subsequent formalization constructs the ordinary lists from the original coloring and a stopped pruning history. It proves $q\le W$, equation (2) and the bound of 1,411 on short and chosen rows, then applies the integral to the actual lists. The subsequent graph proof constructs the two-stage pruning history and verifies the raw estimates on a sparsest color, then carries (4) through the construction of the auxiliary cliques in §4. [Proof and remaining steps](coloring-to-exterior.md)
+The row theorem takes a pruning domain, a row count and two aggregate counts. A subsequent formalization constructs the ordinary lists from the original coloring and a stopped pruning history. It proves $q\le W$, equation (2) and the bound of 1,411 on short and chosen rows, then applies the integral to the actual lists. The subsequent graph proof constructs the two-stage pruning history and verifies the raw estimates on a sparsest color, then carries (4) through the construction of the auxiliary cliques in §4. [Actual auxiliary cliques](coloring-to-exterior.md) · [Strict shortage and the remaining signed cut](exterior-shortage.md)
 
 From the cutoff directory, run this command to compile the component and check the same exported proof with Lean’s kernel, Lean4Lean and Nanoda. The script also prints the axioms of the named declarations and the SHA‑256 digest of the export. Add `--lean-only` to compile the sources and print their axioms without the independent replays.
 
