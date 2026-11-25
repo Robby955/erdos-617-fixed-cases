@@ -32,4 +32,8 @@ The Python check covers 1,280 signed-cut endpoints. It reports a reduced width m
 - **Lower the cutoff.** Read `proof/retained-width-corollary.md`, `proof/retained-width.md` and `proof/verify_retained_width.py`. At `2^143` the first-band sufficient comparison has margin at most −0.17125 at an allowed boundary point. Excluding that point using the original coloring, or improving the comparison there, would address a specific obstruction. The failed inequality supplies no counterexample.
 - **Close the finite range.** The first remaining order on these manuscripts is thirteen. An argument uniform in the number of remaining rows could resolve many orders at once. At each step reconstruct the claimed edges on the same global coloring. Counts on unrelated hypothetical row systems need not be compatible.
 
+## Report a smaller cutoff
+
+[Open a GitHub issue](https://github.com/Robby955/erdos-617-fixed-cases/issues/new?title=Proposed+cutoff) with the exact proposed cutoff, the lemma or inequality that changes, and a proof or replay command at a specific commit. Credit the people and tools that found the improvement. An issue records a proposal. The dated releases record verified bounds and preserve the earlier proofs.
+
 The November GitHub edition credits Robert Sneiderman and OpenAI GPT-6.2 Astra. Lean proves the large-color theorem from the original coloring. Independent mathematical review of the manuscript is pending.
