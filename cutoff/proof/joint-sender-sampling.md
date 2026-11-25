@@ -1,6 +1,6 @@
 # From the marked senders to the tested cut
 
-Robert Sneiderman and OpenAI GPT‑6.2 Astra · GitHub proof supplement · 25 November 2026
+Robert Sneiderman and OpenAI GPT‑6.2 Astra · 25 November 2026
 
 Suppose an $r$-coloring of $K_{r^2+1}$ has every color on every $r+1$ vertices. At $r\ge255\cdot2^{136}$ the earlier Lean proof selects a sparsest color $J$, disjoint cliques $C_i$ of that color and a scale $s$. Write $h=s-1$ for the number of omitted rows. The exterior set $L$ consists of vertices with at most $\rho r$ neighbors of color $J$ in every retained row, where $\rho=9/(40s)$. Its shortage is $\Delta=hr-|L|>3r/20$. The following results concern those same cliques and vertices. [Entry from any coloring](ColoringSample.lean) · [The shortage](exterior-shortage.md)
 

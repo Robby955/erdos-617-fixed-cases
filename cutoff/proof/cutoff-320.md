@@ -1,6 +1,6 @@
 # A cutoff of $2^{320}$ for the balanced coloring conjecture
 
-Robert Sneiderman research project · Private proof supplement · 22 November 2026
+Robert Sneiderman’s research notes · 22 November 2026
 
 **Theorem.** For every integer $r\ge 2^{320}$, every $r$-edge-coloring of $K_{r^2+1}$ has $r+1$ vertices whose induced edges omit a color.
 

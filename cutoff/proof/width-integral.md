@@ -1,6 +1,6 @@
 # One threshold for the three row bounds
 
-Robert Sneiderman and OpenAI GPT‑6.2 Astra · GitHub proof supplement · 25 November 2026
+Robert Sneiderman and OpenAI GPT‑6.2 Astra · 25 November 2026
 
 Appendix A, §3 needs one choice of rows for three different estimates. The Lean theorem starts with a finite family of ordinary rows, the raw parts’ individual pruning charges, the deficit count from (2) after the chosen parts are bounded by $O-a+q/256$, and the corrected incidence count. It returns a threshold, the retained rows, an integer $s$ and a weight $w$. Every retained row satisfies the incidence and deficit bounds, and the sum of their squared deficits satisfies the third bound. It also proves that exactly $s-1$ slots were omitted and that $2^b s^4$ lies below the cutoff. [Statement at the paper’s cutoff](CommonWidth.lean) · [The three inequalities](RowWidth.lean) · [Manuscript, equation (4)](weighted-width.md#3-integrate-both-endpoints-of-the-width-test)
 

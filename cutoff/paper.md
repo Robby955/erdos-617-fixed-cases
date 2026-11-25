@@ -1,7 +1,7 @@
 ---
 title: An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture
 author: Robert Sneiderman and OpenAI GPT-6.2 Astra
-date: GitHub edition · 25 November 2026
+date: 25 November 2026
 ---
 
 **Abstract.** Every $r$-coloring of the edges of $K_{r^2+1}$ contains $r+1$ vertices missing a color whenever $r\ge 255\cdot 2^{136}$. We prove this by counting the edges that can prevent an independent choice across monochromatic cliques. Lean verifies the result from the original coloring. A separate proof at $r=12$, together with the fixed cases through eleven, leaves only $13\le r<255\cdot 2^{136}$ as possible exceptions.
@@ -16,9 +16,9 @@ Suppose every $r+1$ vertices see all colors. A stability theorem puts most edges
 
 **Theorem B.** In every twelve-coloring of the edges of $K_{145}$, some thirteen vertices miss a color.
 
-Here the difficult case has 61 vertices and a budget of 408 edges of the chosen color. In the last possible configuration there are five cliques of eleven vertices each. Each of the six vertices outside them must join all but at most four points of some clique in the chosen color. Two of the six must use the same clique. On those thirteen vertices at most $4+4+1=9$ edges are available for the eleven other colors. This raises the 61-vertex edge floor to 409. Two further bounds, on 47 and 59 vertices, exclude the other possible stops in the reduction.
+In the difficult case, a set of 61 vertices would span at most 408 edges of the chosen color. In the last possible configuration there are five cliques of eleven vertices each. Each of the six vertices outside them must join all but at most four points of some clique in the chosen color. Two of the six must use the same clique. On those thirteen vertices at most $4+4+1=9$ edges are available for the eleven other colors. Thus the 61 vertices span at least 409 edges of the chosen color. Two further bounds, on 47 and 59 vertices, exclude the other possible stops in the reduction.
 
-![One possible placement of the four misses from each exterior vertex.](figures/row-collision.png)
+![Hollow circles mark the four edges from each exterior vertex that can have another color.](figures/row-collision.png)
 
 <!-- pagebreak -->
 
@@ -29,11 +29,11 @@ Here the difficult case has 61 vertices and a budget of 408 edges of the chosen 
 | $3,4$ | Erdős and Gyárfás proved both cases in their 1999 paper. [Original paper](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf) |
 | $5,6,7,8,9$ | Robert Sneiderman released the proofs for five through eight on 20 July 2026 and for nine on 21 July. The proofs at five and six are graph-theoretic. The others use finite certificates. [Five through eight](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20) · [Nine](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21) |
 | $10,11$ | Terpstra Research publicly released computer-assisted proofs in August 2026. This project later obtained separate arguments for both orders. [August release](https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.1) · [Ten, Theorem 21](proof/overfull-core.md#12-order-ten) · [Eleven](proof/midpoint-row-excess.md) |
-| $12$ | Theorem B in this manuscript. The local edge bounds and the final reduction have two separately written integer replays. [Lower-bound calculation](proof/verify_order_twelve.py) · [Capacity calculation](proof/replay_order_twelve.py) |
+| $12$ | Theorem B in this manuscript. The local edge bounds and the final reduction have two independent integer calculations. [Lower-bound calculation](proof/verify_order_twelve.py) · [Capacity calculation](proof/replay_order_twelve.py) |
 
 Sneiderman publicly posted his five-color proof claim on 18 July. Ramazan Kara credits that proof as the mathematical basis of his Lean and certificate verification. Conner Silverstein and Anthony Rose gave separate computer-assisted arguments, as did Hai Xia and Stefan Szeider in October. [July 18 claim](https://www.erdosproblems.com/forum/thread/617/proof-claims#proof-claim-83) · [Kara's verification](https://github.com/RamazanKara/erdos-617-r5-formal-verification) · [Silverstein](https://github.com/Sprite143/erdos617-r5-computer-proof) · [Rose](https://github.com/arose-logos/erdos-gyarfas-r5/blob/main/paper/erdos617_paper.md) · [Xia and Szeider](https://arxiv.org/abs/2610.24484)
 
-**What Lean checks.** Given any coloring at $r\ge 255\cdot2^{136}$, Lean proves that a set of $r+1$ vertices misses a color. Three kernels accepted the same proof export. At twelve colors, Lean verifies the final thirteen-vertex witness. The written argument and two integer replays establish the hypotheses for that witness. Independent mathematical review is pending. [Cutoff proof and replay](proof/formal-cutoff.md) · [Twelve-color witness](proof/OrderTwelveCollision.lean)
+**What Lean checks.** Given any coloring at $r\ge 255\cdot2^{136}$, Lean proves that a set of $r+1$ vertices misses a color. Three kernels accepted the same proof export. At twelve colors, Lean verifies the final thirteen-vertex witness. The written argument and two integer calculations establish the hypotheses for that witness. Independent mathematical review is pending. [Cutoff proof and replay](proof/formal-cutoff.md) · [Twelve-color witness](proof/OrderTwelveCollision.lean)
 
 **Contributions.** Robert Sneiderman directed the research and handles correspondence. OpenAI GPT-6.2 Astra, the AI model used in Codex, contributed to proof search, calculations, Lean proofs and drafting. Fable contributed fixed-row arguments and checked earlier steps. The July releases document the tools used for those earlier results. [July disclosure](https://github.com/Robby955/erdos-617-fixed-cases/blob/fb628c8cf5ea7173c245c9542b69d72c11cce4a4/AI_DISCLOSURE.md)
 

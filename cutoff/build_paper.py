@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PROOF = ROOT / "proof"
 REPOSITORY = "https://github.com/Robby955/erdos-617-fixed-cases"
-RELEASE_TAG = "cutoff-2026-11-25"
+RELEASE_TAG = "cutoff-2026-11-25-v2"
 CHAPTERS = [
     ("retained-width", "The cutoff at $2^{144}$", None),
     ("order-twelve", "The twelve-color theorem", None),
@@ -62,7 +62,7 @@ def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> s
             return f"[{label}](#retained-width)"
         # A PDF file link can open adjacent source files when the package is downloaded.
         relative = path.relative_to(ROOT)
-        if target.name.startswith("github-"):
+        if target.name.startswith("github-") or target.name == "retained-width-corollary.pdf":
             suffix = f"#{fragment}" if fragment else ""
             return f"[{label}]({REPOSITORY}/blob/{RELEASE_TAG}/cutoff/{relative.as_posix()}{suffix})"
         name = relative.as_posix() if target.parent == ROOT else Path(filename).name
@@ -72,15 +72,24 @@ def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> s
 
 def build(kind: str, edition: str = "review") -> None:
     target = {"paper": ROOT / "paper.pdf", "overview": ROOT / "overview.pdf",
-              "twelve": PROOF / "order-twelve.pdf"}[kind]
+              "twelve": PROOF / "order-twelve.pdf",
+              "corollary": PROOF / "retained-width-corollary.pdf"}[kind]
     metadata = []
-    if edition == "github":
+    if edition == "github" and kind != "corollary":
         target = target.with_name("github-" + target.name)
         metadata = ["-M", "author=Robert Sneiderman and OpenAI GPT-6.2 Astra",
-                    "-M", f"date=GitHub edition · {24 if kind == 'twelve' else 25} November 2026"]
+                    "-M", f"date={24 if kind == 'twelve' else 25} November 2026"]
     manuscript = "paper.md" if edition == "github" else "paper-review.md"
     front = (ROOT / manuscript).read_text().replace("<!-- pagebreak -->", r"\newpage")
-    if kind == "twelve":
+    if kind == "corollary":
+        title = "A sharper cutoff for the Erdős–Gyárfás balanced-coloring conjecture"
+        front = (f"---\ntitle: {title}\nauthor: Robert Sneiderman and OpenAI GPT-6.2 Astra\n"
+                 "date: 25 November 2026\n---\n\n")
+        statement = (PROOF / "retained-width-corollary.md").read_text().split("\n", 1)[1]
+        width = chapter_text("retained-width", "The width estimate at $2^{144}$", None)
+        anchors = set(re.findall(r"\{#([\w-]+)\}", width))
+        front += prepare_links(statement + width, PROOF, target, anchors)
+    elif kind == "twelve":
         text = (PROOF / "order-twelve.md").read_text()
         title = "The twelve-color case of the Erdős–Gyárfás balanced-coloring conjecture"
         front = f"---\ntitle: {title}\nauthor: Robert Sneiderman\ndate: 24 November 2026\n---\n\n"
@@ -132,7 +141,7 @@ def build(kind: str, edition: str = "review") -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("target", choices=("paper", "overview", "twelve"))
+    parser.add_argument("target", choices=("paper", "overview", "twelve", "corollary"))
     parser.add_argument("--edition", choices=("review", "github"), default="review")
     args = parser.parse_args()
     build(args.target, args.edition)

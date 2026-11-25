@@ -25,7 +25,7 @@
           <p class="byline">Robert Sneiderman and OpenAI GPT-6.2 Astra</p>
           <p class="abstract">Color every edge of a complete graph on <span class="math"><i>r</i>² + 1</span> vertices with <i>r</i> colors. Erdős and Gyárfás asked whether some <span class="math"><i>r</i> + 1</span> vertices must miss a color.</p>
           <p class="result">We prove this for every <span class="math"><i>r</i> ≥ 255 · 2<sup>136</sup></span>. The proof is formalized in Lean.</p>
-          <div class="reading"><a class="paper-link" href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/paper.pdf">Read the paper <span>PDF</span></a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25/cutoff/proof/BalancedColoringCutoff.lean#L53-L57">Lean theorem</a></div>
+          <div class="reading"><a class="paper-link" href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/paper.pdf">Read the paper <span>PDF</span></a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v2/cutoff/proof/BalancedColoringCutoff.lean#L53-L57">Lean theorem</a></div>
         </div>
         <figure aria-labelledby="figure-title">
           <h2 id="figure-title">Why one extra vertex matters</h2>
@@ -44,11 +44,11 @@
           <p>Suppose every set of <span class="math"><i>r</i> + 1</span> vertices sees every color. Choose the color with the fewest edges. Most of its edges lie in rows, and inside those rows we find cliques. We try to choose one vertex from each clique, then add enough outside vertices to reach <span class="math"><i>r</i> + 1</span>. Each blocked choice costs edges. At large orders those costs exceed the number available.</p>
           <p>Theorem A gives the simpler bound <span class="math"><i>r</i> ≥ 2<sup>144</sup></span>. Appendix I sharpens it by a factor of 255/256 and follows the final contradiction into Lean. Lean, Lean4Lean and Nanoda accepted the same proof export. Independent mathematical review of the paper is pending.</p>
           <ul class="resources">
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/overview.pdf">Two-page overview</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25/cutoff/proof/formal-cutoff.md">Lean proof guide</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/kernel-replay.txt">Kernel replay log</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/lean-and-paper.zip">Source archive</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/corollary.pdf">Sharper bound</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/overview.pdf">Two-page overview</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v2/cutoff/proof/formal-cutoff.md">Lean proof guide</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/kernel-replay.txt">Kernel replay log</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/lean-and-paper.zip">Source archive</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/corollary.pdf">Sharper bound</a></li>
           </ul>
         </div>
       </section>
@@ -67,11 +67,11 @@
         <dt>20–21 July 2026</dt><dd>I released my proof manuscripts for five through eight colors on July 20 and for nine on July 21. Ramazan Kara separately released a machine verification of the five-color case that credits my proof. <span class="refs"><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20">Five through eight</a> · <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21">Nine</a> · <a href="https://github.com/RamazanKara/erdos-617-r5-formal-verification">Kara’s verification</a></span></dd>
         <dt>August 2026</dt><dd>Terpstra Research released arguments for ten and eleven colors. <a href="https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.1">Release and audit notes</a></dd>
         <dt>17 October 2026</dt><dd>Hai Xia and Stefan Szeider posted a separate computational proof for five colors. Their October 17 version does not cite my July release. <a href="https://arxiv.org/html/2610.24484v1">October paper, version 1</a></dd>
-        <dt>November 2026</dt><dd>Our November paper gives a separate argument at twelve colors. The large-color theorem has an end-to-end Lean proof. <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/paper.pdf">Full manuscript</a></dd></dl>
+        <dt>November 2026</dt><dd>Our November paper gives a separate argument at twelve colors. The large-color theorem has an end-to-end Lean proof. <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v2/paper.pdf">Full manuscript</a></dd></dl>
         </div>
       </section>
     </article>
   </main>
-  <footer class="wrap"><span>Robert Sneiderman</span><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25">Versioned release</a></footer>
+  <footer class="wrap"><span>Robert Sneiderman</span><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v2">Paper and source code</a></footer>
 </body>
 </html>

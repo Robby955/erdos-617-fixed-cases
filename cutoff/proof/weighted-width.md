@@ -1,10 +1,10 @@
 # Weighted transversals and the cutoff $r\ge 2^{146}$
 
-Robert Sneiderman research project · Private proof supplement · 23 November 2026
+Robert Sneiderman’s research notes · 23 November 2026
 
 **Theorem.** For every integer $r\ge 2^{146}$, every coloring of the edges of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices whose induced edges omit a color.
 
-The bound applies to every coloring. It improves the preceding private bound $2^{165}$ by a factor of $524{,}288$. Two ingredients control discarded parts. A weighted independent transversal charges missing representatives to short lists. The ordered partition supplies distinct edge incidences for the surplus in oversized chosen parts. The combined proof awaits independent review. The conjecture for every $r\ge3$ remains open. [Preceding proof, §§3–5](cutoff-165.md) · [Numerical certificate](verify_weighted_width.py) · [Local Lean lemmas](WeightedWidth.lean) · [Combined PDF](../paper.pdf)
+The bound applies to every coloring. It improves the previous bound $2^{165}$ by a factor of $524{,}288$. Two ingredients control discarded parts. A weighted independent transversal charges missing representatives to short lists. The ordered partition supplies distinct edge incidences for the surplus in oversized chosen parts. The combined proof awaits independent review. The conjecture for every $r\ge3$ remains open. [Preceding proof, §§3–5](cutoff-165.md) · [Numerical certificate](verify_weighted_width.py) · [Local Lean lemmas](WeightedWidth.lean) · [Combined PDF](../paper.pdf)
 
 ## 1. Count the unused part of the stability bound
 

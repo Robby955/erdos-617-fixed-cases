@@ -1,6 +1,6 @@
 # The 28- and 29-vertex terminals at order ten
 
-Private research note, 23 November 2026.
+23 November 2026
 
 The local 28-vertex assertion is false. A balanced ten-coloring on 28 vertices can have **126 target edges**, target independence number three and largest target clique nine. The following construction gives every edge. Here balanced means that every eleven vertices see all ten colors. The 29-vertex bound of 153 remains open in this work. The August terminal family also requires inheritance from a single hypothetical balanced coloring of the full 101 vertices. The example tests the local hypotheses. [Exact replay](verify_order_ten_terminal.py)
 

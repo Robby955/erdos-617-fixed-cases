@@ -1,6 +1,6 @@
 # A large-order bound for the Erdős–Gyárfás balanced coloring conjecture
 
-Robert Sneiderman research project · Private referee manuscript · 22 November 2026
+Robert Sneiderman · Draft of 22 November 2026
 
 **Theorem 1.** For every integer $r\ge 2^{483}$, every coloring of the edges of $K_{r^2+1}$ with $r$ colors has a set of $r+1$ vertices whose edges omit a color.
 

@@ -1,6 +1,6 @@
 # Four rows in the Erdős–Gyárfás balanced coloring problem
 
-Rob Sneiderman research workspace · 23 November 2026 · Private draft for review
+Robert Sneiderman’s research notes · 23 November 2026
 
 **Theorem.** Let $r\ge17$. In an edge coloring with $r$ colors, assume that every $r+1$ vertices see every color. Suppose a set $W$ of $4r$ vertices contains no five vertices pairwise avoiding color $a$. Then $W$ contains a clique of size $r$ in color $a$. This is $M(4)$ in the local reduction.
 

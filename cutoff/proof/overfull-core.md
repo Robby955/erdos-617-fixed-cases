@@ -1,6 +1,6 @@
 # The overfull core of a sparsest hue in Erdős 617
 
-Robert Sneiderman research project · Private proof supplement · 23 November 2026
+Robert Sneiderman’s research notes · 23 November 2026
 
 **The open step of the grid supplement is still open.** This note continues §§4–5 of [the grid supplement](grid-obstruction.md). A normalized sparsest hue has at most $r-4$ full cliques for $r\ge7$ and at most $r-5$ for $r\ge11$. The conjecture at each order reduces to $r-2$ local statements. The first four now follow for $r\ge11$, using the three-row theorem in Section 8. The note also gives a condition that forces at least three full cliques and records solver results at orders three and four. Independent mathematical review is pending.
 

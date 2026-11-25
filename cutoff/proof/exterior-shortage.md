@@ -1,6 +1,6 @@
 # Why the exterior vertices fall short
 
-Robert Sneiderman and OpenAI GPT‑6.2 Astra · GitHub proof supplement · 25 November 2026
+Robert Sneiderman and OpenAI GPT‑6.2 Astra · 25 November 2026
 
 Color the edges of $K_{r^2+1}$ with $r$ colors, where $r\ge255\cdot2^{136}$. Suppose every $r+1$ vertices see all the colors. Choose the sparsest color $J$ and the retained cliques given by the width theorem. Put $h=s-1$ for the number of omitted rows. Let $G$ consist of vertices outside the retained cliques that have at most $9r/(40s)$ neighbors of color $J$ in each retained clique. Lean proves
 $$

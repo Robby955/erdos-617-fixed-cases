@@ -1,6 +1,6 @@
 # The smaller mixed profile and a cutoff of $2^{190}$
 
-Robert Sneiderman research project · Private proof supplement · 22 November 2026
+Robert Sneiderman’s research notes · 22 November 2026
 
 **Theorem 1.** For every integer $r\ge2^{190}$, every $r$-edge-coloring of $K_{r^2+1}$ contains $r+1$ vertices missing a color.
 

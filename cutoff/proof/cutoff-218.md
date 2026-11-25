@@ -1,6 +1,6 @@
 # Mixed harmonic rows and a cutoff of $2^{218}$
 
-Robert Sneiderman research project · Private proof supplement · 22 November 2026
+Robert Sneiderman’s research notes · 22 November 2026
 
 **Theorem 1.** For every integer $r\ge2^{218}$, every $r$-edge-coloring of $K_{r^2+1}$ has $r+1$ vertices whose induced edges omit a color.
 

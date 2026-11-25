@@ -1,6 +1,6 @@
 # The five-row stop at order eleven and the odd midpoint
 
-Rob Sneiderman research project · Private proof note · 24 November 2026
+Robert Sneiderman’s research notes · 24 November 2026
 
 **Theorem 1.** Every eleven-coloring of the edges of $K_{122}$ has twelve vertices missing a color. The new step is a lower bound of 342 edges at the 56-vertex stop. The shortest proof of that bound uses the degree reduction in Section 2 and 77 cases in Section 5. Section 3 then treats all ten stops. Terpstra Research publicly claimed this fixed order in August 2026. Both our four-row prerequisites and our new argument await external mathematical review. [Earlier public release](https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.1) · [77-case replay](verify_midpoint_row_budgets.py)
 

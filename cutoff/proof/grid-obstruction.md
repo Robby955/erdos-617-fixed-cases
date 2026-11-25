@@ -1,6 +1,6 @@
 # Off-grid edges and competing color demands in Erdős 617
 
-Robert Sneiderman research project · Private proof supplement · 22 November 2026
+Robert Sneiderman’s research notes · 22 November 2026
 
 Let $r\ge3$. Call a coloring **balanced** if every set of $r+1$ vertices sees all $r$ colors. Delete $z$ from a coloring on $r^2+1$ vertices and arrange the remaining set $Q$ in an $r\times r$ grid. An edge is **off-grid** if its endpoints differ in both coordinates. Each hue $a$ may use its own grid, with $E_a$ off-grid edges of that hue. A hue **demands** $zx$ if some $(r+1)$-set through $z,x$ has no other edge of that hue. Two demands of distinct hues on one edge prove the conjectured conclusion. [Erdős and Gyárfás, Conjecture 1](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 

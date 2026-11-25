@@ -1,6 +1,6 @@
 # From an arbitrary coloring to the exterior rows
 
-Robert Sneiderman and OpenAI GPT‑6.2 Astra · GitHub proof supplement · 25 November 2026
+Robert Sneiderman and OpenAI GPT‑6.2 Astra · 25 November 2026
 
 Fix any coloring of the edges of $K_{r^2+1}$ with $r$ colors, where $r\ge255\cdot2^{136}$. Lean now proves the common threshold of Appendix A directly from this input. The theorem either finds $r+1$ vertices missing a color or constructs the actual cliques and proves all three estimates in (4) on them. It chooses the target color, ordered rows, deletion history, representatives and threshold internally. [Theorem from the original coloring](ColoringWidth.lean) · [What the width estimates say](RowWidth.lean)
 

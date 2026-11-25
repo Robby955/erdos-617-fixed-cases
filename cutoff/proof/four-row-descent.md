@@ -1,6 +1,6 @@
 # Four rows at orders fifteen and sixteen
 
-Rob Sneiderman research workspace · 23 November 2026 · Private proof supplement
+Robert Sneiderman’s research notes · 23 November 2026
 
 **Theorem.** Suppose every $r+1$ vertices of an $r$-edge-colored complete graph see every color. For $r\ge15$, any $4r$ vertices with target independence at most four contain a target clique of size $r$. In the project's notation this is $M(4)$. The earlier proof covers $r\ge17$. The two new orders use the counting certificates below. The regular case is also impossible at $r=13,14$. The new results await independent review. [Earlier four-row proof](four-rows.md) · [Three-row input, including order ten](overfull-core.md) · [Exact replay](verify_four_row_descent.py) · [Certificates and surviving profiles](four-row-descent-certificates.json)
 

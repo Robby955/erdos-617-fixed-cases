@@ -1,12 +1,12 @@
 # A cutoff of $2^{144}$ for Erdős 617
 
-Robert Sneiderman research project · Private proof supplement · 24 November 2026
+24 November 2026
 
 **Theorem.** For every integer $r\ge2^{144}$, every $r$-coloring of the edges of $K_{r^2+1}$ contains $r+1$ vertices missing a color.
 
-This supplement strengthens the width estimate in the [preceding manuscript](weighted-width.md). All five bands, their sampling constants and the final signed-cut argument are inherited from that manuscript. A first-stage deletion spends part of the very budget used to count unqualified destinations. Keeping both uses in the same inequality allows more rows to contribute at the upper endpoint of the width integral. The combined argument awaits independent review. [Exact checker](verify_retained_width.py)
+We use the five bands, sampling constants and signed-cut inequality of the [weighted transversal argument](weighted-width.md). A first-stage deletion spends part of the very budget used to count unqualified destinations. Keeping both uses in the same inequality allows more rows to contribute at the upper endpoint of the width integral. [Exact checker](verify_retained_width.py)
 
-Lean proves that every feasible pair of real pruning parameters belongs to a band with width margin greater than $7/10000$. It also checks the reserved-row endpoint inequality. The derivation of the width integral and the extraction of rows from an arbitrary coloring are in the written proof. [Formal width comparisons](RetainedWidth.lean)
+Lean proves that every feasible pair of real pruning parameters belongs to a band with width margin greater than $7/10000$. It also checks the reserved-row endpoint inequality. The [Lean proof guide](formal-cutoff.md) also covers the extraction of rows and the width integral. [Formal width comparisons](RetainedWidth.lean)
 
 ## 1. Count the destinations still available to omit
 

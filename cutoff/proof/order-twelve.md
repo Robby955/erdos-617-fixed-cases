@@ -4,7 +4,7 @@ Robert Sneiderman · 24 November 2026
 
 **Theorem.** Every twelve-coloring of the edges of $K_{145}$ has thirteen vertices whose induced complete graph misses a color.
 
-The new local bound is 409 target edges on the 61 vertices in the five-row case, against a cap of 408. Two further local bounds, 283 edges on 47 vertices and 358 on 59 vertices, close the other cases. The proof uses earlier four-row certificates. The calculations have two integer implementations. Lean verifies the thirteen-vertex witness in Section 4. The entire reduction is given below for independent review. [Forward calculation](verify_order_twelve.py) · [Budget-first replay](replay_order_twelve.py) · [Lean proof of the witness](OrderTwelveCollision.lean)
+The new local bound is 409 target edges on the 61 vertices in the five-row case, against a cap of 408. Two further local bounds, 283 edges on 47 vertices and 358 on 59 vertices, close the other cases. The proof uses earlier four-row certificates. The calculations have two integer implementations. Lean verifies the thirteen-vertex witness in Section 4. [Forward calculation](verify_order_twelve.py) · [Budget-first replay](replay_order_twelve.py) · [Lean proof of the witness](OrderTwelveCollision.lean)
 
 ## 1. Inputs and deletion
 

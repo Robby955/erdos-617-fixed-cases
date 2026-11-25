@@ -1,6 +1,6 @@
 # From the colored edges to one common threshold
 
-Robert Sneiderman and OpenAI GPT‑6.2 Astra · GitHub proof supplement · 25 November 2026
+Robert Sneiderman and OpenAI GPT‑6.2 Astra · 25 November 2026
 
 The missing-color conjecture asks for a set of $r+1$ vertices that omits some color. Fix a color $J$. In a coloring with no such set, an independent set in the graph of $J$ has at most $r$ vertices. A clique in that graph also has at most $r$ vertices, since it misses every other color. This observation lets us use a single graph for both counts in Appendix A. [Coloring and clique bounds](ColoringLists.lean) · [Statement of the conjecture](CutoffStatement.lean)
 

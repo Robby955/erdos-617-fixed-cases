@@ -1,6 +1,6 @@
 # Fixed rows, excess loads, and a cutoff of $2^{165}$
 
-Robert Sneiderman research project · Private proof supplement · 22 November 2026
+Robert Sneiderman’s research notes · 22 November 2026
 
 **Theorem 1.** For every integer $r\ge2^{165}$, every coloring of the edges of $K_{r^2+1}$ with $r$ colors has $r+1$ vertices missing a color.
 
@@ -160,4 +160,4 @@ $$
  (1-\epsilon(l))(c-\lambda\kappa\rho_0)+l-\lambda\kappa
                      -Z_2\rho_0-1/(fRK^2)>1/2000 .
 $$
-This expression is concave in $l$. The one-row and oversampling inequality requires it to be nonpositive. All 1,728 endpoints pass, as do the ordinary and auxiliary list conditions, the two oversampling caps, and the height bounds. This proves Theorem 1 subject to the preceding manuscripts. The supplementary Lean file checks three real inequalities used above. The full combinatorial proof remains in the text. [Arithmetic and arc checks](verify_cutoff_165.py) · [Combined manuscript](../paper.pdf)
+This expression is concave in $l$. The one-row and oversampling inequality requires it to be nonpositive. All 1,728 endpoints pass, as do the ordinary and auxiliary list conditions, the two oversampling caps, and the height bounds. Together with the earlier sampling bounds, this proves Theorem 1. The [Lean proof guide](formal-cutoff.md) gives the formal argument for the sharper cutoff. [Arithmetic and arc checks](verify_cutoff_165.py) · [Combined manuscript](../paper.pdf)

@@ -1,12 +1,10 @@
 # An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture
 
-**Robert Sneiderman and OpenAI GPT-6.2 Astra** · GitHub edition · 25 November 2026
+**Robert Sneiderman and OpenAI GPT-6.2 Astra** · 25 November 2026
 
-Color every edge of a complete graph with $r$ colors. Erdős and Gyárfás asked whether, on $r^2+1$ vertices, some $r+1$ vertices must miss one color. This manuscript proves that they must for every $r\ge 2^{144}$, and separately for $r=12$. The sharper working corollary lowers the cutoff to $255\cdot2^{136}$. Together the fixed-case and cutoff manuscripts leave $13\le r<255\cdot2^{136}$ open. [Corollary and exact check](proof/retained-width-corollary.md)
+Color every edge of a complete graph with $r$ colors. Erdős and Gyárfás asked whether, on $r^2+1$ vertices, some $r+1$ vertices must miss one color. This manuscript proves that they must for every $r\ge 2^{144}$, and separately for $r=12$. Appendix I lowers the cutoff to $255\cdot2^{136}$. Together the fixed-case and cutoff manuscripts leave $13\le r<255\cdot2^{136}$ open. [Corollary and exact check](proof/retained-width-corollary.md)
 
-**[Two-page overview](github-overview.pdf)** · **[Full paper](github-paper.pdf)** · **[Twelve-color paper](proof/github-order-twelve.pdf)** · **[Cite the GitHub edition](CITATION.cff)**
-
-The November 24 review edition carries Robert Sneiderman’s byline. The November 25 GitHub edition adds the sharper corollary and a guide to its completed Lean proof in Appendix I. [Review paper](paper.pdf) · [Review overview](overview.pdf) · [Twelve-color review paper](proof/order-twelve.pdf) · [Review citation](CITATION-review.cff)
+**[Two-page overview](github-overview.pdf)** · **[Full paper](github-paper.pdf)** · **[Twelve-color paper](proof/github-order-twelve.pdf)** · **[Cite the paper](CITATION.cff)**
 
 ### How to check the result
 
@@ -60,10 +58,15 @@ Robert Sneiderman directed the research and handles correspondence. OpenAI GPT-6
 
 ### Rebuilding the PDFs
 
-With Pandoc and XeLaTeX installed, run these commands from this directory. Omit `--edition github` to build the review edition. [GitHub manuscript source](paper.md) · [November 24 introduction](paper-review.md)
+Run these commands with Pandoc and XeLaTeX installed. [Manuscript source](paper.md)
 
 ```sh
 python3 build_paper.py paper --edition github
 python3 build_paper.py overview --edition github
 python3 build_paper.py twelve --edition github
+python3 build_paper.py corollary --edition github
 ```
+
+### Earlier draft
+
+The November 24 draft predates the formal proof of the sharper cutoff. [Manuscript](paper.pdf) · [Overview](overview.pdf) · [Twelve-color paper](proof/order-twelve.pdf) · [Citation](CITATION-review.cff)

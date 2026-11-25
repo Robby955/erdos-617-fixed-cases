@@ -2,7 +2,7 @@
 
 ## November cutoff and twelve-color manuscript
 
-The GitHub edition lists Robert Sneiderman and OpenAI GPT-6.2 Astra on its byline. Sneiderman directed the research and handles correspondence and corrections. OpenAI GPT-6.2 Astra is the AI model used in Codex for mathematical proof search, drafting, exact calculations and Lean formalization. The separate review edition lists Sneiderman as its author and describes the same contributions. Fable contributed fixed-row arguments and internal reviews of earlier stages. The manuscript identifies the statements verified in Lean and the checks reproduced in Python. The two full theorems await independent mathematical review. [Paper and verification guide](cutoff/README.md)
+Robert Sneiderman directed the research and handles correspondence and corrections. OpenAI GPT-6.2 Astra contributed to proof search, drafting, exact calculations and Lean formalization. Fable contributed fixed-row arguments and checked earlier steps. The November 24 draft credits Sneiderman as author and discloses model assistance. The November 25 paper credits Sneiderman and Astra jointly. [Contributions and scope of verification](cutoff/README.md)
 
 ## July fixed-case manuscripts
 
