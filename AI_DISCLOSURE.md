@@ -1,8 +1,12 @@
 # AI disclosure
 
-These manuscripts were developed with extensive AI assistance.
+Robert Sneiderman directed the research and is the author of the manuscripts.
 
-## Models and roles
+## November cutoff and twelve-color manuscript
+
+OpenAI's Astra model in Codex contributed to mathematical proof search, drafting, exact-checker implementation and Lean formalization. Fable contributed fixed-row arguments and internal reviews of earlier stages. The manuscript identifies the statements verified in Lean and the checks reproduced in Python. The two full theorems await independent mathematical review. [Paper and verification guide](cutoff/README.md)
+
+## July fixed-case manuscripts
 
 - **OpenAI GPT-5.6 Sol:** proof search, drafting, checking of reductions and
   case splits, verification-program development, and revisions.

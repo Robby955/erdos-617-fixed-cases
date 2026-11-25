@@ -1,12 +1,14 @@
-# Fixed-case proof claims for Erdős Problem 617
+# The Erdős–Gyárfás balanced-coloring conjecture
 
-This repository contains five fixed-parameter proof claims related to
-[Erdős Problem 617](https://www.erdosproblems.com/617), an edge-coloring
-problem of Erdős and Gyárfás.
+Robert Sneiderman
 
-**Latest release:** [fixed r = 9 paper, proof package, and certificate assets](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21)
+Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The November preprint gives an explicit cutoff of $2^{144}$ and a separate proof at twelve colors. The complete arguments are available for independent review. [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
-## Claims
+**[Two-page overview](cutoff/overview.pdf)** · **[Full paper](cutoff/paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
+
+## July fixed-case releases
+
+The July papers cover $r=5,6,7,8,9$. [Release for five through eight](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20) · [Release for nine](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21)
 
 - **r = 5:** Every five-coloring of the edges of K₂₆ has six vertices
   whose induced K₆ omits at least one color. Equivalently,
@@ -34,10 +36,7 @@ problem of Erdős and Gyárfás.
 [TeX source](r9/main.tex) |
 [Replay instructions](r9/README.md)
 
-These claims address only r = 5, 6, 7, 8, 9. They do not settle the statement
-for every r ≥ 3.
-
-## Review status
+## Review of the July manuscripts
 
 The manuscripts are preprints posted for independent checking. None has
 completed external mathematical review. Submission to the proof-claim forum
@@ -51,11 +50,7 @@ manifests, replay commands, and proof artifacts are included under
 
 ## AI disclosure
 
-AI use is described in [AI_DISCLOSURE.md](AI_DISCLOSURE.md). OpenAI GPT-5.6
-Sol was used extensively during proof search, drafting, program development,
-and internal checking. OpenAI GPT-5 (Codex) was used for later source review,
-replay packaging, and release checks. xAI Grok 4.5 was used to critique drafts
-of the r = 5, 6, 7, 8 manuscripts.
+Robert Sneiderman directed the research. OpenAI's Astra model contributed to the November proof search, drafting, exact checks and Lean work. Fable contributed fixed-row arguments and internal reviews. The July papers document their earlier model assistance separately. [Contribution statement](AI_DISCLOSURE.md)
 
 ## Corrections
 

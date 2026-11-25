@@ -1,10 +1,17 @@
 cff-version: 1.2.0
-message: "Please cite the relevant manuscript and this repository release."
-title: "Fixed-case proof claims for Erdos Problem 617"
+message: "Please cite the relevant Robert Sneiderman manuscript. The July releases also have version-specific citations."
+title: "Proofs for the Erdős–Gyárfás balanced-coloring conjecture"
 type: software
 authors:
   - family-names: "Sneiderman"
     given-names: "Robert"
 repository-code: "https://github.com/Robby955/erdos-617-fixed-cases"
 url: "https://github.com/Robby955/erdos-617-fixed-cases"
-date-released: 2026-07-21
+preferred-citation:
+  type: unpublished
+  title: "An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture"
+  authors:
+    - family-names: "Sneiderman"
+      given-names: "Robert"
+  year: 2026
+  month: 11
