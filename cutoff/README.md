@@ -33,13 +33,13 @@ To check the Lean components, run the following from the directory containing th
 lake exe cache get
 lake env lean proof/RowExtraction.lean
 lake env lean proof/PruningOverlap.lean
-lake env python3 -B proof/replay_pruning_kernels.py shortage --lean-only
+lake env python3 -B proof/replay_pruning_kernels.py cut --lean-only
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The November 25 Lean supplement now covers Appendix A through the strict exterior shortage in §4 at the working cutoff $255\cdot2^{136}$. From an arbitrary coloring, it either finds a missing-color witness or constructs the row selection and proves $hr-|G|>3r/20$ for the exterior set in §5. The Lean sources also give the original sender counts and the trial law for one sender. The remaining graph argument uses the joint marked sample, its conflict repair and the final signed cut. The twelve-color proof has its own exact checks and formal final witness. [Exterior shortage and proof frontier](proof/exterior-shortage.md) · [End-to-end cutoff statement](proof/CutoffStatement.lean)
+The November 25 Lean supplement starts from the original coloring at the working cutoff $255\cdot2^{136}$. It constructs the retained cliques, proves the strict exterior shortage and samples the outside vertices. On every supported sample the repaired graph has independence number at most $s-1$. Lean bounds the repair cost and proves the tested-cut inequality using the same target edges between cliques. Its specialized test requires admissible row probabilities. The heavy-load count, oversampling and final capacity comparison remain to be connected to the numerical contradiction. [Tested cut and proof frontier](proof/joint-sender-sampling.md) · [Precise cutoff statement](proof/CutoffStatement.lean)
 
-Run `lake env python3 -B proof/replay_pruning_kernels.py shortage` to check the §4 theorem with Lean’s kernel, Lean4Lean and Nanoda. Use `enlargement` for the extension and clique-enlargement argument, or `senders` for the initial §5 results. The earlier exports can be replayed from the revisions specified in their supplements. [Replay script](proof/replay_pruning_kernels.py)
+Run `lake env python3 -B proof/replay_pruning_kernels.py sampling` for the original-coloring sampling theorem and `lake env python3 -B proof/replay_pruning_kernels.py cut` for the repair, tested cut and edge recovery. Both commands build the source and replay the export with Lean’s kernel, Lean4Lean and Nanoda. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 

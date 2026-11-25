@@ -160,9 +160,54 @@ SENDER_NAMES = (
 )
 
 
+SAMPLE_MODULES = (*SENDER_MODULES, "StrongAssignments", "EligibleSenders", "JointSenderLaw",
+                  "MarkedSenderLaw", "SenderSampleMoments", "RepresentativeMass", "ColoringSenderLaw",
+                  "DistinctRowConflicts", "SameRowPairs", "SameRowConflicts", "RepresentativeRepairs",
+                  "ColoringSample")
+SAMPLE_NAMES = (
+    "Erdos617.ColoredLists.eligible_mass_with_surplus",
+    "Erdos617.ColoredLists.eligible_thinning",
+    "Erdos617.MarkedSender.mark_count_variance",
+    "Erdos617.ColoredLists.sender_atom_bound",
+    "Erdos617.SameRowConflicts.expected_edges_le_cut",
+    "Erdos617.RepresentativeCut.between_row_groups",
+    "Erdos617.RepresentativeRepairs.compatible",
+    "Erdos617.ColoredLists.sampled_exterior_order",
+    "Erdos617.ColoredLists.sampled_representative_cost",
+    "Erdos617.ColoredLists.witness_or_sender_sample",
+)
+
+
+CUT_MODULES = (*SAMPLE_MODULES, "SenderSupport", "ExcessCircle", "CircleStartLaw",
+               "ExcessArcRepairs", "ArcRepairUnion", "RepairedIndependence", "LoadCap",
+               "SampleRepairGraph", "ForeignRowLoads", "ColoringRepairCost", "SignedSampleCut",
+               "SignedCutExpectation", "ColoringSignedCut", "TestedRowMoments",
+               "EdgeRecovery", "ColoringTestedCut", "RecoveredTest")
+CUT_NAMES = (
+    "Erdos617.ColoredLists.represented_support",
+    "Erdos617.ColoredLists.sender_load_fits",
+    "Erdos617.ArcRepair.expected_excess_union",
+    "Erdos617.ColoredLists.sample_repair_cap",
+    "Erdos617.ColoredLists.foreign_load_le_interrow_cut",
+    "Erdos617.ColoredLists.sampled_union_repair_cost",
+    "Erdos617.SignedSampleCut.exterior_interrow_identity",
+    "Erdos617.SignedSampleCut.full_incidence_cut",
+    "Erdos617.ColoredLists.expected_fixed_cut",
+    "Erdos617.TestedRows.expected_cross_deficit",
+    "Erdos617.TestedRows.expected_slots",
+    "Erdos617.EdgeRecovery.coloring_pair_recovery",
+    "Erdos617.ColoredLists.tested_cut_bound",
+    "Erdos617.ColoredLists.recovered_tested_cut",
+)
+
+
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "senders":
+    if part == "cut":
+        modules, names = CUT_MODULES, CUT_NAMES
+    elif part == "sampling":
+        modules, names = SAMPLE_MODULES, SAMPLE_NAMES
+    elif part == "senders":
         modules, names = SENDER_MODULES, SENDER_NAMES
     elif part == "shortage":
         modules, names = SHORTAGE_MODULES, SHORTAGE_NAMES
@@ -224,7 +269,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)

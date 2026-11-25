@@ -8,7 +8,7 @@ Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ c
 
 **[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
-For every coloring at the working cutoff, Lean proves that the selected ordinary cliques leave a strict shortage of exterior vertices with small attachments. The proof starts with the original edge labels and follows the same rows through Appendix A, §4. The global sampling argument in §5 remains to be formalized. [Readable proof and three-kernel replay](cutoff/proof/exterior-shortage.md)
+For every coloring at the working cutoff, Lean constructs the ordinary rows and their marked exterior sample. It bounds the cost of repairing that sample and derives the signed cut on the actual edges between tested rows. The proof still needs bounds on the number of heavy loads and the two oversampling comparisons to reach the final numerical contradiction. [Current proof and replay guide](cutoff/proof/joint-sender-sampling.md)
 
 ## July fixed-case releases
 

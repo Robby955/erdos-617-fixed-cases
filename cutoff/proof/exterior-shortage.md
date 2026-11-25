@@ -38,7 +38,7 @@ Return to the original retained cliques. Write $H$ for the exterior vertices out
 
 For a sender with neighbor fraction $q$ in one row, draw a uniformly random vertex. On hitting a neighbor, retry with probability $100\rho$, where $\rho=9/(40s)$, using a fresh uniform draw. Lean derives the success probability $(1-q)(1+100\rho q)$ and the probability $(1+100\rho q)/|C|$ of returning each particular nonneighbor in that clique. The width bound gives the extra charge $37\rho r(1-q)$ for a strong sender. [Exact finite trial](SenderRetry.lean) · [Surplus on a retained row](RetainedSenders.lean)
 
-The next graph step is to combine the individual trials into the marked sample on these same rows. The proof must bound the conflicts and the cost of repairing them, including when two senders choose the same row. Those estimates are inputs to Appendix A, §5, inequality (5). The exact numerical checker verifies its 1,280 endpoint comparisons. The implication from the coloring to (5) and the end-to-end cutoff theorem remain open in Lean. [Marked senders and excess arcs](cutoff-165.md#5-charge-only-the-excess-of-a-heavy-load) · [Final inequality](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut) · [Endpoint checker](verify_retained_width.py)
+The subsequent supplement constructs the joint sample, proves the repaired independence bound and derives the signed cut on the actual tested edges. Its proof guide lists the remaining implications needed for inequality (5) in §5. [Joint sampling and tested cut](joint-sender-sampling.md)
 
 ## Replaying the proof
 
