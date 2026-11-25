@@ -8,6 +8,8 @@ Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ c
 
 **[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
+The November 25 Lean supplement constructs a single threshold satisfying the three row estimates in the cutoff argument. The proof can be replayed with three kernels. [Formal proof and replay guide](cutoff/proof/width-integral.md)
+
 ## July fixed-case releases
 
 Robert Sneiderman’s July papers cover $r=5,6,7,8,9$. [Release for five through eight](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20) · [Release for nine](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21)
