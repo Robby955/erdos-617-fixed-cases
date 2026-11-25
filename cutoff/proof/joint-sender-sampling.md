@@ -53,11 +53,10 @@ Both subtractions on the right are retained by the calculation. The statement ap
 
 ## What remains before the cutoff theorem
 
-1. Prove the heavy-load bounds for $n_i$ on these sampled rows. They establish that the manuscript’s specific $\pi_i$ satisfy the probability constraint and bound the total number of tested rows. The per-row exception includes first-stage sources recorded at that destination. Sum the actual destination counts, whose total is at most the number of first-stage sources. [Required bounds in the manuscript](cutoff-190.md#4-recover-the-cost-of-uniquely-assigned-senders)
-2. Compare the original and enlarged thinning probabilities. The signed-cut upper bound applies at both probabilities. A lower bound for the enlarged sample and a comparison of their repair costs are needed to infer the two oversampling estimates. The comparison must preserve the subtraction $\rho\sum n_i^2$. [Excess-arc argument](cutoff-165.md#5-charge-only-the-excess-of-a-heavy-load)
-3. Charge each marked moderate sender to a destination, use the one-row cut on those assignments and apply the retry surplus in the second pass. This is the remaining path from the coloring to the nonpositive value in Appendix A, §5, inequality (5). The rational checker finds a strictly positive value at all 1,280 endpoints. [Capacity with moderate assignments](cutoff-289.md) · [Final inequality](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut) · [Endpoint checker](verify_retained_width.py)
+The per-row and total heavy-load counts, the manuscript row probabilities and their expected total are now in Lean. The two kinds of load use disjoint incidences, giving coefficient one. [Proof and replay](heavy-loads.md)
 
-An internal read-only audit suggests a sharper heavy-load estimate. For a fixed row, ordinary direct loads outside the own-row and recorded-source exceptions use edges with the other endpoint outside every retained clique. Foreign representative loads use edges with the other endpoint inside a different retained clique. The two sets of incidences are disjoint. If the maximum expected representative multiplicity there is at most one, the single incidence budget pays both charges with coefficient $1$ in place of $513/512$. This is a proposed strengthening for the next proof. The tested cut above and the present cutoff use the existing constants. [Incidence definition](PrunedWidth.lean) · [Foreign multiplicity bound](ForeignRowLoads.lean)
+1. Compare the original and enlarged thinning probabilities. The signed-cut upper bound applies at both probabilities. A lower bound for the enlarged sample and a comparison of their repair costs are needed to infer the two oversampling estimates. The comparison must preserve the subtraction $\rho\sum n_i^2$. [Excess-arc argument](cutoff-165.md#5-charge-only-the-excess-of-a-heavy-load)
+2. Charge each marked moderate sender to a destination, use the one-row cut on those assignments and apply the retry surplus in the second pass. This is the remaining path from the coloring to the nonpositive value in Appendix A, §5, inequality (5). The rational checker finds a strictly positive value at all 1,280 endpoints. [Capacity with moderate assignments](cutoff-289.md) · [Final inequality](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut) · [Endpoint checker](verify_retained_width.py)
 
 ## Replaying the proofs
 
@@ -69,7 +68,7 @@ lake env python3 -B proof/replay_pruning_kernels.py cut
 python3 -B proof/verify_retained_width.py
 ```
 
-Lean's kernel, Lean4Lean and Nanoda each accepted the two exports below. The axiom reports list only `propext`, `Classical.choice` and `Quot.sound`. The declaration counts include dependencies. The current edition contains 98 compiled Lean modules and 300 public theorems.
+Lean's kernel, Lean4Lean and Nanoda each accepted the two exports below. The axiom reports list only `propext`, `Classical.choice` and `Quot.sound`. The declaration counts include dependencies.
 
 | Replay | Named theorems | Export declarations | Export SHA-256 |
 | --- | ---: | ---: | --- |

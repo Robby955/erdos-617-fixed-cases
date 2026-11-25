@@ -90,6 +90,19 @@ def check_width_and_cut():
     return widths, cuts
 
 
+def check_reduced_cutoff(widths):
+    """Shrink the allowed fourth-root scale using the existing positive margins."""
+    order = 255 * 2**136
+    loss_upper = F(1, 4*255)  # log(1 + 1/255)/4 is strictly smaller.
+    margin = min(widths) - loss_upper
+    assert order * 256 == 255 * 2**EXPONENT
+    assert margin > F(1, 10000)
+    max_K_prime = K + 2*1411
+    for _, b, _, _ in previous.BANDS:
+        assert order > 2**b * (8*max_K_prime)**4
+    return margin
+
+
 def check_next_exponent():
     hi, b, ai, bi = previous.BANDS[0]
     p = P_MAX
@@ -111,4 +124,5 @@ if __name__ == "__main__":
     widths, cuts = check_width_and_cut()
     print(f"Cutoff 2^{EXPONENT}. Width margins:", ", ".join(f"{float(x):.9f}" for x in widths))
     print(f"All {len(cuts)} signed-cut endpoints pass; minimum {float(min(cuts)):.9f}.")
+    print(f"Cutoff 255 * 2^136. Lower bound for the reduced width margin: {float(check_reduced_cutoff(widths)):.9f}.")
     print(f"First-band sufficient comparison at 2^{EXPONENT - 1}: at most {float(check_next_exponent()):.9f}.")

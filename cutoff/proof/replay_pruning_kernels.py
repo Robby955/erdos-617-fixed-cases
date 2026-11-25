@@ -201,9 +201,20 @@ CUT_NAMES = (
 )
 
 
+LOAD_MODULES = (*CUT_MODULES, "HeavyLoadIncidence", "HeavyLoadBound", "HeavyLoadTotals",
+                "HeavyLoadTests", "ManuscriptRowTest")
+LOAD_NAMES = tuple("Erdos617.ColoredLists." + name for name in (
+    "disjoint_load_incidence", "threshold_heavy_count", "foreign_load_le_distinct_edges",
+    "heavy_load_height", "retained_load_budgets", "heavy_load_total", "manuscript_row_test",
+    "manuscript_test_mass", "manuscript_tested_cut",
+))
+
+
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "cut":
+    if part == "loads":
+        modules, names = LOAD_MODULES, LOAD_NAMES
+    elif part == "cut":
         modules, names = CUT_MODULES, CUT_NAMES
     elif part == "sampling":
         modules, names = SAMPLE_MODULES, SAMPLE_NAMES
@@ -269,7 +280,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)

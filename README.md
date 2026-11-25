@@ -4,11 +4,11 @@
 
 **Robert Sneiderman and OpenAI GPT-6.2 Astra** · GitHub edition · 24 November 2026
 
-Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The November preprint gives an explicit cutoff of $2^{144}$ and a separate proof at twelve colors. The complete arguments are available for independent review. [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
+Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The November preprint gives an explicit cutoff of $2^{144}$ and a separate proof at twelve colors. The working corollary sharpens the cutoff to $255\cdot2^{136}$ by using the positive margins in all five width comparisons. [Corollary](cutoff/proof/retained-width-corollary.md) [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
 **[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
-For every coloring at the working cutoff, Lean constructs the ordinary rows and their marked exterior sample. It bounds the cost of repairing that sample and derives the signed cut on the actual edges between tested rows. The proof still needs bounds on the number of heavy loads and the two oversampling comparisons to reach the final numerical contradiction. [Current proof and replay guide](cutoff/proof/joint-sender-sampling.md)
+For every coloring at the working cutoff, Lean constructs the ordinary rows and their marked exterior sample. It bounds the cost of repairing that sample and derives the signed cut on the actual edges between tested rows. Lean now bounds the heavy loads and verifies the manuscript’s probabilities for testing rows. The two oversampling comparisons and the final capacity argument remain open in the formalization. [Row-test proof](cutoff/proof/heavy-loads.md) [Current proof and replay guide](cutoff/proof/joint-sender-sampling.md)
 
 ## July fixed-case releases
 
