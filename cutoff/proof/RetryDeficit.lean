@@ -15,7 +15,7 @@ def uniqueMiss (E : Finset V) (I : Finset ℕ) (s i : ℕ) : ℝ :=
   ∑ y ∈ uniqueGroup T E I s i, (1-neighborFraction (targetGraph T.color T.target) (rowList T E i) y)
 
 omit [Fintype V] in
-private theorem miss_nonneg (G : SimpleGraph V) (C : Finset V) (y : V) :
+theorem one_sub_neighborFraction_nonneg (G : SimpleGraph V) (C : Finset V) (y : V) :
     0 ≤ 1-neighborFraction G C y := by
   by_cases empty : C = ∅
   · simp [neighborFraction,empty]
@@ -121,7 +121,7 @@ private theorem unique_weight_row (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Wit
   have count : (U.card:ℝ) = (∑ y ∈ U, q y)+miss := by
     change _ = (∑ y ∈ U, q y)+∑ y ∈ U, (1-q y)
     rw [sum_sub_distrib]; simp
-  have mpos : 0 ≤ miss := sum_nonneg fun y _ ↦ miss_nonneg G C y
+  have mpos : 0 ≤ miss := sum_nonneg fun y _ ↦ one_sub_neighborFraction_nonneg G C y
   have hsmall : x ≤ X/S.s := (le_div_iff₀ sp).mpr (by linarith only [dx])
   rw [count,add_mul]
   have win := add_le_add (mul_le_mul_of_nonneg_right weight x0) (mul_le_mul_of_nonneg_right hsmall mpos)

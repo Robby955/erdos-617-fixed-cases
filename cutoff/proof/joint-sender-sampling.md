@@ -51,11 +51,11 @@ $$
 $$
 Both subtractions on the right are retained by the calculation. The statement applies to any admissible thinning, including oversampling. [Independent row tests](TestedRowMoments.lean) · [Combined tested cut](ColoringTestedCut.lean) · [Recovery on the original edges](RecoveredTest.lean)
 
-## What remains before the cutoff theorem
+## From the sample to the cutoff
 
 The per-row and total heavy-load counts, the manuscript row probabilities and their expected total are now in Lean. The two kinds of load use disjoint incidences, giving coefficient one. [Proof and replay](heavy-loads.md)
 
-The expected cost of distinct repairs at the enlarged sampling probability is now bounded directly by four times its base value. Both oversampling passes and the one-row bound for moderate senders have been formalized. The remaining graph step is to combine strong and moderate assignments at every destination before deriving inequality (5). The rational checker gives positive values at all 1,280 endpoints. [Proofs and current frontier](oversampling.md) · [Endpoint checker](verify_retained_width.py)
+The expected cost of distinct repairs at the enlarged sampling probability is now bounded directly by four times its base value. Both oversampling passes and the one-row bound for moderate senders have been formalized. The completed proof combines strong and moderate assignments at each destination and derives inequality (5) on the same coloring. [End-to-end theorem and replay](formal-cutoff.md) The rational checker gives positive values at all 1,280 endpoints. [Oversampling proofs](oversampling.md) · [Endpoint checker](verify_retained_width.py)
 
 ## Replaying the proofs
 

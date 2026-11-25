@@ -238,9 +238,36 @@ OVERSAMPLE_NAMES = (
 )
 
 
+CAPACITY_MODULES = (*OVERSAMPLE_MODULES, "MixedSenderCapacity")
+CAPACITY_NAMES = tuple("Erdos617.ColoredLists." + name for name in (
+    "eligible_mass_of_row_allowances", "mixed_row_capacity",
+    "marked_sender_payment", "mixed_sender_capacity",
+))
+
+
+CUTOFF_MODULES = (*CAPACITY_MODULES, "FinalSignedCut", "SignedCutInterval", "CutoffCells",
+                  "CertifiedWidthCell", "BalancedColoringCutoff")
+CUTOFF_NAMES = (
+    "Erdos617.ColoredLists.mixed_sender_capacity",
+    "Erdos617.ColoredLists.coloring_signed_cut",
+    "Erdos617.ColoredLists.signed_interval",
+    "Erdos617.CutoffCells.all_cells_pass",
+    "Erdos617.CutoffCells.real_endpoints",
+    "Erdos617.missing_color_of_large_order",
+    "Erdos617.erdos_617_of_ge_cutoff",
+    "Erdos617.balancedColoringAt_of_ge_reduced_cutoff",
+    "Erdos617.paper_cutoff",
+    "Erdos617.finite_counterexample_orders",
+)
+
+
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "oversampling":
+    if part == "cutoff":
+        modules, names = CUTOFF_MODULES, CUTOFF_NAMES
+    elif part == "capacity":
+        modules, names = CAPACITY_MODULES, CAPACITY_NAMES
+    elif part == "oversampling":
         modules, names = OVERSAMPLE_MODULES, OVERSAMPLE_NAMES
     elif part == "loads":
         modules, names = LOAD_MODULES, LOAD_NAMES
@@ -310,7 +337,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads", "oversampling"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads", "oversampling", "capacity", "cutoff"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)

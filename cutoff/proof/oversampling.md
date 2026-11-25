@@ -1,6 +1,6 @@
 # Sampling the same coloring twice
 
-Let $r\ge255\cdot2^{136}$. Start with an arbitrary $r$-edge-coloring on $r^2+1$ vertices. Lean either finds $r+1$ vertices missing a color or constructs retained cliques, all from this coloring, for which both oversampling estimates in Appendix A, §5 hold. The second alternative still has to be excluded to conclude the cutoff theorem. The precise implication is the last theorem in [TwoOversamplingPasses.lean](TwoOversamplingPasses.lean).
+Let $r\ge255\cdot2^{136}$. Start with an arbitrary $r$-edge-coloring on $r^2+1$ vertices. Lean either finds $r+1$ vertices missing a color or constructs retained cliques, all from this coloring, for which both oversampling estimates in Appendix A, §5 hold. The [completed cutoff proof](formal-cutoff.md) excludes the second alternative. The precise implication is the last theorem in [TwoOversamplingPasses.lean](TwoOversamplingPasses.lean).
 
 ## Why a larger sample cannot cost too many repairs
 
@@ -12,7 +12,7 @@ Let $s$ be the chosen scale, $\Delta$ the exterior shortage and $A$ the sum of t
 
 Write $\rho=9/(40s)$, $x_i=1-|C_i|/r$ and $N_i$ for the number of vertices whose unique strong destination is row $i$. The first estimate uses $\sum_iN_ix_i\le 2\kappa\rho r$. For each such vertex $y$ let $q_y$ be the fraction of its destination adjacent to it in the target color. The sender calculation pays at least $37\rho r(1-q_y)$ for that vertex. Distinct unique-destination groups are disjoint, so the first estimate bounds the sum of these actual nonneighbor fractions. Substitution gives the second weight $W_1$ and a second surplus bound, on the same rows. The parameters used by the exact checker occur explicitly in the definition of `TwoPassBounds`. [Base repair budget](OversamplingBudget.lean) · [Charging the nonneighbors](RetryDeficit.lean) · [Both passes](TwoOversamplingPasses.lean)
 
-## The remaining capacity inequality
+## Capacity with both kinds of sender
 
 Assign each moderate sender in advance to a row where it has more than $\rho r$ target neighbors. If $v_i$ is the expected number marked at destination $i$ and $m$ is the expected number of all marked senders, a one-row cut of at most $\epsilon(\rho r)^2$ implies
 $$
@@ -20,11 +20,11 @@ $$
 $$
 Lean proves the one-row cut bound, the disjoint assignment and this implication. [Single-row cut](OneRowCapacity.lean) · [Assignment and square-sum bound](ModerateDestinations.lean)
 
-The next graph inequality combines the strong assignments with the marked moderate vertices at each destination. With $D=\sum_i(r-|C_i|)$, $\sigma=\sum_i(r-|C_i|)^2$ and $L_0=D+\Delta+1-A$, its required form is
+The combined capacity inequality treats the strong assignments with the marked moderate vertices at each destination. With $D=\sum_i(r-|C_i|)$, $\sigma=\sum_i(r-|C_i|)^2$ and $L_0=D+\Delta+1-A$, it gives
 $$
 rL_0+\rho r\,m\le rD+\tfrac{501}{1000}\sigma+\sum_i v_i^2+m .
 $$
-Apply the clique capacity to the union in each sample, bound the variance of the moderate count by its mean, and evaluate the strong-row inequality at $v_i$. The one-row cuts alone do not establish this joint inequality. After it, the formal proof must connect both sampling bounds to inequality (5) and certify positivity throughout the width intervals. [Capacity argument, §3](cutoff-289.md#3-using-the-labels-of-edges-into-a-row) · [Final signed expression](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut) · [Exact rational checker](verify_retained_width.py)
+Lean applies the clique capacity to the union in each sample, bounds the variance of the moderate count by its mean, and evaluates the strong-row inequality at $v_i$. The resulting inequality feeds into (5), whose sign is certified throughout the width intervals. [Combined capacity in Lean](MixedSenderCapacity.lean) · [End-to-end proof and replay](formal-cutoff.md) · [Capacity argument, §3](cutoff-289.md#3-using-the-labels-of-edges-into-a-row) · [Final signed expression](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut) · [Exact rational checker](verify_retained_width.py)
 
 ## Verification
 

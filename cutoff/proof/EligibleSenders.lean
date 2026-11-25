@@ -60,20 +60,34 @@ private theorem retained_charge_capacity (prep : Prepared T) (hr : 3 ≤ r) (no 
   change (∑ y ∈ Z, deg y)+(Z.card:ℝ)*d-J ≤ (r:ℝ)*d+501/1000*d^2
   nlinarith only [capacity,variance,count]
 
-/-- Each strong sender chooses at most two of its original rows. Summing their
-actual payments in row order proves the eligibility estimate and keeps the
-additional 37ρr(1−q) and ρrv from every unique strong sender. -/
-theorem eligible_mass_with_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+/-- The strong senders assigned to a particular destination before sampling. -/
+def strongGroup (E : Finset V) (I : Finset ℕ) (s i : ℕ) : Finset V :=
+  (senderSet T E I s).filter fun y ↦ i ∈ assignedStrong (strongRows T E I y)
+
+/-- The part of a strong sender's row charge available after missing neighbors are paid. -/
+def rowSenderPayment (E : Finset V) (i : ℕ) (y : V) : ℝ :=
+  let C := rowList T E i
+  let G := targetGraph T.color T.target
+  let d := (r:ℝ)-C.card
+  ((C.filter (G.Adj y)).card:ℝ)+d-2*d*(1-neighborFraction G C y)
+
+/-- Sum the sender payments against arbitrary signed row allowances. Both
+the strong-only test and the mixed capacity use this same incidence sum. -/
+theorem eligible_mass_of_row_allowances (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e n α β M)
-    (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card = r) :
+    (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card = r) (slack : ℕ → ℝ)
+    (rowBounds : ∀ i ∈ S.retained,
+      (∑ y ∈ strongGroup T E S.retained S.s i, rowSenderPayment T E i y) ≤
+        (r:ℝ)*((r:ℝ)-(rowList T E i).card) +
+          (501/1000:ℝ)*((r:ℝ)-(rowList T E i).card)^2 + slack i) :
     let H := senderSet T E S.retained S.s
     let Δ := ((S.s-1:ℕ):ℝ)*r-((lowExterior T E S.retained S.s).card:ℝ)
     (r:ℝ)*(1+Δ-∑ y ∈ H, senderEligibility T E S.retained S.s y)+
       (∑ y ∈ H, senderRetryCharge T E S.retained S.s y) ≤
-      (501/1000:ℝ)*∑ i ∈ S.retained, ((r:ℝ)-(rowList T E i).card)^2 := by
+      (501/1000:ℝ)*(∑ i ∈ S.retained, ((r:ℝ)-(rowList T E i).card)^2) + ∑ i ∈ S.retained, slack i := by
   let H := senderSet T E S.retained S.s
   let G := targetGraph T.color T.target
   let C := rowList T E
@@ -86,12 +100,6 @@ theorem eligible_mass_with_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Wi
   let Z := fun i ↦ H.filter fun y ↦ i ∈ assignments y
   let pay := fun y i ↦ deg y i+d i-2*d i*(1-q y i)
   have rows (y i) (h : i ∈ N y) : i ∈ S.retained ∧ (r:ℝ)/2 < deg y i := mem_filter.mp h
-  have cost (i) (hi : i ∈ S.retained) :
-      (∑ y ∈ Z i, pay y i) ≤ (r:ℝ)*d i+(501/1000:ℝ)*(d i)^2 := by
-    have dis : Disjoint (C i) (Z i) := disjoint_left.mpr fun y inC inZ ↦
-      ((mem_senderSet T).mp (mem_filter.mp inZ).1).1 (mem_biUnion.mpr ⟨i,hi,inC⟩)
-    apply retained_charge_capacity T prep hr no lists S band hi _ dis
-    exact fun y hy ↦ (rows y i (assignedStrong_subset _ (mem_filter.mp hy).2)).2
   have sender (y : V) (_ : y ∈ H) :
       (r:ℝ)*(1-senderEligibility T E S.retained S.s y)+senderRetryCharge T E S.retained S.s y ≤
         ∑ i ∈ assignments y, pay y i := by
@@ -128,7 +136,8 @@ theorem eligible_mass_with_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Wi
     ext i
     simp only [mem_filter]
     exact ⟨fun hi ↦ ⟨(rows y i (assignedStrong_subset _ hi)).1,hi⟩,And.right⟩
-  have upper := sum_le_sum cost
+  have upper : (∑ i ∈ S.retained, ∑ y ∈ Z i, pay y i) ≤
+      ∑ i ∈ S.retained, ((r:ℝ)*d i+(501/1000:ℝ)*(d i)^2+slack i) := sum_le_sum rowBounds
   have lower := sum_le_sum sender
   simp_rw [transpose] at lower
   rw [sum_comm] at lower
@@ -139,10 +148,32 @@ theorem eligible_mass_with_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Wi
   simp only [sum_add_distrib,← mul_sum,sum_sub_distrib,sum_const,nsmul_eq_mul,mul_one] at paid
   have ledger := sender_ledger T S order slots
   change (H.card:ℝ) = _ + ∑ i ∈ S.retained, d i at ledger
-  dsimp only
   change (r:ℝ)*(1+_ - ∑ y ∈ H, senderEligibility T E S.retained S.s y)+
-    (∑ y ∈ H, senderRetryCharge T E S.retained S.s y) ≤ (501/1000:ℝ)*∑ i ∈ S.retained, (d i)^2
+    (∑ y ∈ H, senderRetryCharge T E S.retained S.s y) ≤ (501/1000:ℝ)*(∑ i ∈ S.retained, (d i)^2) + ∑ i ∈ S.retained, slack i
   nlinarith only [paid,congrArg (fun z : ℝ ↦ (r:ℝ)*z) ledger]
+
+/-- Each strong sender chooses at most two of its original rows. Summing their
+actual payments in row order proves the eligibility estimate and keeps the
+additional 37ρr(1−q) and ρrv from every unique strong sender. -/
+theorem eligible_mass_with_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+    (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
+    (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
+      (range r) (qualifying T) E r)
+    (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e n α β M)
+    (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card = r) :
+    let H := senderSet T E S.retained S.s
+    let Δ := ((S.s-1:ℕ):ℝ)*r-((lowExterior T E S.retained S.s).card:ℝ)
+    (r:ℝ)*(1+Δ-∑ y ∈ H, senderEligibility T E S.retained S.s y)+
+      (∑ y ∈ H, senderRetryCharge T E S.retained S.s y) ≤
+      (501/1000:ℝ)*∑ i ∈ S.retained, ((r:ℝ)-(rowList T E i).card)^2 := by
+  have cost (i) (hi : i ∈ S.retained) :=
+    retained_charge_capacity T prep hr no lists S band hi (strongGroup T E S.retained S.s i)
+      (disjoint_left.mpr fun y inC inZ ↦
+        ((mem_senderSet T).mp (mem_filter.mp inZ).1).1 (mem_biUnion.mpr ⟨i,hi,inC⟩))
+      (fun y hy ↦ (mem_filter.mp (assignedStrong_subset _ (mem_filter.mp hy).2)).2)
+  simpa only [sum_const_zero,add_zero] using
+    eligible_mass_of_row_allowances T hr no order lists S band slots (fun _ ↦ 0)
+      (fun i hi ↦ by rw [add_zero]; exact cost i hi)
 
 /-- The extra charge in the eligibility bound is nonnegative on every sender,
 including vertices with no assigned retry. -/

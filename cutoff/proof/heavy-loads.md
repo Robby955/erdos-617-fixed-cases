@@ -18,7 +18,7 @@ The coefficient of $y_i/\rho$ is exactly one. Sum the destination counts before 
 
 For a width endpoint, let $A$ bound $sy_i$ and $X$ bound $sx_i$. The old, slightly larger expression for the maximum height still applies. With the paper's coefficients $a,b$, the inequality $\pi_i=(a n_i+b N_i)/r\le 1$ now follows for every retained row. Each $\pi_i$ is nonnegative. The independent row test therefore exists for every admissible sender-thinning probability. Summing gives a bound on the expected number of tested rows. The specialized signed-cut theorem also evaluates the second falling moment of the number of omitted and tested rows, including its diagonal correction. [Endpoint coefficients](HeavyLoadTests.lean) · [Expected number and signed cut](ManuscriptRowTest.lean)
 
-The oversampling supplement now compares distinct repair edges directly at two sampling probabilities and derives both estimates with the quadratic correction. It also records the remaining combined capacity inequality. [Oversampling proof and replay](oversampling.md)
+The oversampling supplement now compares distinct repair edges directly at two sampling probabilities and derives both estimates with the quadratic correction. The combined capacity inequality is now proved in the [end-to-end supplement](formal-cutoff.md). [Oversampling proof and replay](oversampling.md)
 
 Run the exact endpoint check and kernel replay from the directory containing `lakefile.toml`.
 

@@ -8,7 +8,7 @@ Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ c
 
 **[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
-For every coloring at the working cutoff, Lean constructs the ordinary rows and their marked exterior sample. It bounds the cost of repairing that sample and derives the signed cut on the actual edges between tested rows. Lean also proves both oversampling bounds on the same coloring and bounds the contribution of moderately attached vertices at each destination. The combined capacity inequality and its connection to the final numerical contradiction remain open in Lean. [Both sampling estimates and replay](cutoff/proof/oversampling.md)
+The Lean proof starts with an arbitrary coloring at the improved cutoff and produces the missing-color witness. It also proves that only finitely many orders can be counterexamples. [Theorem in Lean](cutoff/proof/BalancedColoringCutoff.lean) · [Proof and independent-kernel replay instructions](cutoff/proof/formal-cutoff.md)
 
 ## July fixed-case releases
 

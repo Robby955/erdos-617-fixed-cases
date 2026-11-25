@@ -12,7 +12,7 @@ The review edition carries Robert Sneiderman’s byline. Both editions give the 
 
 | Result | Mathematical argument | Verification |
 |---|---|---|
-| Cutoff at $2^{144}$ | The proof compares the cost of discarding vertices with the cost of discarding their destination rows. The full paper includes the earlier combinatorial estimates and the signed-cut argument. [Width argument](proof/retained-width.md) · [Earlier estimates](proof/weighted-width.md) | Exact rational checks for five width comparisons and 1,280 signed-cut endpoints. Lean constructs one threshold satisfying all three row bounds in (4), for each of the five bands. [Python](proof/verify_retained_width.py) · [Lean width theorem](proof/CommonWidth.lean) |
+| Cutoff at $2^{144}$ | The proof compares the cost of discarding vertices with the cost of discarding their destination rows. The full paper includes the earlier combinatorial estimates and the signed-cut argument. [Width argument](proof/retained-width.md) · [Earlier estimates](proof/weighted-width.md) | Exact rational checks for five width comparisons and 1,280 signed-cut endpoints. The complete theorem and its sharper corollary are formalized from the original coloring. [Python endpoint check](proof/verify_retained_width.py) · [End-to-end Lean theorem](proof/BalancedColoringCutoff.lean) |
 | Twelve colors | Six exterior vertices would each have to use a different one of five rows. One row shared by two yields thirteen vertices missing a color. The resulting edge floor is 409 against a cap of 408. [Proof source](proof/order-twelve.md) · [Local hypotheses](proof/overfull-core.md#6-a-reduction-to-local-statements-for-any-hue) | One program minimizes the excess spent, another maximizes the number of vertices a given budget can accommodate. Lean checks the missing-color witness once its row and two vertices are supplied. [First replay](proof/verify_order_twelve.py) · [Second replay](proof/replay_order_twelve.py) · [Lean](proof/OrderTwelveCollision.lean) |
 
 From this directory, the following commands run the main exact checks with Python 3.10 or newer. The scripts use the standard library.
@@ -27,19 +27,19 @@ python3 -B replay_order_twelve.py
 
 The first command reports five positive width margins and a minimum signed-cut margin greater than 0.0003327. In the four-row census at twelve, every surviving quartet has weight at least four. The two final commands test 91 profiles, or 434 choices when row labels of matching weight are retained, and exclude all eleven possible stops. The proof at twelve also uses the two- and three-row lemmas in the [supporting note](proof/overfull-core.md).
 
-To check the Lean components, run the following from the directory containing this README. The toolchain and the mathlib commit are pinned.
+To check the Lean proofs, run the following from the directory containing this README. The toolchain and the mathlib commit are pinned.
 
 ```sh
 lake exe cache get
 lake env lean proof/RowExtraction.lean
 lake env lean proof/PruningOverlap.lean
-lake env python3 -B proof/replay_pruning_kernels.py oversampling --lean-only
+lake env python3 -B proof/replay_pruning_kernels.py cutoff --lean-only
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The November 25 Lean supplement starts from the original coloring at the working cutoff $255\cdot2^{136}$. It constructs the retained cliques, proves the strict exterior shortage and samples the outside vertices. On every supported sample the repaired graph has independence number at most $s-1$. Lean bounds the repair cost and proves the tested-cut inequality using the same target edges between cliques. Lean proves both oversampling estimates for those same rows. It also proves a single-row cut bound and controls the moderate senders assigned to each destination. The combined strong- and moderate-sender capacity inequality and the final numerical contradiction remain to be formalized. [Oversampling and verification](proof/oversampling.md) · [Precise cutoff statement](proof/CutoffStatement.lean)
+The end-to-end Lean proof starts with an arbitrary coloring on the specified number of vertices. It selects the cliques, derives both sampling estimates and the combined capacity inequality, and excludes the resulting numerical interval. The final theorem gives the missing-color witness for every order at or above the improved cutoff. A corollary proves that only finitely many orders can be counterexamples. [Theorems](proof/BalancedColoringCutoff.lean) · [Proof guide and verification record](proof/formal-cutoff.md)
 
-Run `lake env python3 -B proof/replay_pruning_kernels.py sampling` for the original-coloring sampling theorem and `lake env python3 -B proof/replay_pruning_kernels.py cut` for the repair, tested cut and edge recovery. Use `loads` for the manuscript row test and `oversampling` for both sampling bounds and the moderate destinations. These commands build the source and replay the export with Lean’s kernel, Lean4Lean and Nanoda. [Replay script](proof/replay_pruning_kernels.py)
+Run `lake env python3 -B proof/replay_pruning_kernels.py cutoff` to export the full proof and replay it with Lean’s kernel, Lean4Lean and Nanoda. The proof guide lists the executables used by this command. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 
