@@ -132,6 +132,48 @@ def ordered_incidence_examples():
     return cases, strict
 
 
+def check_fractional_pruning_overlap():
+    """Replay both stages on 17 vertices, charging the ends of undirected edges."""
+    r = 4
+    row = (0,)*5 + (1,)*4 + (2,)*4 + (3,)*4
+    cross = {(0, 5), (0, 6), (1, 9), (1, 13), (2, 5), (5, 14), (10, 15)}
+    live = set(range(len(row)))
+    recorded = set()
+    payments = {}
+    for source, destination in ((0, 1), (5, None), (1, None)):
+        star = [edge for edge in cross if source in edge and set(edge) <= live]
+        if destination is not None:
+            assert 256*row.count(destination) <= 257*r
+            star = [edge for edge in star if any(row[v] == destination for v in edge)]
+            recorded.update(star)
+            quota = F(r, 4)
+        else:
+            quota = TAU*r
+        assert len(star) > quota
+        for u, v in star:
+            other = v if u == source else u
+            assert (source, other) not in payments and (other, source) not in payments
+            payments[source, other] = quota / len(star)
+            if destination is not None:
+                payments[other, source] = quota / len(star)
+        live.remove(source)
+
+    assert 256*row.count(0) > 257*r
+    ends = {(v, u) for edge in cross for v, u in (edge, edge[::-1])}
+    forward = {(v, u) for v, u in ends if row[v] == 0 and row[v] < row[u]}
+    ordinary = {(v, u) for v, u in ends if v in live and row[v] != 0
+                and tuple(sorted((v, u))) not in recorded}
+    overlap = sum(payments.get(end, 0) for end in forward)
+    assert (2, 5) in forward and (2, 5) not in payments
+    assert payments[5, 2] == TAU*r / 2
+    assert (6, 0) not in ordinary and payments[6, 0] == F(1, 2)
+    assert (len(ends), len(ordinary), len(forward)) == (14, 5, 5)
+    assert sum(payments.values()) == F(299, 50)
+    assert overlap == F(299, 100)
+    assert len(ordinary) + sum(payments.values()) + len(forward) <= len(ends) + overlap
+    assert 2*TAU*r - overlap == F(99, 100)
+
+
 def auxiliary_checks():
     """Prove all list, rounding and ordered attachment inequalities."""
     tau, theta_a, theta_o = F(43, 200), F(81, 200), F(369, 1000)
@@ -220,6 +262,7 @@ def sampling(A, X, B, R, y_hi):
 if __name__ == '__main__':
     caps = auxiliary_checks()
     cases, strict = ordered_incidence_examples()
+    check_fractional_pruning_overlap()
     widths, margins = [], []
     lo = F(0)
     for hi, b, ai, bi in BANDS:
@@ -242,3 +285,4 @@ if __name__ == '__main__':
     print(f'Minimum log-width margin {float(min(widths)):.9f}. Minimum signed-cut margin {float(min(margins)):.9f}.')
     print('Auxiliary one-, two-, three-row deficit caps:', ', '.join(f'{float(c):.9f}' for c in caps))
     print(f'Discarded-incidence check: {cases:,} graph and omission choices, {strict:,} positive savings.')
+    print('17-vertex pruning replay: overlap 299/100, paper allowance 398/100.')

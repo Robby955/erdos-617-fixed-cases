@@ -32,11 +32,14 @@ To check the Lean components, run the following from the directory containing th
 ```sh
 lake exe cache get
 lake env lean proof/RowExtraction.lean
+lake env lean proof/PruningOverlap.lean
 lake env lean proof/RetainedWidth.lean
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-Lean checks the choice of a row and its outgoing edge count, the five width comparisons, and the final thirteen-vertex witness. The complete extraction and pruning argument, the width integral, and the full twelve-color reduction are given in the manuscript. Both theorems await independent mathematical review.
+Lean checks the row count, the pruning overlap, the five width comparisons, and the final thirteen-vertex witness. The proof that an arbitrary coloring supplies all inputs to the width argument, the width integral, and the full twelve-color reduction are given in the manuscript. The exact statement of Theorem A has its own Lean definition, `Erdos617.CutoffStatement`. An end-to-end Lean proof of that proposition is open. [Formal statement](proof/CutoffStatement.lean)
+
+To check the overlap with three kernels, run `lake env python3 -B proof/replay_pruning_kernels.py`. It exports the seven declarations and their dependencies and replays the same proof in Lean’s kernel, Lean4Lean and Nanoda. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 
@@ -44,7 +47,7 @@ Lean checks the choice of a row and its outgoing edge count, the five width comp
 
    On four vertices, let the only nontarget edges be *ab* and *cd*. With pivot *a*, only *b* is left for later. The internal edge *cd* has two ends, and its two outgoing target edges are *cb* and *db*. This attains equality.
 
-2. **Follow the same edges through pruning on pages 11–12, then turn to pages 3–5.** Appendix A, §2 asks which outgoing edge incidences have already been charged to a deleted vertex. This is the first calculation to check by hand. The cutoff chapter uses those budgets to choose a single collection of rows that controls both their size deficits and their edges to other rows. Lean checks the last five numerical comparisons once the pruning parameters are supplied. [Pruning and overlap](proof/weighted-width.md#2-give-missing-representatives-to-the-short-lists) · [Cutoff chapter](proof/retained-width.md) · [Lean comparisons](proof/RetainedWidth.lean)
+2. **Follow the same edges through pruning on pages 11–12, then turn to pages 3–5.** A deleted vertex in a chosen oversized row can spend its quota on outgoing target edges. Its row is too large to receive a first-stage destination charge. Lean proves that the source quotas cover every duplicated incidence. The next step is the width integral, which must produce one threshold that controls both row deficits and target edges to other rows. Lean verifies the five numerical comparisons used at the end of that argument. [Pruning overlap and worked example](proof/pruning-overlap.md) · [Width integral](proof/weighted-width.md#3-integrate-both-endpoints-of-the-width-test) · [Cutoff chapter](proof/retained-width.md) · [Lean comparisons](proof/RetainedWidth.lean)
 3. **Read the contradiction on pages 13–16.** If *h* rows were omitted, Appendix A, §4 shows that fewer than *hr* − 3*r*/20 exterior vertices have small target degree into every retained row. Section 5 uses that shortage to derive inequality (5), which requires a nonpositive value. Concavity and the exact computation give a strictly positive value throughout the allowed interval. A referee can check how the graph forces (5) before replaying its 1,280 endpoints. [Shortage and signed cut](proof/weighted-width.md#4-a-shortage-of-at-least-3r20) · [Two uses of the cut](proof/cutoff-190.md#4-recover-the-cost-of-uniquely-assigned-senders) · [Exact replay](proof/verify_retained_width.py)
 
 ### Earlier work
