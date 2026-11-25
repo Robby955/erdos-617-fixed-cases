@@ -1,17 +1,19 @@
 # An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture
 
-Robert Sneiderman · Preprint for independent review · 24 November 2026
+**Robert Sneiderman and OpenAI GPT-6.2 Astra** · GitHub edition · 24 November 2026
 
 Color every edge of a complete graph with $r$ colors. Erdős and Gyárfás asked whether, on $r^2+1$ vertices, some $r+1$ vertices must miss one color. This manuscript proves that they must for every $r\ge 2^{144}$, and separately for $r=12$. With the fixed cases through eleven, the only possible exceptions have $13\le r<2^{144}$.
 
-**[Read the overview](overview.pdf)** · **[Download the full paper](paper.pdf)** · **[Read the twelve-color proof](proof/order-twelve.md)**
+**[Two-page overview](github-overview.pdf)** · **[Full paper](github-paper.pdf)** · **[Twelve-color paper](proof/github-order-twelve.pdf)** · **[Cite the GitHub edition](CITATION.cff)**
+
+The review edition carries Robert Sneiderman’s byline. Both editions give the same theorems and proofs. [Review paper](paper.pdf) · [Review overview](overview.pdf) · [Twelve-color review paper](proof/order-twelve.pdf) · [Review citation](CITATION-review.cff)
 
 ### How to check the result
 
 | Result | Mathematical argument | Verification |
 |---|---|---|
 | Cutoff at $2^{144}$ | The proof compares the cost of discarding vertices with the cost of discarding their destination rows. The full paper includes the earlier combinatorial estimates and the signed-cut argument. [Width argument](proof/retained-width.md) · [Earlier estimates](proof/weighted-width.md) | Exact rational checks for five width comparisons and 1,280 signed-cut endpoints. A Lean theorem covers the five comparisons for all feasible real parameters. [Python](proof/verify_retained_width.py) · [Lean](proof/RetainedWidth.lean) |
-| Twelve colors | Six exterior vertices would each have to use a different one of five rows. One row shared by two yields thirteen vertices missing a color. The resulting edge floor is 409 against a cap of 408. [Paper](proof/order-twelve.pdf) · [Local hypotheses](proof/overfull-core.md#6-a-reduction-to-local-statements-for-any-hue) | One program minimizes the excess spent, another maximizes the number of vertices a given budget can accommodate. Lean checks the missing-color witness once its row and two vertices are supplied. [First replay](proof/verify_order_twelve.py) · [Second replay](proof/replay_order_twelve.py) · [Lean](proof/OrderTwelveCollision.lean) |
+| Twelve colors | Six exterior vertices would each have to use a different one of five rows. One row shared by two yields thirteen vertices missing a color. The resulting edge floor is 409 against a cap of 408. [Proof source](proof/order-twelve.md) · [Local hypotheses](proof/overfull-core.md#6-a-reduction-to-local-statements-for-any-hue) | One program minimizes the excess spent, another maximizes the number of vertices a given budget can accommodate. Lean checks the missing-color witness once its row and two vertices are supplied. [First replay](proof/verify_order_twelve.py) · [Second replay](proof/replay_order_twelve.py) · [Lean](proof/OrderTwelveCollision.lean) |
 
 From this directory, the following commands run the main exact checks with Python 3.10 or newer. The scripts use the standard library.
 
@@ -41,4 +43,14 @@ Erdős and Gyárfás proved the cases $r=3,4$. Sneiderman released proof manuscr
 
 Terpstra Research released arguments at ten and eleven in August. The accompanying working notes give this project's separate proofs. [Terpstra release](https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.1) · [Ten, Theorem 21](proof/overfull-core.md#12-order-ten) · [Eleven](proof/midpoint-row-excess.md)
 
-The first two pages of the paper give the contribution statement, including the roles of Astra and Fable. To rebuild the PDFs, install Pandoc and XeLaTeX and run `python3 build_paper.py paper`, `python3 build_paper.py overview`, and `python3 build_paper.py twelve`. [Manuscript source](paper.md) · [Citation](CITATION.cff)
+Robert Sneiderman directed the research and handles correspondence. OpenAI GPT-6.2 Astra, the AI model used in Codex, contributed to proof search, calculations, Lean proofs and drafting. Fable contributed fixed-row arguments and checked earlier steps.
+
+### Rebuilding the PDFs
+
+With Pandoc and XeLaTeX installed, run these commands from this directory. Omit `--edition github` to build the review edition. [Shared manuscript source](paper.md)
+
+```sh
+python3 build_paper.py paper --edition github
+python3 build_paper.py overview --edition github
+python3 build_paper.py twelve --edition github
+```

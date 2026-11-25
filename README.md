@@ -1,14 +1,16 @@
 # The Erdős–Gyárfás balanced-coloring conjecture
 
-Robert Sneiderman
+## November cutoff and twelve-color paper
+
+**Robert Sneiderman and OpenAI GPT-6.2 Astra** · GitHub edition · 24 November 2026
 
 Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The November preprint gives an explicit cutoff of $2^{144}$ and a separate proof at twelve colors. The complete arguments are available for independent review. [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
-**[Two-page overview](cutoff/overview.pdf)** · **[Full paper](cutoff/paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
+**[Two-page overview](cutoff/github-overview.pdf)** · **[Full paper](cutoff/github-paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
 ## July fixed-case releases
 
-The July papers cover $r=5,6,7,8,9$. [Release for five through eight](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20) · [Release for nine](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21)
+Robert Sneiderman’s July papers cover $r=5,6,7,8,9$. [Release for five through eight](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20) · [Release for nine](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21)
 
 - **r = 5:** Every five-coloring of the edges of K₂₆ has six vertices
   whose induced K₆ omits at least one color. Equivalently,
@@ -50,7 +52,7 @@ manifests, replay commands, and proof artifacts are included under
 
 ## AI disclosure
 
-Robert Sneiderman directed the research. OpenAI's Astra model contributed to the November proof search, drafting, exact checks and Lean work. Fable contributed fixed-row arguments and internal reviews. The July papers document their earlier model assistance separately. [Contribution statement](AI_DISCLOSURE.md)
+Robert Sneiderman directed the research. OpenAI GPT-6.2 Astra, an AI model used in Codex, contributed to the November proof search, drafting, exact checks and Lean proofs. Fable contributed fixed-row arguments and internal reviews. The July papers document their earlier model assistance separately. [Contribution statement](AI_DISCLOSURE.md)
 
 ## Corrections
 

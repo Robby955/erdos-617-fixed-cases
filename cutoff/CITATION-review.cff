@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "Please cite Robert Sneiderman and the version of the preprint consulted."
+type: software
+title: "Proofs and verification for an explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture"
+authors:
+  - family-names: Sneiderman
+    given-names: Robert
+repository-code: "https://github.com/Robby955/erdos-617-fixed-cases"
+preferred-citation:
+  type: unpublished
+  title: "An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture"
+  authors:
+    - family-names: Sneiderman
+      given-names: Robert
+  year: 2026
+  month: 11

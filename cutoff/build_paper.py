@@ -63,15 +63,24 @@ def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> s
     return re.sub(r"\[([^\[\]\n]+)\]\(([^)\s]+)\)", resolve, text)
 
 
-def build(kind: str) -> None:
+def build(kind: str, edition: str = "review") -> None:
     target = {"paper": ROOT / "paper.pdf", "overview": ROOT / "overview.pdf",
               "twelve": PROOF / "order-twelve.pdf"}[kind]
+    metadata = []
+    if edition == "github":
+        target = target.with_name("github-" + target.name)
+        metadata = ["-M", "author=Robert Sneiderman and OpenAI GPT-6.2 Astra",
+                    "-M", "date=GitHub edition · 24 November 2026"]
     front = (ROOT / "paper.md").read_text().replace("<!-- pagebreak -->", r"\newpage")
     if kind == "twelve":
         text = (PROOF / "order-twelve.md").read_text()
         title = "The twelve-color case of the Erdős–Gyárfás balanced-coloring conjecture"
         front = f"---\ntitle: {title}\nauthor: Robert Sneiderman\ndate: 24 November 2026\n---\n\n"
         front += prepare_links(text[text.index("**Theorem.**"):], PROOF, target, set())
+        if edition == "github":
+            front += ("\n\nRobert Sneiderman directed the research. OpenAI GPT-6.2 Astra, "
+                      "the AI model used in Codex, contributed to proof search, calculation, "
+                      "Lean proofs and drafting. Fable contributed fixed-row arguments and checks.\n")
     else:
         chapters = [chapter_text(*chapter) for chapter in CHAPTERS] if kind == "paper" else []
         anchors = set(re.findall(r"\{#([\w-]+)\}", "\n".join(chapters)))
@@ -85,7 +94,8 @@ def build(kind: str) -> None:
         )
         if kind == "overview":
             front = front.replace("The next two chapters", "The first two proof chapters of the full paper")
-            front += "\n\n[Download the complete paper](paper.pdf)\n"
+            paper = "github-paper.pdf" if edition == "github" else "paper.pdf"
+            front += f"\n\n[Download the complete paper]({paper})\n"
         front += "".join(prepare_links(s, PROOF, target, anchors) for s in chapters)
     with tempfile.TemporaryDirectory() as temp:
         source = Path(temp) / "manuscript.md"
@@ -97,11 +107,13 @@ def build(kind: str) -> None:
             "-V", "linestretch=0.98", "-V", "colorlinks=true", "-V", "linkcolor=NavyBlue",
             "-V", "urlcolor=NavyBlue", "-V", "bookmarksdepth=2",
             "-V", r"header-includes=\usepackage{graphicx}\setlength{\emergencystretch}{2em}",
-            "-o", str(target),
+            *metadata, "-o", str(target),
         ], check=True, cwd=target.parent)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("target", choices=("paper", "overview", "twelve"))
-    build(parser.parse_args().target)
+    parser.add_argument("--edition", choices=("review", "github"), default="review")
+    args = parser.parse_args()
+    build(args.target, args.edition)

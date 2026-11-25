@@ -1,16 +1,18 @@
 cff-version: 1.2.0
-message: "Please cite Robert Sneiderman and the version of the preprint consulted."
+message: "Please cite the edition you consulted. This citation is for the November GitHub edition. The July manuscripts have their own dated releases."
 type: software
-title: "Proofs and verification for an explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture"
+title: "Proofs and verification for the November GitHub edition of the Erdős–Gyárfás cutoff paper"
 authors:
   - family-names: Sneiderman
     given-names: Robert
+  - name: "OpenAI GPT-6.2 Astra"
 repository-code: "https://github.com/Robby955/erdos-617-fixed-cases"
 preferred-citation:
   type: unpublished
-  title: "An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture"
+  title: "An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture (GitHub edition)"
   authors:
     - family-names: Sneiderman
       given-names: Robert
+    - name: "OpenAI GPT-6.2 Astra"
   year: 2026
   month: 11
