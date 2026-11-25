@@ -1,10 +1,10 @@
 ---
 title: An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture
-author: Robert Sneiderman
-date: 24 November 2026
+author: Robert Sneiderman and OpenAI GPT-6.2 Astra
+date: GitHub edition · 25 November 2026
 ---
 
-**Abstract.** Erdős and Gyárfás asked whether every $r$-coloring of the edges of $K_{r^2+1}$ contains $r+1$ vertices that miss a color. We prove their conjecture for every $r\ge 2^{144}$ and, by a different argument, for $r=12$. Together with the fixed cases through eleven, this leaves only $13\le r<2^{144}$ as possible exceptions. At large orders the proof extracts monochromatic cliques in a sparsest color and bounds the cost of choosing representatives from them. At twelve colors, six exterior vertices would each need a different row, and only five rows are available.
+**Abstract.** Every $r$-coloring of the edges of $K_{r^2+1}$ contains $r+1$ vertices missing a color whenever $r\ge 255\cdot 2^{136}$. We prove this by counting the edges that can prevent an independent choice across monochromatic cliques. Lean verifies the result from the original coloring. A separate proof at $r=12$, together with the fixed cases through eleven, leaves only $13\le r<255\cdot 2^{136}$ as possible exceptions.
 
 ## Why one extra vertex matters
 
@@ -12,7 +12,7 @@ The conjecture has a sharp boundary for infinitely many $r$. Take the $r^2$ poin
 
 **Theorem A.** Let $r$ be an integer with $r\ge 2^{144}$. For every coloring of the edges of $K_{r^2+1}$ with $r$ colors there is a set of $r+1$ vertices and a color that occurs on none of its edges.
 
-Suppose every $r+1$ vertices see all colors. A color with the fewest edges must then be sparse enough that a stability theorem places most of its edges inside rows. We extract large cliques in that color. An independent choice across these cliques gives one representative per row. To reach $r+1$, we also need outside vertices, whose neighbors may block some choices. The proof tracks the actual edges a blocked choice costs. The improvement to $2^{144}$ comes from charging deleted vertices and discarded rows to the *same* budget. Across five ranges of the parameters, one scale always leaves enough room to derive a contradiction. The width calculation and its earlier combinatorial inputs appear below.
+Suppose every $r+1$ vertices see all colors. A stability theorem puts most edges of a sparsest color inside rows. From these rows we extract monochromatic cliques and try to choose one vertex from each, together with enough exterior vertices to reach $r+1$. Every blocked choice costs edges. Charging deleted vertices and discarded rows to the same budget gives a contradiction in each of five parameter ranges. The positive margin in all five gives the sharper cutoff $255\cdot 2^{136}$. [Derivation and Lean proof](#formal-proof)
 
 **Theorem B.** In every twelve-coloring of the edges of $K_{145}$, some thirteen vertices miss a color.
 
@@ -33,7 +33,7 @@ Here the difficult case has 61 vertices and a budget of 408 edges of the chosen 
 
 Sneiderman publicly posted his five-color proof claim on 18 July. Ramazan Kara credits that proof as the mathematical basis of his Lean and certificate verification. Conner Silverstein and Anthony Rose gave separate computer-assisted arguments, as did Hai Xia and Stefan Szeider in October. [July 18 claim](https://www.erdosproblems.com/forum/thread/617/proof-claims#proof-claim-83) · [Kara's verification](https://github.com/RamazanKara/erdos-617-r5-formal-verification) · [Silverstein](https://github.com/Sprite143/erdos617-r5-computer-proof) · [Rose](https://github.com/arose-logos/erdos-gyarfas-r5/blob/main/paper/erdos617_paper.md) · [Xia and Szeider](https://arxiv.org/abs/2610.24484)
 
-**What Lean checks.** For Theorem A, Lean proves that every feasible pair of real pruning parameters belongs to one of the five bands where the width comparison succeeds. Its uniform lower bound on the margin is $7/10000$. For Theorem B, Lean constructs a thirteen-element set and a missing color from the eleven-point clique and its two exterior vertices. Deriving those configurations from an arbitrary coloring uses the written proofs and the accompanying exact calculations. Both complete arguments await independent mathematical review. [Width comparison](proof/RetainedWidth.lean) · [Thirteen-vertex witness](proof/OrderTwelveCollision.lean)
+**What Lean checks.** Given any coloring at $r\ge 255\cdot2^{136}$, Lean proves that a set of $r+1$ vertices misses a color. Three kernels accepted the same proof export. At twelve colors, Lean verifies the final thirteen-vertex witness. The written argument and two integer replays establish the hypotheses for that witness. Independent mathematical review is pending. [Cutoff proof and replay](proof/formal-cutoff.md) · [Twelve-color witness](proof/OrderTwelveCollision.lean)
 
 **Contributions.** Robert Sneiderman directed the research and handles correspondence. OpenAI GPT-6.2 Astra, the AI model used in Codex, contributed to proof search, calculations, Lean proofs and drafting. Fable contributed fixed-row arguments and checked earlier steps. The July releases document the tools used for those earlier results. [July disclosure](https://github.com/Robby955/erdos-617-fixed-cases/blob/fb628c8cf5ea7173c245c9542b69d72c11cce4a4/AI_DISCLOSURE.md)
 

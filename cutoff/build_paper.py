@@ -9,6 +9,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 PROOF = ROOT / "proof"
+REPOSITORY = "https://github.com/Robby955/erdos-617-fixed-cases"
+RELEASE_TAG = "cutoff-2026-11-25"
 CHAPTERS = [
     ("retained-width", "The cutoff at $2^{144}$", None),
     ("order-twelve", "The twelve-color theorem", None),
@@ -45,6 +47,8 @@ def chapter_text(stem: str, title: str, stop: str | None) -> str:
 def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> str:
     def resolve(match: re.Match) -> str:
         label, dest = match.groups()
+        if dest == "#formal-proof" and "formal-proof" not in anchors:
+            return f"[{label}]({REPOSITORY}/blob/{RELEASE_TAG}/cutoff/proof/formal-cutoff.md)"
         if re.match(r"^(?:https?://|#)", dest):
             return match.group()
         filename, _, fragment = dest.partition("#")
@@ -58,9 +62,12 @@ def prepare_links(text: str, source: Path, target: Path, anchors: set[str]) -> s
             return f"[{label}](#retained-width)"
         # A PDF file link can open adjacent source files when the package is downloaded.
         relative = path.relative_to(ROOT)
+        if target.name.startswith("github-"):
+            suffix = f"#{fragment}" if fragment else ""
+            return f"[{label}]({REPOSITORY}/blob/{RELEASE_TAG}/cutoff/{relative.as_posix()}{suffix})"
         name = relative.as_posix() if target.parent == ROOT else Path(filename).name
         return f"[{label}]({name})"
-    return re.sub(r"\[([^\[\]\n]+)\]\(([^)\s]+)\)", resolve, text)
+    return re.sub(r"(?<!!)\[([^\[\]\n]+)\]\(([^)\s]+)\)", resolve, text)
 
 
 def build(kind: str, edition: str = "review") -> None:
@@ -70,8 +77,9 @@ def build(kind: str, edition: str = "review") -> None:
     if edition == "github":
         target = target.with_name("github-" + target.name)
         metadata = ["-M", "author=Robert Sneiderman and OpenAI GPT-6.2 Astra",
-                    "-M", "date=GitHub edition · 24 November 2026"]
-    front = (ROOT / "paper.md").read_text().replace("<!-- pagebreak -->", r"\newpage")
+                    "-M", f"date=GitHub edition · {24 if kind == 'twelve' else 25} November 2026"]
+    manuscript = "paper.md" if edition == "github" else "paper-review.md"
+    front = (ROOT / manuscript).read_text().replace("<!-- pagebreak -->", r"\newpage")
     if kind == "twelve":
         text = (PROOF / "order-twelve.md").read_text()
         title = "The twelve-color case of the Erdős–Gyárfás balanced-coloring conjecture"
@@ -83,6 +91,17 @@ def build(kind: str, edition: str = "review") -> None:
                       "Lean proofs and drafting. Fable contributed fixed-row arguments and checks.\n")
     else:
         chapters = [chapter_text(*chapter) for chapter in CHAPTERS] if kind == "paper" else []
+        if edition == "github" and kind == "paper":
+            corollary = (PROOF / "retained-width-corollary.md").read_text().split("\n", 1)[1]
+            guide = (PROOF / "formal-cutoff.md").read_text().split("## Read the statement", 1)[1]
+            guide = guide.split("## Verification record,", 1)[0]
+            guide = guide.replace("## How the last contradiction works",
+                                  "\\newpage\n\n## How the last contradiction works")
+            chapters.append(
+                "\n\n\\newpage\n\n# Appendix I. The sharper cutoff and its Lean proof {#formal-proof}\n\n"
+                + corollary + "\n## The formal statement\n" + guide
+                + "\n[Build instructions and verification record](formal-cutoff.md#reproduce-the-proof)\n"
+            )
         anchors = set(re.findall(r"\{#([\w-]+)\}", "\n".join(chapters)))
         front = prepare_links(front, ROOT, target, anchors)
         front = re.sub(
@@ -94,7 +113,7 @@ def build(kind: str, edition: str = "review") -> None:
         )
         if kind == "overview":
             front = front.replace("The next two chapters", "The first two proof chapters of the full paper")
-            paper = "github-paper.pdf" if edition == "github" else "paper.pdf"
+            paper = f"{REPOSITORY}/releases/download/{RELEASE_TAG}/paper.pdf" if edition == "github" else "paper.pdf"
             front += f"\n\n[Download the complete paper]({paper})\n"
         front += "".join(prepare_links(s, PROOF, target, anchors) for s in chapters)
     with tempfile.TemporaryDirectory() as temp:

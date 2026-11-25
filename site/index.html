@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Robert Sneiderman’s research record for Erdős Problem 617. The large-color cutoff, the fixed cases and the work still open.">
+  <title>Erdős 617 · The cutoff and the open cases</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="graph.js" defer></script>
+</head>
+<body>
+  <header><a class="wordmark" href="#top">Erdős 617</a><nav aria-label="Contents"><a href="#proof">Proof</a><a href="#history">History</a><a href="#open">Open work</a></nav></header>
+  <main id="top">
+    <div class="hero">
+      <div><p class="eyebrow">Robert Sneiderman’s research notebook</p><h1>Where can a<br>counterexample<br>still hide?</h1>
+        <p class="intro">Erdős and Gyárfás asked whether every coloring of the edges of a complete graph on <i>r</i>² + 1 vertices with <i>r</i> colors has <i>r</i> + 1 vertices that miss a color. Our Lean proof puts every possible exception below 255 · 2<sup>136</sup>. The goal is a proof for every <i>r</i> ≥ 3.</p>
+        <a class="action" href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/paper.pdf">Read the cutoff paper <span aria-hidden="true">↗</span></a></div>
+      <figure><canvas id="graph" width="560" height="420" aria-label="A three-color complete graph on a three-by-three grid. The tenth vertex can be added below."></canvas>
+        <div class="controls" aria-label="Coloring example"><button aria-pressed="true" data-mode="grid">9 vertices</button><button aria-pressed="false" data-mode="ten">Add the tenth</button><button aria-pressed="false" data-mode="witness">Show the four</button></div>
+        <figcaption id="caption" aria-live="polite">In this three-color example, every four of the nine grid points see all three colors.</figcaption>
+      </figure>
+    </div>
+    <section id="proof"><p class="eyebrow">The November manuscript</p><h2>One cutoff, two ways to state it.</h2>
+      <div class="bounds">
+        <div><p class="label">The paper’s theorem</p><p class="formula">2<sup>144</sup></p><p>The manuscript proves the conjecture for every number of colors <i>r</i> ≥ 2<sup>144</sup>. This is the smallest power of two covered by the argument.</p></div>
+        <div><p class="label">Sharpest cutoff in this project</p><p class="formula">255 · 2<sup>136</sup></p><p>The same proof works slightly below 2<sup>144</sup>. Each of five inequalities had room to spare. Using that margin lowers the cutoff by exactly 1/256, or 0.390625%.</p></div>
+      </div>
+      <p>The corollary leaves every width comparison positive. The smallest certified margin is greater than 0.00015316. The paper checks 1,280 endpoints. Lean uses a separate subdivision and proves the inequality throughout all 45 intervals.</p>
+      <p class="sources"><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/overview.pdf">Two-page introduction</a><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/corollary.pdf">Read the corollary</a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25/cutoff/proof/formal-cutoff.md">Follow the proof in Lean</a><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/lean-and-paper.zip" download>Download Lean sources and paper</a></p>
+      <p class="byline">November GitHub edition by Robert Sneiderman and OpenAI GPT-6.2 Astra.</p>
+    </section>
+    <section id="history"><p class="eyebrow">Research history</p><h2>From five colors to a finite range.</h2>
+      <p class="intro">I started with five colors. Could I find six vertices that miss a color in every coloring of the 325 edges on 26 vertices? In July I used OpenAI models to work through that case, then six, seven, eight and nine.</p>
+      <dl class="timeline">
+        <dt>1999</dt><dd>Erdős and Gyárfás published the conjecture and proved it for three and four colors. <a href="https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf">Original paper</a></dd>
+        <dt>20–21 July 2026</dt><dd>I released my proof manuscripts for five through eight colors on July 20 and for nine on July 21. Ramazan Kara separately released a machine verification of the five-color case that credits my proof. <span class="refs"><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r5-r8-2026-07-20">Five through eight</a> · <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/fixed-r9-2026-07-21">Nine</a> · <a href="https://github.com/RamazanKara/erdos-617-r5-formal-verification">Kara’s verification</a></span></dd>
+        <dt>August 2026</dt><dd>Terpstra Research released arguments for ten and eleven colors. <a href="https://github.com/terpstra-research/erdos-617-r10-r11/releases/tag/v0.1.1">Release and audit notes</a></dd>
+        <dt>17 October 2026</dt><dd>Hai Xia and Stefan Szeider posted a separate computational proof for five colors. Their October 17 version does not cite my July release. Both dated accounts are linked here so readers can see the chronology. <a href="https://arxiv.org/html/2610.24484v1">October paper, version 1</a></dd>
+        <dt>November 2026</dt><dd>Our November paper gives a separate argument at twelve colors. The large-color theorem has an end-to-end Lean proof. <a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25/paper.pdf">Full manuscript</a></dd>
+      </dl>
+    </section>
+    <section id="open"><p class="eyebrow">Work toward the full conjecture</p><h2>What remains open?</h2>
+      <p class="gap">13 ≤ <i>r</i> &lt; 255 · 2<sup>136</sup></p>
+      <p>This is the range left by the project’s manuscripts. At the lower end, thirteen colors means 170 vertices. The target is to find fourteen that miss a color. At the upper end, lowering the cutoff to 2<sup>143</sup> would require a stronger estimate: one of the five current width comparisons already fails there.</p>
+      <h3>What Lean checks today</h3><p>For every color count at or above the cutoff, Lean proves that any coloring of the complete graph on <i>r</i>² + 1 vertices has <i>r</i> + 1 vertices missing a color. The downloadable source includes the theorem, exact arithmetic and replay instructions. Independent mathematical review of the paper is pending.</p>
+      <p class="sources"><a href="research.md">Research handoff and replay commands</a><a href="https://github.com/Robby955/erdos-617-fixed-cases">Paper and proofs on GitHub</a></p>
+    </section>
+  </main><footer>Robert Sneiderman · 25 November 2026</footer>
+</body>
+</html>
