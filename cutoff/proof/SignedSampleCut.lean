@@ -67,6 +67,20 @@ private theorem two_color_budgets (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
   · simpa only [mul_neg, ← sub_eq_add_neg] using upper₀
   · simpa only [mul_neg, ← sub_eq_add_neg] using upper₁
 
+/-- When W has hr+b vertices, the repaired target graph and the original
+nontarget color classes force a repair floor, valid for either sign of b. -/
+theorem oversample_floor (color : {e : Sym2 V // ¬e.IsDiag} → Fin r) (j : Fin r)
+    (W : Finset V) (h : ℕ) (repaired : SimpleGraph W) (P b : ℝ)
+    (hr : 2 ≤ r) (no : ¬Witness color) (order : (W.card:ℝ) = (h:ℝ)*r+b)
+    (cap : ∀ S : Finset W, repaired.IsIndepSet (S:Set W) → S.card ≤ h)
+    (paid : (repaired.edgeFinset.card:ℝ) ≤
+      (((targetGraph color j).induce (W:Set V)).edgeFinset.card:ℝ)+P) :
+    (2*((r:ℝ)-h)+1)*b-b^2-r*h*((h:ℝ)-1) ≤ 2*P := by
+  have size : (Fintype.card W:ℝ) = r*h+b := by simpa [mul_comm] using order
+  have J := (tangent_floor repaired h r b size cap).2
+  have O := (two_color_budgets color j W h (-b) hr no (by simpa using order)).2
+  linarith only [J,O,paid]
+
 /-- Edge budget on the union of W and the tested disjoint rows. The target-edge
 difference counts the cut and all interrow target edges when the rows are cliques. -/
 theorem signed_cut (color : {e : Sym2 V // ¬e.IsDiag} → Fin r) (j : Fin r)

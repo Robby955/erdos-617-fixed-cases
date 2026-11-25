@@ -55,8 +55,7 @@ Both subtractions on the right are retained by the calculation. The statement ap
 
 The per-row and total heavy-load counts, the manuscript row probabilities and their expected total are now in Lean. The two kinds of load use disjoint incidences, giving coefficient one. [Proof and replay](heavy-loads.md)
 
-1. Compare the original and enlarged thinning probabilities. The signed-cut upper bound applies at both probabilities. A lower bound for the enlarged sample and a comparison of their repair costs are needed to infer the two oversampling estimates. The comparison must preserve the subtraction $\rho\sum n_i^2$. [Excess-arc argument](cutoff-165.md#5-charge-only-the-excess-of-a-heavy-load)
-2. Charge each marked moderate sender to a destination, use the one-row cut on those assignments and apply the retry surplus in the second pass. This is the remaining path from the coloring to the nonpositive value in Appendix A, §5, inequality (5). The rational checker finds a strictly positive value at all 1,280 endpoints. [Capacity with moderate assignments](cutoff-289.md) · [Final inequality](weighted-width.md#5-the-five-width-bands-and-the-final-signed-cut) · [Endpoint checker](verify_retained_width.py)
+The expected cost of distinct repairs at the enlarged sampling probability is now bounded directly by four times its base value. Both oversampling passes and the one-row bound for moderate senders have been formalized. The remaining graph step is to combine strong and moderate assignments at every destination before deriving inequality (5). The rational checker gives positive values at all 1,280 endpoints. [Proofs and current frontier](oversampling.md) · [Endpoint checker](verify_retained_width.py)
 
 ## Replaying the proofs
 

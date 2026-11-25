@@ -210,9 +210,39 @@ LOAD_NAMES = tuple("Erdos617.ColoredLists." + name for name in (
 ))
 
 
+OVERSAMPLE_MODULES = (*LOAD_MODULES, "PairThinning", "RepairThinning", "OversamplingFloor",
+                      "OversamplingPass", "RepairEnvelope", "OversamplingBudget", "EligibilitySurplus",
+                      "RetryDeficit", "TwoOversamplingPasses", "OneRowCapacity", "ModerateDestinations")
+OVERSAMPLE_NAMES = (
+    "Erdos617.MarkedSender.oversample_weight",
+    "Erdos617.FiniteLaw.expect_pair_set_card_le",
+    "Erdos617.ColoredLists.sample_pair_local",
+    "Erdos617.ColoredLists.oversample_repairs",
+    "Erdos617.SignedSampleCut.oversample_floor",
+    "Erdos617.ColoredLists.oversample_expected_floor",
+    "Erdos617.ColoredLists.oversampling_pass",
+    "Erdos617.ColoredLists.untruncated_eligibility",
+    "Erdos617.ColoredLists.coloring_repair_envelope",
+    "Erdos617.ColoredLists.first_pass_unique_weight",
+    "Erdos617.ColoredLists.normalized_repair_budget",
+    "Erdos617.ColoredLists.oversample_guards",
+    "Erdos617.ColoredLists.eligibility_surplus",
+    "Erdos617.ColoredLists.unique_miss_charge",
+    "Erdos617.ColoredLists.retry_deficit_weight",
+    "Erdos617.ColoredLists.two_oversampling_passes",
+    "Erdos617.ColoredLists.witness_or_two_passes",
+    "Erdos617.ColoredLists.normalized_one_row_cut",
+    "Erdos617.ColoredLists.moderate_partition",
+    "Erdos617.ColoredLists.moderate_cut_payment",
+    "Erdos617.ColoredLists.moderate_square_sum",
+)
+
+
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "loads":
+    if part == "oversampling":
+        modules, names = OVERSAMPLE_MODULES, OVERSAMPLE_NAMES
+    elif part == "loads":
         modules, names = LOAD_MODULES, LOAD_NAMES
     elif part == "cut":
         modules, names = CUT_MODULES, CUT_NAMES
@@ -280,7 +310,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads", "oversampling"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)

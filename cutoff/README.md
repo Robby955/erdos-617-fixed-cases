@@ -33,13 +33,13 @@ To check the Lean components, run the following from the directory containing th
 lake exe cache get
 lake env lean proof/RowExtraction.lean
 lake env lean proof/PruningOverlap.lean
-lake env python3 -B proof/replay_pruning_kernels.py cut --lean-only
+lake env python3 -B proof/replay_pruning_kernels.py oversampling --lean-only
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The November 25 Lean supplement starts from the original coloring at the working cutoff $255\cdot2^{136}$. It constructs the retained cliques, proves the strict exterior shortage and samples the outside vertices. On every supported sample the repaired graph has independence number at most $s-1$. Lean bounds the repair cost and proves the tested-cut inequality using the same target edges between cliques. Lean now counts heavy loads, proves the manuscript’s row tests give probabilities in $[0,1]$ and bounds their expected total. The two oversampling comparisons and the final capacity argument still need to be connected to the numerical contradiction. [Row-test proof](proof/heavy-loads.md) [Tested cut and proof frontier](proof/joint-sender-sampling.md) · [Precise cutoff statement](proof/CutoffStatement.lean)
+The November 25 Lean supplement starts from the original coloring at the working cutoff $255\cdot2^{136}$. It constructs the retained cliques, proves the strict exterior shortage and samples the outside vertices. On every supported sample the repaired graph has independence number at most $s-1$. Lean bounds the repair cost and proves the tested-cut inequality using the same target edges between cliques. Lean proves both oversampling estimates for those same rows. It also proves a single-row cut bound and controls the moderate senders assigned to each destination. The combined strong- and moderate-sender capacity inequality and the final numerical contradiction remain to be formalized. [Oversampling and verification](proof/oversampling.md) · [Precise cutoff statement](proof/CutoffStatement.lean)
 
-Run `lake env python3 -B proof/replay_pruning_kernels.py sampling` for the original-coloring sampling theorem and `lake env python3 -B proof/replay_pruning_kernels.py cut` for the repair, tested cut and edge recovery. Run the same command with `loads` for the manuscript row test. All three commands build the source and replay the export with Lean’s kernel, Lean4Lean and Nanoda. [Replay script](proof/replay_pruning_kernels.py)
+Run `lake env python3 -B proof/replay_pruning_kernels.py sampling` for the original-coloring sampling theorem and `lake env python3 -B proof/replay_pruning_kernels.py cut` for the repair, tested cut and edge recovery. Use `loads` for the manuscript row test and `oversampling` for both sampling bounds and the moderate destinations. These commands build the source and replay the export with Lean’s kernel, Lean4Lean and Nanoda. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 

@@ -101,6 +101,27 @@ def law (G : SimpleGraph V) (y : V) (kind : Kind V) (ρ p : ℝ)
 
 def marked (o : State V) : ℝ := if o.isSome then 1 else 0
 
+/-- Increasing the thinning rate by a factor of at most k increases the
+weight of any single sender state by at most k, including the unmarked state. -/
+theorem oversample_weight (G : SimpleGraph V) (y : V) (kind : Kind V)
+    (ρ p q k : ℝ) (hρ : 0 ≤ ρ) (rate : 100*ρ ≤ 1)
+    (hp : 0 ≤ p) (hp1 : p ≤ 1) (hq : 0 ≤ q) (hq1 : q ≤ 1)
+    (hk : 1 ≤ k) (inc : p ≤ q) (cap : q ≤ k*p) (o : State V) :
+    (law G y kind ρ q hρ rate hq hq1).weight o ≤ k*(law G y kind ρ p hρ rate hp hp1).weight o := by
+  cases o with
+  | none =>
+    have base := (law G y kind ρ p hρ rate hp hp1).nonneg none
+    change 0 ≤ 1-p*eligible G y kind ρ at base
+    change 1-q*eligible G y kind ρ ≤ k*(1-p*eligible G y kind ρ)
+    calc
+      _ ≤ 1-p*eligible G y kind ρ :=
+        sub_le_sub_left (mul_le_mul_of_nonneg_right inc (eligible_range G y kind hρ rate).1) _
+      _ ≤ _ := le_mul_of_one_le_left base hk
+  | some v =>
+    change q*eligibleState G y kind ρ v ≤ k*(p*eligibleState G y kind ρ v)
+    rw [← mul_assoc]
+    exact mul_le_mul_of_nonneg_right cap (eligibleState_nonneg G y kind hρ v)
+
 theorem mark_mean (G : SimpleGraph V) (y : V) (kind : Kind V) (ρ p : ℝ)
     (hρ : 0 ≤ ρ) (rate : 100*ρ ≤ 1) (hp : 0 ≤ p) (hp1 : p ≤ 1) :
     (law G y kind ρ p hρ rate hp hp1).expect marked = p*eligible G y kind ρ := by
