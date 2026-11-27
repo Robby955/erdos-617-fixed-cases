@@ -1,3 +1,4 @@
+import CutInputs
 import HeavyLoadIncidence
 
 /-! The expected number of positive excess loads at a retained row. The
@@ -109,7 +110,7 @@ variable {E : Finset V} {e t : ℕ} {α β M Y b : ℝ}
 
 /-- The number of uniquely strong senders is at most twice the deficit of
 the receiving clique. This is also the term used in the row test. -/
-theorem unique_count_le_deficit (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem unique_count_le_deficit {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y b α β) {i : ℕ} (hi : i ∈ S.retained) :
     ((uniqueGroup T E S.retained S.s i).card:ℝ) ≤ 2*((r:ℝ)-(rowList T E i).card) := by
@@ -128,7 +129,7 @@ theorem unique_count_le_deficit (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witne
 
 /-- The expected multiplicity of any point in a foreign retained row is
 at most one. Thus all representative loads fit their distinct row cuts. -/
-theorem foreign_load_le_distinct_edges (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem foreign_load_le_distinct_edges {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y b α β) (p : ℝ) (rate : 100*((9/40:ℝ)/S.s) ≤ 1)
     (hp : 0 ≤ p) (hp1 : p ≤ 1) (i : ℕ) :
@@ -163,7 +164,7 @@ theorem foreign_load_le_distinct_edges (prep : Prepared T) (hr : 3 ≤ r) (no : 
 /-- Normalized height of the row's heavy-load count. The coefficient of
 the actual foreign-incidence term is one. All inputs are the original
 trace, its retained rows and its admissible sender law. -/
-theorem heavy_load_height (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem heavy_load_height {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y b α β) (p : ℝ) (rate : 100*((9/40:ℝ)/S.s) ≤ 1)
     (hp : 0 ≤ p) (hp1 : p ≤ 1) {i : ℕ} (hi : i ∈ S.retained) :

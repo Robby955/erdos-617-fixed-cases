@@ -65,6 +65,26 @@ theorem raw_stability_of_counts (hr : 2 ≤ r) (order : Fintype.card V = r^2+1)
   dsimp only
   constructor <;> linarith only [cap,identity,pivot]
 
+/-- Sparsity and the extra vertex force this many missing edges within the
+raw rows, before any pruning or choice of representatives. -/
+theorem missing_floor_of_counts (hr : 0 < r) (order : Fintype.card V = r^2+1)
+    (rows : ∀ x, T.row x < r)
+    (identity : 2*((targetGraph T.color T.target).edgeFinset.card:ℝ) =
+      (∑ i ∈ range r, (T.rowSize i:ℝ)*((T.rowSize i:ℝ)-1)) -
+      2*(∑ i ∈ range r, (internalMissing T i:ℝ)) + 2*(T.crossGraph.edgeFinset.card:ℝ))
+    (sparse : (r:ℝ)*2*((targetGraph T.color T.target).edgeFinset.card:ℝ) ≤
+      (Fintype.card V:ℝ)*((Fintype.card V:ℝ)-1)) :
+    (T.crossGraph.edgeFinset.card:ℝ) - (r:ℝ)^2/2 ≤
+      ∑ i ∈ range r, (internalMissing T i:ℝ) := by
+  have pos : (0:ℝ) < r := by exact_mod_cast hr
+  rw [order] at sparse
+  push_cast at sparse
+  have cap : 2*((targetGraph T.color T.target).edgeFinset.card:ℝ) ≤ (r:ℝ)^3+r := by
+    apply le_of_mul_le_mul_left _ pos
+    nlinarith only [sparse]
+  rw [pair_mass T order rows] at identity
+  linarith only [cap,identity,square_mass T order rows,pos]
+
 /-- The three normalized raw budgets, retaining the variance rebate in the
 total unused allowance. -/
 theorem budgets_of_stability (hr : 2 ≤ r) (order : Fintype.card V = r^2+1)

@@ -1,3 +1,4 @@
+import CutInputs
 import ColoringWidth
 
 /-! The temporary ordinary rows used in the exterior argument, Appendix A §4. -/
@@ -88,7 +89,7 @@ theorem outsideClique_count (E : Finset V) (i : ℕ) {x : V} (hx : x ∈ rowList
 /-- Each temporarily trimmed retained clique contains at least 255r/256
 vertices. Each such vertex has fewer than 7r/50 neighbors of the target
 color outside its original clique, counting all r²+1 vertices. -/
-theorem temporary_row_bounds (prep : Prepared T) (hr : 0 < r) (E : Finset V)
+theorem temporary_row_bounds {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 0 < r) (E : Finset V)
     {Y b α β scale : ℝ} {e₀ n : ℕ} (band : RetainedWidth.Band Y b α β)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e₀ n α β scale)
     {i : ℕ} (retained : i ∈ S.retained) :

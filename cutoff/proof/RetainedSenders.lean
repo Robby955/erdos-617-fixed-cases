@@ -1,3 +1,4 @@
+import CutInputs
 import ExteriorShortage
 import SenderPopulation
 import SenderRetry
@@ -59,7 +60,7 @@ theorem retained_retry_surplus (hr : 2 ≤ r) (no : ¬Witness T.color)
 
 /-- Counting every strong incidence before assigning it to a sender gives a
 strict lower bound on the moderate population plus the original deficits. -/
-theorem distinct_sender_shortfall (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem distinct_sender_shortfall {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)

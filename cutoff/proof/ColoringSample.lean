@@ -1,3 +1,4 @@
+import CutInputs
 import ColoringSenderLaw
 import SenderSampleMoments
 import RepresentativeRepairs
@@ -113,7 +114,7 @@ structure SamplingBounds (E : Finset V) (I : Finset ℕ) (s : ℕ) (loss : ℝ) 
       0 ≤ Δ-m ∧ Δ-m ≤ loss ∧ (3/20:ℝ)*r-loss < m ∧ m ≤ (s:ℝ)*r ∧
       μ.expect v = Δ-m ∧ μ.expect (fun w ↦ (v w)^2) ≤ (Δ-m)^2+m
 
-theorem sampling_bounds (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem sampling_bounds {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)
@@ -171,7 +172,7 @@ theorem witness_or_sender_sample (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
   have slots := card_sdiff_add_card_eq_card sub
   rw [card_range] at slots
   exact Or.inr ⟨T,eq,prep,E,lists,b,α,β,band,S,scale,short,
-    sampling_bounds T prep (by omega) (eq ▸ yes) order lists S band slots short⟩
+    sampling_bounds T prep.cutInputs (by omega) (eq ▸ yes) order lists S band slots short⟩
 
 end
 end Erdos617.ColoredLists

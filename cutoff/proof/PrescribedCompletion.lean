@@ -1,3 +1,4 @@
+import CutInputs
 import ColoredAuxiliaryExtension
 import OrdinaryExtension
 
@@ -19,7 +20,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- Lift the independent auxiliary choices from the induced graph, then extend
 the prescribed set in the original graph over precisely the requested ordinary
 rows. All cardinalities refer to distinct vertices in the original coloring. -/
-theorem finish_prescribed_ordinary (prep : Prepared T) (hr : 0 < r)
+theorem finish_prescribed_ordinary {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 0 < r)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β)
@@ -111,7 +112,7 @@ theorem finish_prescribed_ordinary (prep : Prepared T) (hr : 0 < r)
 and up to two prescribed row representatives. The new vertices are counted in
 the original coloring and lie in the requested auxiliary and ordinary rows.
 Taking the ordinary subfamily empty gives a completion wholly inside B. -/
-theorem complete_prescribed_rows (prep : Prepared T) (hr : 0 < r)
+theorem complete_prescribed_rows {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 0 < r)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β)

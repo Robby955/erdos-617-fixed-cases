@@ -1,3 +1,4 @@
+import CutInputs
 import ColoringSignedCut
 import ColoringRepairCost
 import TestedRowMoments
@@ -53,7 +54,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- The signed tested-cut inequality of Appendix A on the original
 coloring. The repair allowance is the explicit sum of actual row loads and
 interrow edge charges. The test probabilities may be any values in [0,1]. -/
-theorem tested_cut_bound (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem tested_cut_bound {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e n α β M)

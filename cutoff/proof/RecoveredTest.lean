@@ -1,3 +1,4 @@
+import CutInputs
 import ColoringTestedCut
 
 /-! Recover the foreign and representative-pair costs on the original
@@ -19,7 +20,7 @@ def loadTest (E : Finset V) (I : Finset ℕ) (s : ℕ) (μ : V → Law (State V)
 /-- For every admissible row test, the signed cut simultaneously pays the
 foreign and pair costs on the same original interrow edges. H is the number
 of omitted and tested rows. All randomness on the right is in the row test. -/
-theorem recovered_tested_cut (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem recovered_tested_cut {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)

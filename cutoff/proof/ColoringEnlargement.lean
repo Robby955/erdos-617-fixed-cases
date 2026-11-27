@@ -1,3 +1,4 @@
+import CutInputs
 import ColoredAttachment
 
 /-! From the original coloring to the enlarged rows used by the exterior shortage argument. -/
@@ -30,7 +31,7 @@ def HasEnlargedRows (E : Finset V) (retained : Finset ℕ) (s : ℕ) : Prop :=
 /-- Failure of the strict shortage forces clique enlargement in the correct
 arena. In particular every remaining exterior point has two large rows and
 the integer deficits sum to its exterior population minus one. -/
-theorem enlarged_of_failed_shortage (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem enlarged_of_failed_shortage {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β) (scale : (2:ℝ)^b*(S.s:ℝ)^4 < r)
@@ -78,7 +79,7 @@ theorem witness_or_shortage_or_enlargement (color : {e : Sym2 V // ¬e.IsDiag} �
     exact (mem_sdiff.mp (mem_sdiff.mp (mem_inter.mp hi).1).1).1
   have slots := card_sdiff_add_card_eq_card incl
   rw [card_range] at slots
-  exact Or.inr (enlarged_of_failed_shortage T prep (by omega) (eq ▸ yes) order S band scale slots lists
+  exact Or.inr (enlarged_of_failed_shortage T prep.cutInputs (by omega) (eq ▸ yes) order S band scale slots lists
     (le_of_not_gt short))
 
 end

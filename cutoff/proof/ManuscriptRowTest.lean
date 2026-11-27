@@ -1,3 +1,4 @@
+import CutInputs
 import HeavyLoadTests
 
 /-! The actual endpoint test in the signed-cut inequality of Appendix A. -/
@@ -11,7 +12,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 
 /-- Total probability mass of the endpoint tests, hence their expected count.
 The destination counts are summed before taking a uniform per-row bound. -/
-theorem manuscript_test_mass (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem manuscript_test_mass {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)
@@ -19,7 +20,7 @@ theorem manuscript_test_mass (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness 
     (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
     let I := S.retained
     let μ := senderLaw T E I S.s p (retry_rate_of_scale S.scale_lo) hp hp1
-    let Y₀ := 2-firstRate T/2-(199/400:ℝ)*secondRate T
+    let Y₀ := Ycap
     (∑ i ∈ I, loadTest T E I S.s μ a b i) ≤
       (a*(Y₀/(9/40:ℝ)+7/1120)+9*b/1120)*S.s := by
   intro I μ Y₀
@@ -45,7 +46,7 @@ theorem manuscript_test_mass (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness 
 
 /-- The coloring supplies the test probabilities. The second falling moment
 is evaluated here for independent tests on precisely these retained rows. -/
-theorem manuscript_tested_cut (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem manuscript_tested_cut {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)

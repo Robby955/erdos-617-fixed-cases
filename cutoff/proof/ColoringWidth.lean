@@ -28,7 +28,7 @@ theorem assigned_le_omega (T : Trace V r)
     norm_num
 
 /-- Graph data kept with the width selection for use in the exterior argument. -/
-structure Prepared (T : Trace V r) : Prop where
+structure Pruned (T : Trace V r) : Prop where
   rows : ∀ x, T.row x < r
   least : Sparsest T.color T.target
   pivots : PivotRows T.color T.target T.row
@@ -39,7 +39,29 @@ structure Prepared (T : Trace V r) : Prop where
   stopped : ∀ x ∈ live T, (Transversal.neighbors T.crossGraph (live T) x).card ≤ degreeBound r
   paid : ∀ i, (61/250)*assigned T i ≤ unused T i
   source_cap : ∀ i, assigned T i ≤ 5/1464
+
+structure Prepared (T : Trace V r) extends Pruned T where
   width : HasWidth T
+
+/-- Construct both pruning passes directly from the coloring, prior to the width test. -/
+theorem witness_or_pruned (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
+    (hr : 2^20 ≤ r) :
+    Witness color ∨ ∃ T : Trace V r, T.color = color ∧ Pruned T := by
+  by_cases no : Witness color
+  · exact Or.inl no
+  obtain ⟨j,row,least,labels,pivots⟩ := (witness_or_raw_rows color (by omega)).resolve_left no
+  have pos : 0 < r := by omega
+  obtain ⟨T,color_eq,target_eq,row_eq,legal,dest,stop,first,seq⟩ :=
+    exists_pruning_trace color j row pos
+  have noT : ¬Witness T.color := color_eq ▸ no
+  have qual (v) (hv : v ∈ T.firstSources) := (qualifying_bounds T pos (dest v hv)).2.2
+  have cost := destination_cost_of_cross_count T legal (by omega) qual
+    (exterior_row_edges T (by omega) noT)
+  have rowsT : ∀ x, T.row x < r := row_eq ▸ labels
+  have leastT : Sparsest T.color T.target := by rwa [color_eq,target_eq]
+  have pivotsT : PivotRows T.color T.target T.row := by rwa [color_eq,target_eq,row_eq]
+  exact Or.inr ⟨T,color_eq,rowsT,leastT,pivotsT,legal,dest,seq,first,stop,cost,
+    assigned_le_omega T qual cost⟩
 
 /-- The only inputs are the order, the cutoff and the original coloring.
 Either an (r+1)-set already misses a color, or the actual retained cliques
@@ -49,21 +71,12 @@ theorem witness_or_prepared (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
     Witness color ∨ ∃ T : Trace V r, T.color = color ∧ Prepared T := by
   by_cases no : Witness color
   · exact Or.inl no
-  obtain ⟨j,row,least,labels,pivots⟩ := (witness_or_raw_rows color (by omega)).resolve_left no
+  obtain ⟨T,eq,pruned⟩ := (witness_or_pruned color (by omega)).resolve_left no
   have pos : 0 < r := by omega
-  obtain ⟨T,color_eq,target_eq,row_eq,legal,dest,stop,first,seq⟩ :=
-    exists_pruning_trace color j row pos
-  have noT : ¬Witness T.color := color_eq ▸ no
-  have inRange (v) (hv : v ∈ T.firstSources) := (qualifying_bounds T pos (dest v hv)).1
-  have qual (v) (hv : v ∈ T.firstSources) := (qualifying_bounds T pos (dest v hv)).2.2
-  have cost := destination_cost_of_cross_count T legal (by omega) qual
-    (exterior_row_edges T (by omega) noT)
-  have rowsT : ∀ x, T.row x < r := row_eq ▸ labels
-  have leastT : Sparsest T.color T.target := by rwa [color_eq,target_eq]
-  have pivotsT : PivotRows T.color T.target T.row := by rwa [color_eq,target_eq,row_eq]
-  exact Or.inr ⟨T,color_eq,rowsT,leastT,pivotsT,legal,dest,seq,first,stop,cost,
-    assigned_le_omega T qual cost,width_of_pruning T hr order noT rowsT leastT pivotsT legal
-      inRange stop (fun i _ ↦ cost i) qual⟩
+  have dest (v) (h : v ∈ T.firstSources) := qualifying_bounds T pos (pruned.destinations v h)
+  exact Or.inr ⟨T,eq,pruned,width_of_pruning T hr order (eq ▸ no) pruned.rows pruned.least
+    pruned.pivots pruned.legal (fun v h ↦ (dest v h).1) pruned.stopped
+    (fun i _ ↦ pruned.paid i) (fun v h ↦ (dest v h).2.2)⟩
 
 end
 end Erdos617.ColoredLists

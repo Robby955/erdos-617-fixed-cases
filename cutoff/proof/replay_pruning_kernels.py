@@ -68,7 +68,7 @@ LIST_MODULES = (*WIDTH_MODULES, "CutoffStatement", "PruningOverlap", "PartialTra
 
 COLORING_MODULES = (*LIST_MODULES, "RawEdgeIdentity", "PivotCross", "SparseColorCount",
                     "RawMoments", "GlobalRowBudgets", "ExteriorRowEdges", "DestinationCost",
-                    "ConstructPruning", "ColoringWidth")
+                    "ConstructPruning", "ColoringWidth", "CutInputs")
 COLORING_NAMES = tuple("Erdos617.ColoredLists." + name for name in (
     "raw_edge_identity", "pivot_cross_count", "sparse_edge_cap", "raw_stability",
     "global_raw_budgets", "exterior_row_edges", "destination_cost_of_cross_count",
@@ -261,9 +261,58 @@ CUTOFF_NAMES = (
 )
 
 
+def local_dependencies(source_dir: Path, root: str) -> tuple[str, ...]:
+    """Return local Lean imports before their dependents for a clean replay."""
+    ordered = []
+    visited = set()
+
+    def visit(module: str) -> None:
+        if module in visited:
+            return
+        visited.add(module)
+        for line in (source_dir / f"{module}.lean").read_text().splitlines():
+            if line.startswith("import "):
+                for name in line.split()[1:]:
+                    if (source_dir / f"{name}.lean").is_file():
+                        visit(name)
+        ordered.append(module)
+
+    visit(root)
+    return tuple(ordered)
+
+
+THIRD_CORE_NAMES = (
+    "Erdos617.ColoredLists.witness_or_pruned",
+    "Erdos617.PackingLists.budget_at_degree",
+    "Erdos617.ColoredLists.missing_floor_of_counts",
+    "Erdos617.ThirdPruning.three_pass_cost",
+    "Erdos617.ThirdPruning.restrict_live",
+    "Erdos617.ThirdPruning.restrict_recorded",
+    "Erdos617.ThirdPruning.restrict_first_stopped",
+    "Erdos617.ThirdPruning.hole_blocks_other_rows",
+    "Erdos617.ThirdPruning.charge_actual_holes",
+    "Erdos617.ThirdPruning.missing_mass",
+    "Erdos617.ThirdPruning.deleted_second_moment",
+    "Erdos617.ThirdPruning.paired_margin",
+    "Erdos617.ThirdPruning.zero_branch_impossible",
+    "Erdos617.ThirdPruning.selected_at_143",
+    "Erdos617.contradiction_of_selected_rows",
+)
+
+
 def replay(part: str = "overlap", lean_only: bool = False) -> None:
     source_dir = Path(__file__).resolve().parent
-    if part == "cutoff":
+    if part == "cutoff-143":
+        modules = local_dependencies(source_dir, "ThirdPruningCutoff")
+        names = (
+            "Erdos617.missing_color_at_143",
+            "Erdos617.erdos_617_of_ge_two_pow_143",
+            "Erdos617.balancedColoringAt_of_ge_two_pow_143",
+        )
+    elif part == "third-core":
+        modules = local_dependencies(source_dir, "ThirdPruningCore")
+        names = THIRD_CORE_NAMES
+    elif part == "cutoff":
         modules, names = CUTOFF_MODULES, CUTOFF_NAMES
     elif part == "capacity":
         modules, names = CAPACITY_MODULES, CAPACITY_NAMES
@@ -337,7 +386,7 @@ def replay(part: str = "overlap", lean_only: bool = False) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads", "oversampling", "capacity", "cutoff"), nargs="?", default="overlap")
+    parser.add_argument("part", choices=("overlap", "width", "lists", "coloring", "exterior", "cliques", "enlargement", "shortage", "senders", "sampling", "cut", "loads", "oversampling", "capacity", "cutoff", "third-core", "cutoff-143"), nargs="?", default="overlap")
     parser.add_argument("--lean-only", action="store_true", help="compile and print axioms")
     args = parser.parse_args()
     replay(args.part, args.lean_only)

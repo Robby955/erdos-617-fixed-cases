@@ -1,3 +1,4 @@
+import CutInputs
 import OrdinaryRepresentatives
 import OrdinaryTrim
 
@@ -28,7 +29,7 @@ private theorem covered_neighbors {H : SimpleGraph V} (F C : Finset V) {d : ℝ}
 /-- Fill any subfamily of retained ordinary rows while preserving the prescribed
 independent set. P consists of exterior points, Q of auxiliary representatives
 and D of representatives already fixed in other temporary ordinary rows. -/
-theorem extend_prescribed_ordinary (prep : Prepared T) (hr : 0 < r)
+theorem extend_prescribed_ordinary {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 0 < r)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M)

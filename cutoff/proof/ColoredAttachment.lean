@@ -1,3 +1,4 @@
+import CutInputs
 import OmittedRepresentatives
 import AttachmentArena
 import PrescribedCompletion
@@ -15,7 +16,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 
 /-- Both the auxiliary-only and mixed arenas satisfy the extension property
 used for clique enlargement, with attachments measured before enlargement. -/
-theorem actual_can_extend (prep : Prepared T) (hr : 0 < r)
+theorem actual_can_extend {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 0 < r)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β)

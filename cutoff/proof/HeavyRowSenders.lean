@@ -1,3 +1,4 @@
+import CutInputs
 import ExteriorRowEdges
 import OrdinaryTrim
 import StrongRowCharge
@@ -54,7 +55,7 @@ variable [Fintype V] (T : Trace V r)
 
 /-- The size of each original retained row pays for the integer endpoint
 2(d+1)≤r in the heavy-sender trial. -/
-theorem retained_heavy_deficit (prep : Prepared T) (hr : 3 ≤ r) {E : Finset V}
+theorem retained_heavy_deficit {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) {E : Finset V}
     {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β) {i : ℕ} (hi : i ∈ S.retained) :
@@ -73,7 +74,7 @@ theorem retained_heavy_deficit (prep : Prepared T) (hr : 3 ≤ r) {E : Finset V}
 
 /-- Apply the heavy-sender bounds to any actual family assigned to one of
 the selected original rows. The width construction supplies the size test. -/
-theorem retained_heavy_senders (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem retained_heavy_senders {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
@@ -94,7 +95,7 @@ theorem retained_heavy_senders (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witnes
 sender counts and the surplus J read from the original colored row. Here v
 is any nonnegative real. The global signed cut of Appendix A is a subsequent
 argument involving multiple rows. -/
-theorem retained_row_charge (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem retained_row_charge {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e n : ℕ} {α β M Y t : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)

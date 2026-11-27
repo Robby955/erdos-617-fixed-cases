@@ -1,3 +1,4 @@
+import CutInputs
 import OversamplingPass
 import RepairEnvelope
 
@@ -26,7 +27,7 @@ variable {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
 
 /-- The first pass can always use W=2κ, because the very same unique count
 is at most twice the deficit in each of the retained cliques. -/
-theorem first_pass_unique_weight (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem first_pass_unique_weight {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y ex α β) (κ : ℝ)
     (squares : 4*β^2*S.w*(1-S.w) ≤ κ*(9/40)) :
@@ -58,7 +59,7 @@ theorem first_pass_unique_weight (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witn
 
 /-- The base budget is at most P(W,l)(ρr)² with the same constants as
 the endpoint checker. The two passes may supply different bounds W. -/
-theorem normalized_repair_budget (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem normalized_repair_budget {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y ex α β) (slots : e+(ordinaryLists T E).card=r)
@@ -67,7 +68,7 @@ theorem normalized_repair_budget (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witn
     (inc : α*S.w ≤ A) (defi : 2*β*S.w ≤ X) (p : ℝ) (hp : 0 ≤ p) (hp1 : p ≤ 1)
     (κ : ℝ) (k0 : 0 ≤ κ) (squares : 4*β^2*S.w*(1-S.w) ≤ κ*(9/40))
     (den : 0 < 2-heavyTestWeight A X*κ) (Yhi : ℝ)
-    (ymax : 2-firstRate T/2-(199/400:ℝ)*secondRate T ≤ Yhi)
+    (ymax : Ycap ≤ Yhi)
     (W : ℝ) (Wcap : (∑ i ∈ S.retained, ((uniqueGroup T E S.retained S.s i).card:ℝ)*rowDeficit T E i)
       ≤ W*((9/40:ℝ)/S.s*r)) :
     let I := S.retained
@@ -105,7 +106,7 @@ theorem normalized_repair_budget (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witn
     linarith only [u0,Nat.cast_nonneg (α:=ℝ) L.card,mul_le_mul_of_nonneg_right hle rp.le]
   have msmall : m ≤ r*(s:ℝ)^2/1120 := by
     nlinarith only [mcap,mul_nonneg (sub_nonneg.mpr slo) (mul_nonneg sp.le rp.le)]
-  let Y₀ := 2-firstRate T/2-(199/400:ℝ)*secondRate T
+  let Y₀ := Ycap
   have y0 : 0 ≤ Y₀ := by
     have inc0 (i : ℕ) : 0 ≤ rowIncidence T E i := by unfold rowIncidence unrecordedDegree; positivity
     exact (sum_nonneg (s:=I) fun i _ ↦ inc0 i).trans (retained_load_budgets T S prep hr no order lists).2.2

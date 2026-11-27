@@ -1,3 +1,4 @@
+import CutInputs
 import OversamplingFloor
 
 /-! The oversampling comparison at the manuscript's actual probabilities. -/
@@ -27,7 +28,7 @@ theorem sender_count_at_rate (E : Finset V) (I : Finset ℕ) (s : ℕ) (p : ℝ)
 /-- At the base thinning p=Δ/A the signed repair budget, with its negative
 quadratic term, controls the truncated surplus in eligible senders. The cap
 z ≤ Δ/128 allows k = 129/128, or k = 2 for the manuscript certificate. -/
-theorem oversampling_pass (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem oversampling_pass {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)
     (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card=r)

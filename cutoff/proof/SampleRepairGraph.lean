@@ -1,3 +1,4 @@
+import CutInputs
 import LoadCap
 import ArcRepairUnion
 
@@ -69,7 +70,7 @@ variable {r : ℕ} (T : Trace V r)
 
 /-- Every positively weighted sample and every lattice start assignment
 yield an actual graph on W with the required independence cap. -/
-theorem sample_repair_cap (prep : Prepared T) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
+theorem sample_repair_cap {Ycap : ℝ} (prep : CutInputs T Ycap) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e n α β M)
     (hr : 2 ≤ r) (no : ¬Witness T.color) (band : RetainedWidth.Band Y b α β)
     (slots : e+(ordinaryLists T E).card=r) {p rate hp hp1} {w : V → State V}

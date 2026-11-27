@@ -1,3 +1,4 @@
+import CutInputs
 import SampleRepairGraph
 import ColoringSample
 import SignedSampleCut
@@ -36,7 +37,7 @@ variable {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
 /-- A fixed set of tests on a positive-weight outcome. The cap of the
 repaired graph and the budget for its original edge additions are derived
 on the very same exterior W. -/
-theorem sample_signed_cut (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem sample_signed_cut {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card=r)
     (K : Finset ℕ) (tested : K ⊆ S.retained) {p rate hp hp1} {w : V → State V}
@@ -86,7 +87,7 @@ theorem sample_signed_cut (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.c
 
 /-- Average the actual cut, retaining each target edge between tested rows.
 This holds for every admissible thinning probability, including oversampling. -/
-theorem expected_fixed_cut (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem expected_fixed_cut {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card=r)
     (K : Finset ℕ) (tested : K ⊆ S.retained)

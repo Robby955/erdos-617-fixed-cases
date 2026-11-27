@@ -1,3 +1,4 @@
+import CutInputs
 import OversamplingBudget
 
 /-! Remove the two artificial caps on the oversample using uniform inequalities
@@ -83,7 +84,7 @@ variable {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
 /-- On the actual coloring, the number of eligible senders above the exterior
 shortage is at most Zρ²r. This uses the full base budget and both oversample
 floors. It applies to either pass once its W bound has been proved. -/
-theorem eligibility_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem eligibility_surplus {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y ex α β) (slots : e+(ordinaryLists T E).card=r)
@@ -92,7 +93,7 @@ theorem eligibility_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T
     (inc : α*S.w ≤ A) (defi : 2*β*S.w ≤ X)
     (κ Yhi W : ℝ) (k0 : 0 ≤ κ) (k1 : κ ≤ 1/4) (y0 : 0 ≤ Yhi) (y1 : Yhi ≤ 2)
     (w0 : 0 ≤ W) (w1 : W ≤ 1) (squares : 4*β^2*S.w*(1-S.w) ≤ κ*(9/40))
-    (ymax : 2-firstRate T/2-(199/400:ℝ)*secondRate T ≤ Yhi)
+    (ymax : Ycap ≤ Yhi)
     (Wcap : (∑ i ∈ S.retained, ((uniqueGroup T E S.retained S.s i).card:ℝ)*rowDeficit T E i)
       ≤ W*((9/40:ℝ)/S.s*r)) :
     let I := S.retained

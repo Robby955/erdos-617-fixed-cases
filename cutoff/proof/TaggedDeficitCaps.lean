@@ -1,3 +1,4 @@
+import CutInputs
 import AttachmentArena
 import AuxiliaryDeficitCaps
 
@@ -14,7 +15,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- For at most three rows, sum the positive deficits in vertex units. The
 auxiliary group pays its joint cap and each ordinary row pays at most r/256.
 The sizes may refer to the original rows or to any enlargement of them. -/
-theorem tagged_deficit_cap (prep : Prepared T) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
+theorem tagged_deficit_cap {Ycap : ℝ} (prep : CutInputs T Ycap) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β) (scale : (2:ℝ)^b*(S.s:ℝ)^4 < r)
     {B : Finset V} (orderLo : -(3/20:ℝ)*r ≤ (B.card:ℝ)-((S.s-1:ℕ):ℝ)*r)

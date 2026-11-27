@@ -1,3 +1,4 @@
+import CutInputs
 import ManuscriptRowTest
 
 /-! Turning the coloring's signed cut into an upper bound on the base repair
@@ -53,7 +54,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- In edge units the base cost is controlled by the tested-row mass, the
 mark count, and the weighted deficits of the unique senders. The width
 selection itself supplies the squared-deficit estimate for Cauchy–Schwarz. -/
-theorem coloring_repair_envelope (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem coloring_repair_envelope {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)

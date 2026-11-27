@@ -1,3 +1,4 @@
+import CutInputs
 import SenderSupport
 import RepairedIndependence
 
@@ -18,7 +19,7 @@ private theorem list_member {E : Finset V} {i : ℕ} {x : V} (hx : x ∈ rowList
 
 /-- An actual representative has at most r/4 target neighbors in each
 other retained row. This uses the first stopping rule before further pruning. -/
-theorem foreign_representative_degree (prep : Prepared T) {E : Finset V} {i k : ℕ}
+theorem foreign_representative_degree {Ycap : ℝ} (prep : CutInputs T Ycap) {E : Finset V} {i k : ℕ}
     (hi : i ∈ qualifying T) (diff : k ≠ i) {a : V} (ha : a ∈ rowList T E k) :
     4*((rowList T E i).filter ((targetGraph T.color T.target).Adj a)).card ≤ r := by
   apply le_trans _ (prep.first_stopped.live_bound (list_member T ha).1 hi)
@@ -34,7 +35,7 @@ theorem foreign_representative_degree (prep : Prepared T) {E : Finset V} {i k : 
 /-- Every load on a positive-weight outcome fits the circle of circumference
 3r/4. The three bounds used here are actual degrees of exterior vertices,
 their output vertices, and low exterior vertices. -/
-theorem sender_load_fits (prep : Prepared T) {E : Finset V} {I : Finset ℕ} {s : ℕ}
+theorem sender_load_fits {Ycap : ℝ} (prep : CutInputs T Ycap) {E : Finset V} {I : Finset ℕ} {s : ℕ}
     (qual : I ⊆ qualifying T) (hs : 1 ≤ s) {p rate hp hp1} {w : V → State V}
     (positive : 0 < (product (senderLaw T E I s p rate hp hp1)).weight w)
     {i : ℕ} (hi : i ∈ I) (x : V) :

@@ -1,3 +1,4 @@
+import CutInputs
 import ModerateDestinations
 
 /-! Strong senders and marked moderate senders use the same clique capacity.
@@ -13,7 +14,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- The variance and the linear term in the moderate count cost at most one
 copy of its mean. All their target edges enter the same arrival bound as
 the strong senders' edges. -/
-theorem mixed_row_capacity (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem mixed_row_capacity {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β bound Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β bound)
@@ -174,7 +175,7 @@ theorem marked_sender_payment (E : Finset V) (I : Finset ℕ) (s : ℕ) (hs : 11
 
 /-- The combined capacity inequality after cancelling the common raw deficit
 from both sides. It holds at every thinning probability for this selection. -/
-theorem mixed_sender_capacity (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem mixed_sender_capacity {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e t : ℕ} {α β bound Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β bound)

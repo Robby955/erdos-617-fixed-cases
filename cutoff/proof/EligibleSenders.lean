@@ -1,3 +1,4 @@
+import CutInputs
 import StrongAssignments
 import RetainedSenders
 
@@ -24,7 +25,7 @@ def senderRetryCharge (E : Finset V) (parts : Finset ℕ) (s : ℕ) (y : V) : �
   uniqueCharge (strongRows T E parts y) fun i ↦
     ρ*r*rowSuccess T E s y i+37*ρ*r*(1-neighborFraction (targetGraph T.color T.target) (rowList T E i) y)
 
-private theorem retained_charge_capacity (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+private theorem retained_charge_capacity {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)
@@ -155,7 +156,7 @@ theorem eligible_mass_of_row_allowances (hr : 3 ≤ r) (no : ¬Witness T.color)
 /-- Each strong sender chooses at most two of its original rows. Summing their
 actual payments in row order proves the eligibility estimate and keeps the
 additional 37ρr(1−q) and ρrv from every unique strong sender. -/
-theorem eligible_mass_with_surplus (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem eligible_mass_with_surplus {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)
@@ -209,7 +210,7 @@ theorem senderRetryCharge_nonneg (E : Finset V) (parts : Finset ℕ) {s : ℕ} (
 /-- Before thinning, only the row-variance allowance can pay for the shortage
 of eligible destinations. The sender set and the exterior shortage use the
 same choice of ordinary cliques. -/
-theorem eligible_mass_budget (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem eligible_mass_budget {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)
@@ -225,7 +226,7 @@ theorem eligible_mass_budget (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness 
 
 /-- Substitute the actual width square bound into the eligibility estimate.
 This is the scale used for choosing the thinning probability. -/
-theorem eligible_mass_width (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem eligible_mass_width {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)
@@ -254,7 +255,7 @@ theorem eligible_mass_width (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T
 /-- Thinning the eligible mass at min(1,Δ/A) is well defined at the
 strict shortage. It loses at most the normalized variance allowance and
 selects at most sr vertices in expectation. -/
-theorem eligible_thinning (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem eligible_thinning {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)

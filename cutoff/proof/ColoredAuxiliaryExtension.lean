@@ -1,3 +1,4 @@
+import CutInputs
 import AuxiliaryExtension
 
 /-! The original target edges excluded by the prescribed exterior vertices and
@@ -20,7 +21,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 
 /-- In the induced auxiliary coloring, fill all requested rows and avoid
 every target neighbor of a prescribed vertex in the original coloring. -/
-theorem colored_auxiliary_representatives (prep : Prepared T) (hr : 0 < r)
+theorem colored_auxiliary_representatives {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 0 < r)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β)

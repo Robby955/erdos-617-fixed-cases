@@ -1,3 +1,4 @@
+import CutInputs
 import RepairThinning
 
 /-! The repaired graph on the enlarged exterior and every other color on
@@ -13,7 +14,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 
 /-- The original graph supplies the two moments and both Turán floors.
 Here z is the expected excess of the enlarged exterior over hr. -/
-theorem oversample_expected_floor (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem oversample_expected_floor {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)
     (band : RetainedWidth.Band Y b α β) (slots : e+(ordinaryLists T E).card=r)

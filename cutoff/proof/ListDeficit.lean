@@ -114,6 +114,79 @@ structure ListBounds (G : SimpleGraph V) (row : V → I) (all live : Finset V)
         ((shortRows U m (blockSize r)).card + ((E.image row).card:ℝ))/400 ≤
       ((all \ live).card:ℝ)/r + chosenExcess live row E r - 1/r
 
+/-- The deficit count for the same chosen pairs, retaining any improvement
+in the degree cap at the time those pairs were selected. -/
+theorem budget_at_degree (G : SimpleGraph V) (row : V → I) (all live : Finset V)
+    (parts qual : Finset I) (E : Finset V) (r Δ : ℕ) (hr₂ : 2 ≤ r)
+    (order : all.card = r^2+1) (inside : live ⊆ all) (hparts : parts.card = r)
+    (hE : E ⊆ live) (pack : Packing G row E)
+    (cliques : ∀ i ∉ E.image row, G.IsClique (available G live row E i:Set V))
+    (missing : ((E.image row).card:ℝ) ≤ shortfall (parts \ E.image row)
+      (fun i ↦ (available G live row E i).card) (blockSize r))
+    (covers : ∀ v ∈ live, row v ∈ parts)
+    (cliqueCap : ∀ S : Finset V, G.IsClique (S:Set V) → S.card ≤ r)
+    (degree : ∀ v ∈ live, (Transversal.neighbors (cross G row) live v).card ≤ Δ)
+    (rate : ℝ) (Δrate : (Δ:ℝ) ≤ rate*r) :
+    let U := parts \ E.image row
+    let m := fun i ↦ (available G live row E i).card
+    deficit (ordinaryRows U qual m (blockSize r)) m r +
+      ((shortRows U m (blockSize r)).card + ((E.image row).card:ℝ))/400 +
+      (398/400-2*rate)*(E.image row).card ≤
+        ((all \ live).card:ℝ)/r + chosenExcess live row E r - 1/r := by
+  let U := parts \ E.image row
+  let m := fun i ↦ (available G live row E i).card
+  let q := (E.image row).card
+  let b := blockSize r
+  let F := shortRows U m b
+  let O := ordinaryRows U qual m b
+  have hr : 0 < (r:ℝ) := by exact_mod_cast (show 0 < r by omega)
+  have hb : 0 < b := by dsimp [b,blockSize]; omega
+  have into : E.image row ⊆ parts := by
+    intro i hi
+    obtain ⟨v,hv,rfl⟩ := mem_image.mp hi
+    exact covers v (hE hv)
+  have hqw : (q:ℝ) ≤ shortfall U m b := missing
+  change deficit O m r + ((F.card:ℝ)+q)/400 + (398/400-2*rate)*q ≤ _
+  have sumb := count_survivors G row live E parts Δ hE covers degree
+  rw [pack.card] at sumb
+  change live.card ≤ (chosenVertices live row E).card + ∑ i ∈ U, m i + (2*q)*Δ at sumb
+  have sizes : (U.card:ℝ)+q = r := by exact_mod_cast (card_sdiff_add_card_eq_card into).trans hparts
+  have totalCard : ((all \ live).card:ℝ)+live.card = (r:ℝ)^2+1 := by
+    exact_mod_cast (card_sdiff_add_card_eq_card inside).trans order
+  have total : deficit U m r ≤ ((all \ live).card:ℝ)/r + chosenExcess live row E r -
+      1/r + (2*rate)*q := by
+    rw [sum_deficit,chosenExcess]
+    rw [← (show q = (E.image row).card from rfl)]
+    apply le_of_mul_le_mul_right _ hr
+    field_simp
+    have h : (live.card:ℝ) ≤ (chosenVertices live row E).card + ((∑ i ∈ U, m i : ℕ):ℝ)
+        + (2*q:ℝ)*Δ := by exact_mod_cast sumb
+    nlinarith only [h, totalCard, congrArg (fun z : ℝ ↦ z*r) sizes,
+      mul_le_mul_of_nonneg_left Δrate (show 0 ≤ 2*(q:ℝ) by positivity)]
+  have nonnegative (i) (hi : i ∈ U) : 0 ≤ 1-(m i:ℝ)/r := by
+    apply sub_nonneg.mpr
+    apply (div_le_iff₀ hr).2
+    rw [one_mul]
+    exact_mod_cast cliqueCap _ (cliques i (mem_sdiff.mp hi).2)
+  have separate : Disjoint O F := sdiff_disjoint.mono_left inter_subset_left
+  have united : O ∪ F ⊆ U :=
+    union_subset (inter_subset_left.trans sdiff_subset) (filter_subset ..)
+  have subtotal : deficit O m r + deficit F m r ≤ deficit U m r := by
+    unfold deficit
+    rw [← sum_union separate]
+    exact sum_le_sum_of_subset_of_nonneg united (fun i hi _ ↦ nonnegative i hi)
+  have bscale : (b:ℝ) ≤ (399/400)*r := by
+    have hh : 400*b ≤ 399*r := by dsimp [b,blockSize]; omega
+    have hc : (400:ℝ)*b ≤ 399*r := by exact_mod_cast hh
+    linarith only [hc]
+  have charge := short_charge U m r b hr (by exact_mod_cast hb) bscale
+  have adjust : deficit O m r + deficit F m r ≤
+      (((all \ live).card:ℝ)/r + chosenExcess live row E r - 1/r - (398/400-2*rate)*q) +
+        (398/400)*q := by linarith only [subtotal,total]
+  have hfinal := WeightedWidth.short_lists (T := 398/400) (q := (q:ℝ)) (F := (F.card:ℝ))
+    adjust (by convert! charge using 1; norm_num [F]) (by norm_num) hqw
+  linarith only [hfinal]
+
 /-- Equation (2) with the favorable 1/r retained. The construction starts
 with a surviving subgraph and its inter-row degree cap. -/
 theorem exists_list_bounds (G : SimpleGraph V) (row : V → I) (all live : Finset V)
@@ -142,47 +215,12 @@ theorem exists_list_bounds (G : SimpleGraph V) (row : V → I) (all live : Finse
   change (q:ℝ) ≤ shortfall U m b at hqw
   have hqf := hqw.trans (shortfall_le_shortRows U m b)
   refine ⟨E, hE, pack, cliques, hqw, by exact_mod_cast hqf, ?_⟩
-  change deficit O m r + ((F.card:ℝ)+q)/400 ≤ _
-  have sumb := count_survivors G row live E parts (degreeBound r) hE covers degree
-  rw [pack.card] at sumb
-  change live.card ≤ (chosenVertices live row E).card + ∑ i ∈ U, m i + (2*q)*degreeBound r at sumb
-  have sizes : (U.card:ℝ)+q = r := by exact_mod_cast (card_sdiff_add_card_eq_card into).trans hparts
-  have totalCard : ((all \ live).card:ℝ)+live.card = (r:ℝ)^2+1 := by
-    exact_mod_cast (card_sdiff_add_card_eq_card inside).trans order
-  have Δrate : (degreeBound r:ℝ) ≤ (199/400)*r := by
+  have rate : (degreeBound r:ℝ) ≤ (199/400)*r := by
     have h : 400*degreeBound r ≤ 199*r := by dsimp [degreeBound]; omega
     have hh : (400:ℝ)*degreeBound r ≤ 199*r := by exact_mod_cast h
     linarith only [hh]
-  have total : deficit U m r ≤ ((all \ live).card:ℝ)/r + chosenExcess live row E r -
-      1/r + (398/400)*q := by
-    rw [sum_deficit,chosenExcess]
-    rw [← (show q = (E.image row).card from rfl)]
-    apply le_of_mul_le_mul_right _ hr
-    field_simp
-    have h : (live.card:ℝ) ≤ (chosenVertices live row E).card + ((∑ i ∈ U, m i : ℕ):ℝ)
-        + (2*q:ℝ)*degreeBound r := by exact_mod_cast sumb
-    nlinarith only [h, totalCard, congrArg (fun z : ℝ ↦ z*r) sizes,
-      mul_le_mul_of_nonneg_left Δrate (show 0 ≤ 2*(q:ℝ) by positivity)]
-  have nonnegative (i) (hi : i ∈ U) : 0 ≤ 1-(m i:ℝ)/r := by
-    apply sub_nonneg.mpr
-    apply (div_le_iff₀ hr).2
-    rw [one_mul]
-    exact_mod_cast cliqueCap _ (cliques i (mem_sdiff.mp hi).2)
-  have separate : Disjoint O F := sdiff_disjoint.mono_left inter_subset_left
-  have united : O ∪ F ⊆ U :=
-    union_subset (inter_subset_left.trans sdiff_subset) (filter_subset ..)
-  have subtotal : deficit O m r + deficit F m r ≤ deficit U m r := by
-    unfold deficit
-    rw [← sum_union separate]
-    exact sum_le_sum_of_subset_of_nonneg united (fun i hi _ ↦ nonnegative i hi)
-  have bscale : (b:ℝ) ≤ (399/400)*r := by
-    have hh : 400*b ≤ 399*r := by dsimp [b,blockSize]; omega
-    have hc : (400:ℝ)*b ≤ 399*r := by exact_mod_cast hh
-    linarith only [hc]
-  have charge := short_charge U m r b hr (by exact_mod_cast hb) bscale
-  have hfinal := WeightedWidth.short_lists (T := 398/400) (q := (q:ℝ)) (F := (F.card:ℝ))
-    (subtotal.trans total) (by convert! charge using 1; norm_num [F]) (by norm_num) hqw
-  linarith only [hfinal]
+  convert budget_at_degree G row all live parts qual E r (degreeBound r) hr₂
+    order inside hparts hE pack cliques hqw covers cliqueCap degree (199/400) rate using 1; norm_num
 
 end
 end Erdos617.PackingLists

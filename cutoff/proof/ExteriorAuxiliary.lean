@@ -92,7 +92,7 @@ theorem witness_or_exterior_auxiliary (color : {e : Sym2 V // ¬e.IsDiag} → Fi
   · exact Or.inl yes
   obtain ⟨T,eq,prepared⟩ := (witness_or_prepared color hr order).resolve_left yes
   obtain ⟨E,lists,exp,α,β,band,S,below,scale⟩ := prepared.width
-  refine Or.inr ⟨T,eq,prepared,E,lists,exp,α,β,band,S,below,scale,fun _ hi ↦ temporary_row_bounds T prepared (by omega) E band S hi,?_⟩
+  refine Or.inr ⟨T,eq,prepared,E,lists,exp,α,β,band,S,below,scale,fun _ hi ↦ temporary_row_bounds T prepared.cutInputs (by omega) E band S hi,?_⟩
   by_cases short : (3/20:ℝ)*r < ((S.s-1:ℕ):ℝ)*r-((lowExterior T E S.retained S.s).card:ℝ)
   · exact Or.inl short
   have ordinary : ordinaryLists T E ⊆ range r := by

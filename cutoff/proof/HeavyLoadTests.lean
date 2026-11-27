@@ -1,3 +1,4 @@
+import CutInputs
 import HeavyLoadTotals
 import RecoveredTest
 
@@ -52,7 +53,7 @@ variable {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
 
 /-- Every retained row of the coloring gives a valid Bernoulli probability
 using the two coefficients of the manuscript's width-endpoint check. -/
-theorem manuscript_row_test (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem manuscript_row_test {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y ex α β) (A X : ℝ)
     (a0 : 0 ≤ A) (a1 : A ≤ 656/4000) (x0 : 0 ≤ X) (x1 : X ≤ 1/2)

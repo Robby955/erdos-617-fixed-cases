@@ -1,3 +1,4 @@
+import CutInputs
 import ColoringEnlargement
 import SenderPayment
 
@@ -13,7 +14,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- The priced arrivals cannot be realized in either of the two possible
 arenas of enlarged rows. Both the joint deficit bound and the degree of each
 arrival are taken on the original vertices of the selected rows. -/
-theorem excludes_enlarged_rows (prep : Prepared T) (hr : 2^20 ≤ r) (no : ¬Witness T.color)
+theorem excludes_enlarged_rows {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2^20 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
       e n α β M) (band : RetainedWidth.Band Y b α β) (scale : (2:ℝ)^b*(S.s:ℝ)^4 < r) :
@@ -54,7 +55,7 @@ theorem witness_or_exterior_shortage (color : {e : Sym2 V // ¬e.IsDiag} → Fin
   obtain ⟨T,eq,prep,E,lists,b,α,β,band,S,cut,scale,alt⟩ :=
     (witness_or_shortage_or_enlargement color hr order).resolve_left yes
   exact Or.inr ⟨T,eq,prep,E,lists,b,α,β,band,S,cut,scale,alt.resolve_right
-    (excludes_enlarged_rows T prep (by omega) (eq ▸ yes) S band scale)⟩
+    (excludes_enlarged_rows T prep.cutInputs (by omega) (eq ▸ yes) S band scale)⟩
 
 end
 end Erdos617.ColoredLists

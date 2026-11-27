@@ -1,3 +1,4 @@
+import CutInputs
 import TwoOversamplingPasses
 
 /-! The one-row cut bounds the actual target edges from an individual retained
@@ -13,7 +14,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 
 /-- The single-row cut in the manuscript's normalized units. P can be the
 second-pass value of normalizedRepairBound proved on these same rows. -/
-theorem normalized_one_row_cut (prep : Prepared T) (hr : 2 ≤ r) (no : ¬Witness T.color)
+theorem normalized_one_row_cut {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 2 ≤ r) (no : ¬Witness T.color)
     {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)

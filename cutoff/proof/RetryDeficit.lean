@@ -1,3 +1,4 @@
+import CutInputs
 import EligibilitySurplus
 
 /-! The first pass bounds the missing-neighbor mass of the unique senders.
@@ -72,7 +73,7 @@ variable {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
 
 /-- A unique sender contributes its neighbor fraction and its missing
 fraction to its count. The edge budget bounds the former in each row. -/
-private theorem unique_weight_row (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+private theorem unique_weight_row {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y ex α β) (X : ℝ) (x1 : X ≤ 1/2) (width : 2*β*S.w ≤ X)
     {i : ℕ} (hi : i ∈ S.retained) :
@@ -130,7 +131,7 @@ private theorem unique_weight_row (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Wit
   rw [← d_id]; ring
 
 /-- The improved W₁. Here Z bounds the first pass surplus in units of ρ²r. -/
-theorem retry_deficit_weight (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem retry_deficit_weight {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1)
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (band : RetainedWidth.Band Y ex α β) (slots : e+(ordinaryLists T E).card=r)

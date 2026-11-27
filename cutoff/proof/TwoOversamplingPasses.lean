@@ -1,3 +1,4 @@
+import CutInputs
 import RetryDeficit
 
 /-! Both oversampling estimates of Appendix A, §5 on one coloring and one
@@ -26,7 +27,7 @@ def TwoPassBounds (E : Finset V) (I : Finset ℕ) (s : ℕ) (A X Yhi κ ex : ℝ
 
 /-- The certificate bins supply only upper envelopes on the width. The bounds
 on individual senders and the larger thinning probabilities are derived here. -/
-theorem two_oversampling_passes (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem two_oversampling_passes {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)
@@ -36,7 +37,7 @@ theorem two_oversampling_passes (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witne
     (inc : α*S.w ≤ A) (defi : 2*β*S.w ≤ X)
     (κ Yhi : ℝ) (k0 : 0 ≤ κ) (k1 : κ ≤ 1/4) (y0 : 0 ≤ Yhi) (y1 : Yhi ≤ 2)
     (squares : 4*β^2*S.w*(1-S.w) ≤ κ*(9/40))
-    (ymax : 2-firstRate T/2-(199/400:ℝ)*secondRate T ≤ Yhi)
+    (ymax : Ycap ≤ Yhi)
     (shortage : (3/20:ℝ)*r < ((S.s-1:ℕ):ℝ)*r-(lowExterior T E S.retained S.s).card) :
     TwoPassBounds T E S.retained S.s A X Yhi κ ex := by
   let Z₁ := oversampleFactor A X Yhi κ (2*κ) ex
@@ -105,7 +106,7 @@ theorem witness_or_two_passes (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
     nlinarith only [mul_nonneg (sq_nonneg β) (sq_nonneg (2*S.w-1)),
       pow_le_pow_left₀ co.2.2.1 co.2.2.2 2]
   refine Or.inr ⟨T,eq,prep,E,lists,ex,α,β,band,S,scale,short,?_⟩
-  exact two_oversampling_passes T prep (by omega) (eq ▸ yes) order lists S band slots scale
+  exact two_oversampling_passes T prep.cutInputs (by omega) (eq ▸ yes) order lists S band slots scale
     _ _ (mul_nonneg co.1 S.width_pos.le) a1 (by have := co.2.2.1; have := S.width_pos; positivity)
     x1 le_rfl le_rfl _ _ (div_nonneg B0 (by norm_num)) k1 y.1 y.2 (by linarith) le_rfl short
 

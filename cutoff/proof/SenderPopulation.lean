@@ -1,3 +1,4 @@
+import CutInputs
 import SenderDestinations
 import HeavyRowSenders
 
@@ -16,7 +17,7 @@ def strongRows (E : Finset V) (rows : Finset ℕ) (v : V) :=
 
 /-- Vertices with two or more strong destinations cost at least two actual
 incidences each. The shortage and the retained deficits are in vertex units. -/
-theorem sender_population (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem sender_population {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e n : ℕ} {α β M Y b : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T)
       (range r) (qualifying T) E r)

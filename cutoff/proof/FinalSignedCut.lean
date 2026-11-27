@@ -1,3 +1,4 @@
+import CutInputs
 import MixedSenderCapacity
 
 /-! The final signed inequality on the width selection from the coloring. -/
@@ -44,7 +45,7 @@ variable {V : Type*} {r : ℕ} [Fintype V] (T : Trace V r)
 /-- For every box enclosing the actual selected width, a coloring without
 a witness supplies an l in the certificate interval. If its one-row cost
 is at most one, the manuscript's expression (5) is nonpositive. -/
-theorem coloring_signed_cut (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T.color)
+theorem coloring_signed_cut {Ycap : ℝ} (prep : CutInputs T Ycap) (hr : 3 ≤ r) (no : ¬Witness T.color)
     (order : Fintype.card V = r^2+1) {E : Finset V} {e t : ℕ} {α β M Y ex : ℝ}
     (lists : ListBounds (targetGraph T.color T.target) T.row univ (live T) (range r) (qualifying T) E r)
     (S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E) e t α β M)
@@ -54,7 +55,7 @@ theorem coloring_signed_cut (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T
     (inc : α*S.w ≤ A) (defi : 2*β*S.w ≤ X)
     (κ Yhi : ℝ) (k0 : 0 ≤ κ) (k1 : κ ≤ 1/4) (y0 : 0 ≤ Yhi) (y1 : Yhi ≤ 2)
     (squares : 4*β^2*S.w*(1-S.w) ≤ κ*(9/40))
-    (ymax : 2-firstRate T/2-(199/400:ℝ)*secondRate T ≤ Yhi)
+    (ymax : Ycap ≤ Yhi)
     (shortage : (3/20:ℝ)*r < ((S.s-1:ℕ):ℝ)*r-(lowExterior T E S.retained S.s).card) :
     ∃ l : ℝ, 0 ≤ l ∧ l ≤ (501/1000)*κ ∧
       (signedEpsilon A X Yhi κ ex l ≤ 1 → signedMargin A X Yhi κ ex l ≤ 0) := by
