@@ -128,7 +128,7 @@ theorem forward_floor_of_pivots (hr : 2 ≤ r) (no : ¬Witness T.color)
 
 /-- The five raw estimates remaining after construction of the pivot rows
 suffice for a common threshold on the actual colored lists. -/
-theorem witness_or_width_of_pivots (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1)
+theorem witness_or_width_of_pivots (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1)
     (rows : ∀ v, T.row v < r) (pivots : PivotRows T.color T.target T.row) (legal : T.Legal)
     (dest : ∀ v ∈ T.firstSources, T.destination v < r)
     (stop : ∀ v ∈ live T, (Transversal.neighbors T.crossGraph (live T) v).card ≤ degreeBound r)

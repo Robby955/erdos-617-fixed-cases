@@ -72,14 +72,14 @@ theorem two_oversampling_passes (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witne
 /-- From the original coloring alone, either a color is already missing or
 the retained rows satisfy both oversampling bounds at their selected width. -/
 theorem witness_or_two_passes (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
-    (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1) :
+    (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1) :
     Witness color ∨ ∃ T : Trace V r, T.color=color ∧ Prepared T ∧
       ∃ E : Finset V, ListBounds (targetGraph T.color T.target) T.row univ (live T)
         (range r) (qualifying T) E r ∧
       ∃ ex α β, RetainedWidth.Band (2-firstRate T/2-(199/400)*secondRate T) ex α β ∧
       ∃ S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
           (range r \ ordinaryLists T E).card (omittedCount T E) α β
-          ((2:ℝ)^((144-ex)/4) / ((256:ℝ)/255)^(1/4:ℝ)),
+          ((2:ℝ)^((144-ex)/4) / ((16:ℝ)/15)^(1/4:ℝ)),
         (2:ℝ)^ex*(S.s:ℝ)^4 < r ∧
         (3/20:ℝ)*r < ((S.s-1:ℕ):ℝ)*r-((lowExterior T E S.retained S.s).card:ℝ) ∧
         TwoPassBounds T E S.retained S.s (α*S.w) (2*β*S.w) (2-firstRate T/2-(199/400)*secondRate T)
@@ -92,7 +92,7 @@ theorem witness_or_two_passes (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
     (mem_sdiff.mp (mem_sdiff.mp (mem_inter.mp hi).1).1).1
   have slots := card_sdiff_add_card_eq_card sub
   rw [card_range] at slots
-  have co : 0 ≤ α ∧ α ≤ 656/4000 ∧ 0 ≤ β ∧ β ≤ 924/4000 := by cases band <;> norm_num
+  have co : 0 ≤ α ∧ α ≤ 656/4000 ∧ 0 ≤ β ∧ β ≤ 925/4000 := by cases band <;> norm_num
   have y : 0 ≤ 2-firstRate T/2-(199/400)*secondRate T ∧
       2-firstRate T/2-(199/400)*secondRate T ≤ 2 := by cases band <;> constructor <;> linarith
   have a1 := (mul_le_of_le_one_right co.1 S.width_lt.le).trans co.2.1

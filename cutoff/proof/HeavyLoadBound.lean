@@ -139,7 +139,7 @@ theorem foreign_load_le_distinct_edges (prep : Prepared T) (hr : 3 ≤ r) (no : 
       ∑ k ∈ S.retained.erase i, ((RepresentativeCut.cut G (C i) (C k)).card:ℝ) := by
   intro G C μ
   have small : 2*β*S.w ≤ 1 := by
-    have bet : 0 ≤ β ∧ β ≤ 924/4000 := by cases band <;> norm_num
+    have bet : 0 ≤ β ∧ β ≤ 925/4000 := by cases band <;> norm_num
     linarith only [mul_le_mul_of_nonneg_left S.width_lt.le (show 0 ≤ 2*β by linarith only [bet.1]),bet.2]
   have rp : (0:ℝ)<r := by exact_mod_cast (show 0<r by omega)
   have upper := foreign_load_le_interrow_cut T S (by omega) 1 (by norm_num) (by norm_num) small p rate hp hp1 i

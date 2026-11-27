@@ -36,7 +36,7 @@ theorem global_raw_budgets (hr : 2 ≤ r) (order : Fintype.card V = r^2+1)
 
 /-- Once the two stages of pruning have been justified, no global budget
 needs to be supplied to obtain the threshold. -/
-theorem width_of_pruning (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1)
+theorem width_of_pruning (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1)
     (no : ¬Witness T.color) (rows : ∀ x, T.row x < r) (least : Sparsest T.color T.target)
     (pivots : PivotRows T.color T.target T.row) (legal : T.Legal)
     (dest : ∀ v ∈ T.firstSources, T.destination v < r)

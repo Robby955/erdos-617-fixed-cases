@@ -111,12 +111,12 @@ def HasWidth : Prop :=
     ∃ b α β, RetainedWidth.Band (2-firstRate T/2-(199/400)*secondRate T) b α β ∧
       ∃ S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
           (range r \ ordinaryLists T E).card (omittedCount T E) α β
-          ((2:ℝ)^((144-b)/4) / ((256:ℝ)/255)^(1/4:ℝ)),
-        (2:ℝ)^b*(S.s:ℝ)^4 < 255*(2:ℝ)^136 ∧ (2:ℝ)^b*(S.s:ℝ)^4 < r
+          ((2:ℝ)^((144-b)/4) / ((16:ℝ)/15)^(1/4:ℝ)),
+        (2:ℝ)^b*(S.s:ℝ)^4 < 15*(2:ℝ)^140 ∧ (2:ℝ)^b*(S.s:ℝ)^4 < r
 
 /-- A legal stopped trace on the original complete graph yields either the
 conjecture's witness or a common threshold for the actual surviving clique lists. -/
-theorem witness_or_width (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1)
+theorem witness_or_width (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1)
     (rows : ∀ v, T.row v < r) (legal : T.Legal)
     (dest : ∀ v ∈ T.firstSources, T.destination v < r) (raw : RawEstimates T)
     (stop : ∀ v ∈ live T, (Transversal.neighbors T.crossGraph (live T) v).card ≤ degreeBound r) :

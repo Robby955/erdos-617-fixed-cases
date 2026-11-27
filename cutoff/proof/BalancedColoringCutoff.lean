@@ -11,7 +11,7 @@ noncomputable section
 whenever r is at least the improved cutoff. -/
 theorem missing_color_of_large_order {V : Type*} [Fintype V] {r : ℕ}
     (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
-    (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1) : Witness color := by
+    (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1) : Witness color := by
   by_contra no
   obtain ⟨T,eq,prep,E,lists,ex,α,β,band,S,_,scale,short⟩ :=
     (witness_or_exterior_shortage color hr order).resolve_left no
@@ -50,26 +50,26 @@ theorem missing_color_of_large_order {V : Type*} [Fintype V] {r : ℕ}
 
 /-- The large-r case in the encoding used by Formal Conjectures for problem 617.
 Diagonal values are arbitrary because the witness compares distinct vertices. -/
-theorem erdos_617_of_ge_cutoff {r : ℕ} (hr : 255*2^136 ≤ r) {V : Type*} [Fintype V]
+theorem erdos_617_of_ge_cutoff {r : ℕ} (hr : 15*2^140 ≤ r) {V : Type*} [Fintype V]
     (order : Fintype.card V = r^2+1) (coloring : Sym2 V → Fin r) :
     ∃ (vertices : Finset V) (missing : Fin r), vertices.card = r+1 ∧
       ∀ x ∈ vertices, ∀ y ∈ vertices, x ≠ y → coloring s(x,y) ≠ missing :=
   missing_color_of_large_order (fun edge ↦ coloring edge.val) hr order
 
 /-- The strengthened cutoff, in the balanced-coloring statement on Fin (r²+1). -/
-theorem balancedColoringAt_of_ge_reduced_cutoff (r : ℕ) (hr : 255*2^136 ≤ r) :
+theorem balancedColoringAt_of_ge_reduced_cutoff (r : ℕ) (hr : 15*2^140 ≤ r) :
     BalancedColoringAt r :=
   (balanced_iff r).mpr fun color ↦ missing_color_of_large_order color hr (Fintype.card_fin _)
 
 /-- Only finitely many color counts can violate the conjecture. -/
 theorem finite_counterexample_orders : {r : ℕ | 3 ≤ r ∧ ¬BalancedColoringAt r}.Finite := by
-  apply (Finset.range (255*2^136)).finite_toSet.subset
+  apply (Finset.range (15*2^140)).finite_toSet.subset
   intro r h
   exact Finset.mem_range.mpr (lt_of_not_ge fun hr ↦ h.2 (balancedColoringAt_of_ge_reduced_cutoff r hr))
 
 /-- The power-of-two theorem as stated in the November manuscript. -/
 theorem paper_cutoff : CutoffStatement := fun r hr ↦
-  balancedColoringAt_of_ge_reduced_cutoff r ((by decide : 255*2^136 ≤ (2:ℕ)^144).trans hr)
+  balancedColoringAt_of_ge_reduced_cutoff r ((by decide : 15*2^140 ≤ (2:ℕ)^144).trans hr)
 
 end
 end Erdos617

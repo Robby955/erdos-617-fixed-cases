@@ -114,7 +114,7 @@ theorem exterior_independence_cap (hr : 2 ≤ r) (no : ¬Witness T.color)
     exact hx
   have size (i) (hi : i ∈ S.retained) : (r:ℝ)/41 ≤ (A.filter fun x ↦ T.row x=i).card := by
     have βlo : 0 ≤ β := by cases band <;> norm_num
-    have βhi : β ≤ 924/4000 := by cases band <;> norm_num
+    have βhi : β ≤ 925/4000 := by cases band <;> norm_num
     have dx : rowDeficit T E i ≤ 1/2 := by
       by_cases h : 0 ≤ rowDeficit T E i
       · have sc : (1:ℝ) ≤ S.s := by exact_mod_cast sp

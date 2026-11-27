@@ -45,7 +45,7 @@ theorem retained_retry_surplus (hr : 2 ≤ r) (no : ¬Witness T.color)
   have qhalf : 1/2 ≤ neighborFraction G C y := (le_div_iff₀ cp).2 (by linarith only [deg,cb])
   have frac : ρ ≤ 1/1000 := (div_le_iff₀ sp).2 (by linarith only [hs])
   have hβ : 0 ≤ β := by cases band <;> norm_num
-  have βcap : β ≤ 924/4000 := by cases band <;> norm_num
+  have βcap : β ≤ 925/4000 := by cases band <;> norm_num
   have bound := S.deficit i hi
   change (S.s:ℝ)*(1-(C.card:ℝ)/r) ≤ 2*β*S.w at bound
   have num : (1-(C.card:ℝ)/r)*(S.s:ℝ) ≤ 3*(9/40:ℝ) := by

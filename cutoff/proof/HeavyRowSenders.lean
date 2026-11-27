@@ -125,7 +125,7 @@ theorem retained_row_charge (prep : Prepared T) (hr : 3 ≤ r) (no : ¬Witness T
   have sx : (S.s:ℝ)*x ≤ 2*β*S.w := rx ▸ S.deficit i hi
   have smin : (1120:ℝ) ≤ S.s := by exact_mod_cast S.scale_lo
   have βlo : 0 ≤ β := by cases band <;> norm_num
-  have βhi : β ≤ 924/4000 := by cases band <;> norm_num
+  have βhi : β ≤ 925/4000 := by cases band <;> norm_num
   have thin : x ≤ 1/2001 := by
     nlinarith only [sx,mul_le_mul_of_nonneg_right smin x0,βhi,
       mul_le_mul_of_nonneg_left S.width_lt.le βlo]

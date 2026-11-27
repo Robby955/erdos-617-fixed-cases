@@ -76,8 +76,8 @@ def ExteriorAlternative : Prop :=
     ∃ exp α β, RetainedWidth.Band (2-firstRate T/2-(199/400)*secondRate T) exp α β ∧
       ∃ S : WidthIntegral.Selection (ordinaryLists T E) (rowDeficit T E) (rowIncidence T E)
           (range r \ ordinaryLists T E).card (omittedCount T E) α β
-          ((2:ℝ)^((144-exp)/4) / ((256:ℝ)/255)^(1/4:ℝ)),
-        (2:ℝ)^exp*(S.s:ℝ)^4 < 255*(2:ℝ)^136 ∧ (2:ℝ)^exp*(S.s:ℝ)^4 < r ∧
+          ((2:ℝ)^((144-exp)/4) / ((16:ℝ)/15)^(1/4:ℝ)),
+        (2:ℝ)^exp*(S.s:ℝ)^4 < 15*(2:ℝ)^140 ∧ (2:ℝ)^exp*(S.s:ℝ)^4 < r ∧
         (∀ i ∈ S.retained, (255/256:ℝ)*r ≤ (temporaryRow T E i).card ∧
           ∀ x ∈ temporaryRow T E i, ((outsideClique T E i x).card:ℝ) < (7/50:ℝ)*r) ∧
         ((3/20:ℝ)*r < ((S.s-1:ℕ):ℝ)*r-((lowExterior T E S.retained S.s).card:ℝ) ∨
@@ -86,7 +86,7 @@ def ExteriorAlternative : Prop :=
 /-- The arbitrary-coloring entry point retains the pruning history, selected
 cliques and all auxiliary edge and square estimates under failed shortage. -/
 theorem witness_or_exterior_auxiliary (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
-    (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1) :
+    (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1) :
     Witness color ∨ ∃ T : Trace V r, T.color = color ∧ Prepared T ∧ ExteriorAlternative T := by
   by_cases yes : Witness color
   · exact Or.inl yes

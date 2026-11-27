@@ -45,7 +45,7 @@ structure Prepared (T : Trace V r) : Prop where
 Either an (r+1)-set already misses a color, or the actual retained cliques
 satisfy the three width estimates at one common threshold. -/
 theorem witness_or_prepared (color : {e : Sym2 V // ¬e.IsDiag} → Fin r)
-    (hr : 255*2^136 ≤ r) (order : Fintype.card V = r^2+1) :
+    (hr : 15*2^140 ≤ r) (order : Fintype.card V = r^2+1) :
     Witness color ∨ ∃ T : Trace V r, T.color = color ∧ Prepared T := by
   by_cases no : Witness color
   · exact Or.inl no

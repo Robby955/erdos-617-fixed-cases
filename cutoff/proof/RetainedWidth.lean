@@ -7,10 +7,10 @@ namespace Erdos617.RetainedWidth
 
 /-- Each interval for the incidence budget determines a choice of cut parameters. -/
 inductive Band : ℝ → ℝ → ℝ → ℝ → Prop where
-  | first {y} (lo : 0 ≤ y) (hi : y ≤ 1/2) : Band y 14 (656/4000) (924/4000)
-  | second {y} (lo : 1/2 ≤ y) (hi : y ≤ 55/100) : Band y 14 (656/4000) (922/4000)
-  | third {y} (lo : 55/100 ≤ y) (hi : y ≤ 68/100) : Band y 14 (652/4000) (916/4000)
-  | fourth {y} (lo : 68/100 ≤ y) (hi : y ≤ 1) : Band y 15 (652/4000) (916/4000)
+  | first {y} (lo : 0 ≤ y) (hi : y ≤ 501/1000) : Band y 14 (656/4000) (925/4000)
+  | second {y} (lo : 501/1000 ≤ y) (hi : y ≤ 55/100) : Band y 14 (656/4000) (923/4000)
+  | third {y} (lo : 55/100 ≤ y) (hi : y ≤ 65/100) : Band y 14 (653/4000) (918/4000)
+  | fourth {y} (lo : 65/100 ≤ y) (hi : y ≤ 1) : Band y 15 (652/4000) (916/4000)
   | fifth {y} (lo : 1 ≤ y) (hi : y ≤ 2) : Band y 17 (654/4000) (918/4000)
 
 private theorem log_normalizer :
@@ -50,11 +50,11 @@ theorem width_for_every_pruning_pair {p t : ℝ}
   have h₀ : 0 ≤ y := by dsimp [y]; linarith
   have h₂ : y ≤ 2 := by dsimp [y]; linarith
   obtain ⟨b, α, β, band⟩ : ∃ b α β, Band y b α β := by
-    by_cases h₁ : y ≤ 1/2
+    by_cases h₁ : y ≤ 501/1000
     · exact ⟨_, _, _, .first h₀ h₁⟩
     by_cases h₂' : y ≤ 55/100
     · exact ⟨_, _, _, .second (le_of_not_ge h₁) h₂'⟩
-    by_cases h₃ : y ≤ 68/100
+    by_cases h₃ : y ≤ 65/100
     · exact ⟨_, _, _, .third (le_of_not_ge h₂') h₃⟩
     by_cases h₄ : y ≤ 1
     · exact ⟨_, _, _, .fourth (le_of_not_ge h₃) h₄⟩
@@ -69,34 +69,37 @@ theorem reserved_endpoint {lam kept x rebate : ℝ}
   linarith
 
 
-/-- Width remains positive after replacing the required order by 255 / 256 of
+/-- Width remains positive after replacing the required order by 15 / 16 of
 the power-of-two cutoff and taking the fourth root in the scale parameter. -/
 theorem reduced_width_for_every_pruning_pair {p t : ℝ}
     (hp : 0 ≤ p) (hp' : p ≤ 125/61) (ht : 0 ≤ t) (hpt : p/4 + (199/400)*t ≤ 1) :
     let y := 2 - p/2 - (199/400)*t
     ∃ b α β, Band y b α β ∧
-      1/10000 < Real.log ((2:ℝ)^((144-b)/4) / (1120 * ((256:ℝ)/255)^(1/4:ℝ)))
+      1/100000 < Real.log ((2:ℝ)^((144-b)/4) / (1120 * ((16:ℝ)/15)^(1/4:ℝ)))
         - (y/α + (p+t)/β) + min ((391 + (1464/5)*p)/1120) ((4333+737*p)/10000) := by
   obtain ⟨b, α, β, band, _⟩ := width_for_every_pruning_pair hp hp' ht hpt
   refine ⟨b, α, β, band, ?_⟩
   have hlog := Real.log_two_gt_d9
   have hnorm := log_normalizer
-  have hratio : Real.log ((256:ℝ)/255) ≤ 1/255 := by
-    exact (Real.log_le_sub_one_of_pos (by norm_num : 0 < (256:ℝ)/255)).trans (by norm_num)
+  have hratio : Real.log ((16:ℝ)/15) ≤ 6454/100000 := by
+    apply (Real.log_le_iff_le_exp (by norm_num)).2
+    have h := Real.sum_le_exp_of_nonneg (x := (6454:ℝ)/100000) (by norm_num) 4
+    norm_num [Finset.sum_range_succ, Nat.factorial] at h
+    linarith
   rw [Real.log_div (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity),
-    Real.log_rpow (by norm_num : 0 < (256:ℝ)/255), Real.log_rpow (by norm_num), add_min]
+    Real.log_rpow (by norm_num : 0 < (16:ℝ)/15), Real.log_rpow (by norm_num), add_min]
   cases band <;> apply lt_min <;> linarith
 
 /-- The fourth power of the reduced width scale gives exactly the stated
 integer cutoff in each band. -/
 theorem fourth_power_of_reduced_scale (b : ℝ) :
-    (2:ℝ)^b * ((2:ℝ)^((144-b)/4) / ((256:ℝ)/255)^(1/4:ℝ))^4 = 255*(2:ℝ)^136 := by
+    (2:ℝ)^b * ((2:ℝ)^((144-b)/4) / ((16:ℝ)/15)^(1/4:ℝ))^4 = 15*(2:ℝ)^140 := by
   have hnum : ((2:ℝ)^((144-b)/4))^(4:ℕ) = (2:ℝ)^(144-b) := by
     rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num : (0:ℝ) ≤ 2)]
     congr 1
     ring
-  have hden : (((256:ℝ)/255)^(1/4:ℝ))^(4:ℕ) = (256:ℝ)/255 := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num : 0 ≤ (256:ℝ)/255)]
+  have hden : (((16:ℝ)/15)^(1/4:ℝ))^(4:ℕ) = (16:ℝ)/15 := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num : 0 ≤ (16:ℝ)/15)]
     norm_num
   rw [div_pow, hnum, hden, ← mul_div_assoc, ← Real.rpow_add (by norm_num : (0:ℝ) < 2)]
   rw [show b + (144-b) = 144 by ring]

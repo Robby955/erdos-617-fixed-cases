@@ -25,7 +25,7 @@ theorem retained_repair_floor (hr : 0 < r) (band : RetainedWidth.Band Y b α β)
     (39/40:ℝ)*r + (r:ℝ)/41 ≤ (rowList T E i).card := by
   have pos : (0:ℝ) < r := by exact_mod_cast hr
   have lo : 0 ≤ β := by cases band <;> norm_num
-  have upper : β ≤ 924/4000 := by cases band <;> norm_num
+  have upper : β ≤ 925/4000 := by cases band <;> norm_num
   have scale : (1120:ℝ) ≤ S.s := by exact_mod_cast S.scale_lo
   have deficit : rowDeficit T E i ≤ 1/2000 := by
     by_cases h : 0 ≤ rowDeficit T E i

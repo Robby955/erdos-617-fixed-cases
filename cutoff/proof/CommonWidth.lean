@@ -297,21 +297,21 @@ pruning parameters. The inputs are the scalar pruning bounds, the actual row
 count, and the joint row budget for the available bands. -/
 theorem width_at_reduced_cutoff (rows : Finset ι) (x y : ι → ℝ) (e₀ n r : ℕ)
     {p t : ℝ} (hp : 0 ≤ p) (hp' : p ≤ 125/61) (ht : 0 ≤ t)
-    (hpt : p/4+(199/400)*t ≤ 1) (hn : n ≤ 1411) (hr : 255*2^136 ≤ r)
+    (hpt : p/4+(199/400)*t ≤ 1) (hn : n ≤ 1411) (hr : 15*2^140 ≤ r)
     (hx : ∀ i ∈ rows, 0 ≤ x i) (hy : ∀ i ∈ rows, 0 ≤ y i)
     (count : e₀+rows.card = r) (omissions : (e₀:ℝ)+1 ≤ 729-(1464/5)*p+n)
     (budgets : ∀ b α β, RetainedWidth.Band (2-p/2-(199/400)*t) b α β →
       RowBudget rows x y n α β ((2-p/2-(199/400)*t)/α+(p+t)/β)) :
     ∃ b α β, RetainedWidth.Band (2-p/2-(199/400)*t) b α β ∧
       ∃ T : Selection rows x y e₀ n α β
-        ((2:ℝ)^((144-b)/4) / ((256:ℝ)/255)^(1/4:ℝ)),
-        (2:ℝ)^b*(T.s:ℝ)^4 < 255*(2:ℝ)^136 ∧ (2:ℝ)^b*(T.s:ℝ)^4 < r := by
+        ((2:ℝ)^((144-b)/4) / ((16:ℝ)/15)^(1/4:ℝ)),
+        (2:ℝ)^b*(T.s:ℝ)^4 < 15*(2:ℝ)^140 ∧ (2:ℝ)^b*(T.s:ℝ)^4 < r := by
   obtain ⟨b, α, β, band, cmp⟩ := RetainedWidth.reduced_width_for_every_pruning_pair hp hp' ht hpt
-  let factor := ((256:ℝ)/255)^(1/4:ℝ)
+  let factor := ((16:ℝ)/15)^(1/4:ℝ)
   let S := (2:ℝ)^((144-b)/4) / factor
   have hfac : 0 < factor := by dsimp [factor]; positivity
   have hfac' : factor ≤ 2 := by
-    calc factor ≤ ((256:ℝ)/255)^(1:ℝ) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
+    calc factor ≤ ((16:ℝ)/15)^(1:ℝ) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
          _ ≤ 2 := by norm_num
   have ha : 0 < α := by cases band <;> norm_num
   have hb : 0 < β := by cases band <;> norm_num
@@ -329,7 +329,7 @@ theorem width_at_reduced_cutoff (rows : Finset ι) (x y : ι → ℝ) (e₀ n r 
   have he : S/1120 = (2:ℝ)^((144-b)/4) / (1120 * factor) := by dsimp [S]; ring
   obtain ⟨T⟩ := at_scale rows x y e₀ n hp hp' ha hb hx hy slots omissions
     (budgets _ _ _ band) rate size (by rw [he]; dsimp [saving,fraction,affine,factor]; linarith only [cmp])
-  have hfinal : (2:ℝ)^b*(T.s:ℝ)^4 < 255*(2:ℝ)^136 := by
+  have hfinal : (2:ℝ)^b*(T.s:ℝ)^4 < 15*(2:ℝ)^140 := by
     calc (2:ℝ)^b*(T.s:ℝ)^4 < (2:ℝ)^b*S^4 :=
            mul_lt_mul_of_pos_left (pow_lt_pow_left₀ T.scale_hi (by positivity) (by norm_num)) (by positivity)
          _ = _ := RetainedWidth.fourth_power_of_reduced_scale b
@@ -343,7 +343,7 @@ theorem width_from_row_counts {κ : Type*} [DecidableEq κ]
     (raw : Finset κ) (surplus U assigned : κ → ℝ)
     (rows : Finset ι) (x y : ι → ℝ) (e₀ n r : ℕ) {p t O a v a₁ q : ℝ}
     (hp : 0 ≤ p) (hp' : p ≤ 125/61) (ht : 0 ≤ t) (hpt : p/4+(199/400)*t ≤ 1)
-    (hn : n ≤ 1411) (hr : 255*2^136 ≤ r) (count : e₀+rows.card = r)
+    (hn : n ≤ 1411) (hr : 15*2^140 ≤ r) (count : e₀+rows.card = r)
     (hsurplus : ∀ i ∈ raw, 0 ≤ surplus i) (hassigned : ∀ i ∈ raw, 0 ≤ assigned i)
     (sizes : ∑ i ∈ raw, surplus i ≤ 1/2) (costs : ∑ i ∈ raw, U i ≤ 1/2)
     (loads : ∑ i ∈ raw, assigned i = p)
@@ -357,8 +357,8 @@ theorem width_from_row_counts {κ : Type*} [DecidableEq κ]
     (deficit : (∑ i ∈ rows, x i) + n/400 ≤ p+t+O-a+q/256) :
     ∃ b α β, RetainedWidth.Band (2-p/2-(199/400)*t) b α β ∧
       ∃ T : Selection rows x y e₀ n α β
-        ((2:ℝ)^((144-b)/4) / ((256:ℝ)/255)^(1/4:ℝ)),
-        (2:ℝ)^b*(T.s:ℝ)^4 < 255*(2:ℝ)^136 ∧ (2:ℝ)^b*(T.s:ℝ)^4 < r := by
+        ((2:ℝ)^((144-b)/4) / ((16:ℝ)/15)^(1/4:ℝ)),
+        (2:ℝ)^b*(T.s:ℝ)^4 < 15*(2:ℝ)^140 ∧ (2:ℝ)^b*(T.s:ℝ)^4 < r := by
   have hslots := omitted_slots_of_row_charges raw surplus U assigned e₀ n
     hsurplus hassigned sizes costs loads localCost destination omitted
   exact width_at_reduced_cutoff rows x y e₀ n r hp hp' ht hpt hn hr hx hy count hslots

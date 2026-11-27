@@ -96,13 +96,13 @@ theorem temporary_row_bounds (prep : Prepared T) (hr : 0 < r) (E : Finset V)
       ∀ x ∈ temporaryRow T E i, ((outsideClique T E i x).card:ℝ) < (7/50:ℝ)*r := by
   have pos : (0:ℝ) < r := by exact_mod_cast hr
   have hα : α ≤ 656/4000 := by cases band <;> norm_num
-  have hβ : β ≤ 924/4000 := by cases band <;> norm_num
+  have hβ : β ≤ 925/4000 := by cases band <;> norm_num
   have hs : (1120:ℝ) ≤ S.s := by exact_mod_cast S.scale_lo
   have a (z w : ℝ) (hw : 0 ≤ w) (hz : (S.s:ℝ)*z ≤ w) : z ≤ w/1120 := by
     by_cases h : 0 ≤ z
     · linarith only [mul_le_mul_of_nonneg_right hs h,hz]
     · linarith only [le_of_not_ge h,hw]
-  have xbound : rowDeficit T E i ≤ (2*924/4000)/1120 := by
+  have xbound : rowDeficit T E i ≤ (2*925/4000)/1120 := by
     apply a _ _ (by norm_num)
     have paid := S.deficit i retained
     have hb : 0 ≤ β := by cases band <;> norm_num
@@ -116,7 +116,7 @@ theorem temporary_row_bounds (prep : Prepared T) (hr : 0 < r) (E : Finset V)
   have hK : K ⊆ C := filter_subset ..
   have count : ((C \ K).card:ℝ)+K.card = (C.card:ℝ) := by
     exact_mod_cast card_sdiff_add_card_eq_card hK
-  have short : (r:ℝ) - (C.card:ℝ) ≤ ((2*924/4000)/1120)*r := by
+  have short : (r:ℝ) - (C.card:ℝ) ≤ ((2*925/4000)/1120)*r := by
     have scaled := mul_le_mul_of_nonneg_right xbound pos.le
     change (1-(C.card:ℝ)/r)*r ≤ _ at scaled
     rwa [sub_mul,div_mul_cancel₀ _ pos.ne',one_mul] at scaled
