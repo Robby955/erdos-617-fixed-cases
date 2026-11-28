@@ -1,8 +1,8 @@
 # An explicit cutoff for the Erdős–Gyárfás balanced-coloring conjecture
 
-**Robert Sneiderman and OpenAI GPT-6.2 Astra** · 25 November 2026
+**Robert Sneiderman and OpenAI GPT-6.2 Astra** · 27 November 2026
 
-Color every edge of a complete graph with $r$ colors. Erdős and Gyárfás asked whether, on $r^2+1$ vertices, some $r+1$ vertices must miss one color. This manuscript proves that they must for every $r\ge 2^{144}$, and separately for $r=12$. Appendix I lowers the cutoff to $255\cdot2^{136}$. Together the fixed-case and cutoff manuscripts leave $13\le r<255\cdot2^{136}$ open. [Corollary and exact check](proof/retained-width-corollary.md)
+Color every edge of a complete graph with $r$ colors. Erdős and Gyárfás asked whether, on $r^2+1$ vertices, some $r+1$ vertices must miss one color. This manuscript proves the conjecture for every $r\ge 2^{143}$ and separately at $r=12$. The fixed cases and the cutoff leave $13\le r<2^{143}$ open. [Third pruning pass and verification](proof/third-pruning.md)
 
 **[Two-page overview](overview.pdf)** · **[Full paper](paper.pdf)** · **[Twelve-color paper](proof/order-twelve.pdf)** · **[Cite the paper](CITATION.cff)**
 
@@ -10,20 +10,21 @@ Color every edge of a complete graph with $r$ colors. Erdős and Gyárfás asked
 
 | Result | Mathematical argument | Verification |
 |---|---|---|
-| Cutoff at $2^{144}$ | The proof compares the cost of discarding vertices with the cost of discarding their destination rows. The full paper includes the earlier combinatorial estimates and the signed-cut argument. [Width argument](proof/retained-width.md) · [Earlier estimates](proof/weighted-width.md) | Exact rational checks for five width comparisons and 1,280 signed-cut endpoints. The complete theorem and its sharper corollary are formalized from the original coloring. [Python endpoint check](proof/verify_retained_width.py) · [End-to-end Lean theorem](proof/BalancedColoringCutoff.lean) |
+| Cutoff at $2^{143}$ | A third pruning pass bounds the edges that can prevent an independent choice across the surviving cliques. [Appendix J](proof/third-pruning.md) | Lean, Lean4Lean and Nanoda accepted the same export with 31,019 declarations. [Theorem](proof/ThirdPruningCutoff.lean) · [Replay record](proof/cutoff-143-kernels.txt) |
 | Twelve colors | Six exterior vertices would each have to use a different one of five rows. One row shared by two yields thirteen vertices missing a color. The resulting edge floor is 409 against a cap of 408. [Proof source](proof/order-twelve.md) · [Local hypotheses](proof/overfull-core.md#6-a-reduction-to-local-statements-for-any-hue) | One program minimizes the excess spent, another maximizes the number of vertices a given budget can accommodate. Lean checks the missing-color witness once its row and two vertices are supplied. [First replay](proof/verify_order_twelve.py) · [Second replay](proof/replay_order_twelve.py) · [Lean](proof/OrderTwelveCollision.lean) |
 
 From this directory, the following commands run the main exact checks with Python 3.10 or newer. The scripts use the standard library.
 
 ```sh
 cd proof
-python3 -B verify_retained_width.py
+python3 -B verify_pruning_corner.py
+python3 -B verify_third_pruning.py
 python3 -B verify_four_row_descent.py 12
 python3 -B verify_order_twelve.py
 python3 -B replay_order_twelve.py
 ```
 
-The first command reports five positive width margins and a minimum signed-cut margin greater than 0.0003327. In the four-row census at twelve, every surviving quartet has weight at least four. The two final commands test 91 profiles, or 434 choices when row labels of matching weight are retained, and exclude all eleven possible stops. The proof at twelve also uses the two- and three-row lemmas in the [supporting note](proof/overfull-core.md).
+The first two checks cover 1,280 signed-cut endpoints and 1,489 terminal boxes. The optional independent arithmetic replay, `python3 -B replay_third_pruning.py`, uses `z3-solver` and excludes 101 linear boxes. In the four-row census at twelve, every surviving quartet has weight at least four. The two final commands test 91 profiles, or 434 choices when row labels of matching weight are retained, and exclude all eleven possible stops. The proof at twelve also uses the two- and three-row lemmas in the [supporting note](proof/overfull-core.md).
 
 To check the Lean proofs, run the following from the directory containing this README. The toolchain and the mathlib commit are pinned.
 
@@ -31,13 +32,13 @@ To check the Lean proofs, run the following from the directory containing this R
 lake exe cache get
 lake env lean proof/RowExtraction.lean
 lake env lean proof/PruningOverlap.lean
-lake env python3 -B proof/replay_pruning_kernels.py cutoff --lean-only
+lake env python3 -B proof/replay_pruning_kernels.py cutoff-143 --lean-only
 lake env lean proof/OrderTwelveCollision.lean
 ```
 
-The end-to-end Lean proof starts with an arbitrary coloring on the specified number of vertices. It selects the cliques, derives both sampling estimates and the combined capacity inequality, and excludes the resulting numerical interval. The final theorem gives the missing-color witness for every order at or above the improved cutoff. A corollary proves that only finitely many orders can be counterexamples. [Theorems](proof/BalancedColoringCutoff.lean) · [Proof guide and verification record](proof/formal-cutoff.md)
+The end-to-end Lean proof starts with an arbitrary coloring on the specified number of vertices. It selects the cliques, derives both sampling estimates and the combined capacity inequality, and excludes the resulting numerical interval. The final theorem gives the missing-color witness for every order at or above the improved cutoff. A corollary proves that only finitely many orders can be counterexamples. [Cutoff theorem](proof/ThirdPruningCutoff.lean) · [Proof and verification record](proof/third-pruning.md)
 
-Run `lake env python3 -B proof/replay_pruning_kernels.py cutoff` to export the full proof and replay it with Lean’s kernel, Lean4Lean and Nanoda. The proof guide lists the executables used by this command. [Replay script](proof/replay_pruning_kernels.py)
+Run `lake env python3 -B proof/replay_pruning_kernels.py cutoff-143` to export the full proof and replay it with Lean’s kernel, Lean4Lean and Nanoda. The proof guide lists the executables used by this command. [Replay script](proof/replay_pruning_kernels.py)
 
 ### Reading the cutoff proof
 

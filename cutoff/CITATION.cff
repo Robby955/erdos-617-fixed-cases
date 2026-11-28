@@ -1,6 +1,8 @@
 cff-version: 1.2.0
 message: "To cite the cutoff theorem, use the paper listed below."
 type: software
+version: "2026-11-27"
+date-released: 2026-11-27
 title: "Lean proofs and verification for the Erdős–Gyárfás balanced-coloring conjecture"
 authors:
   - family-names: Sneiderman

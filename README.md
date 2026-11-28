@@ -2,13 +2,13 @@
 
 ## An explicit cutoff for balanced colorings
 
-**Robert Sneiderman and OpenAI GPT-6.2 Astra** · 25 November 2026
+**Robert Sneiderman and OpenAI GPT-6.2 Astra** · 27 November 2026
 
-Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The November preprint gives an explicit cutoff of $2^{144}$ and a separate proof at twelve colors. Appendix I sharpens the cutoff to $255\cdot2^{136}$ by using the positive margins in all five width comparisons. [Corollary](cutoff/proof/retained-width-corollary.md) [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
+Erdős and Gyárfás asked whether every edge coloring of $K_{r^2+1}$ with $r$ colors contains $r+1$ vertices missing a color. The manuscript proves this for every $r\ge 2^{143}$ and separately at twelve colors. Appendix J derives the cutoff by counting the edges at the vertices removed in a third pruning pass. [Cutoff argument](cutoff/proof/third-pruning.md) · [Original conjecture](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf)
 
-**[Research site](https://erdos617.com)** · **[Versioned release](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v3)** · **[Two-page overview](cutoff/overview.pdf)** · **[Full paper](cutoff/paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
+**[Research site](https://erdos617.com)** · **[Versioned release](https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-27)** · **[Two-page overview](cutoff/overview.pdf)** · **[Full paper](cutoff/paper.pdf)** · **[Proof sources and verification guide](cutoff/README.md)**
 
-The Lean proof starts with an arbitrary coloring at the improved cutoff and produces the missing-color witness. It also proves that only finitely many orders can be counterexamples. [Theorem in Lean](cutoff/proof/BalancedColoringCutoff.lean) · [Proof and independent-kernel replay instructions](cutoff/proof/formal-cutoff.md)
+The Lean proof starts with an arbitrary coloring at the improved cutoff and produces the missing-color witness. It also proves that only finitely many orders can be counterexamples. [Theorem in Lean](cutoff/proof/ThirdPruningCutoff.lean) · [Proof and independent-kernel replay instructions](cutoff/proof/third-pruning.md)
 
 ## July fixed-case releases
 

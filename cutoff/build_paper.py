@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PROOF = ROOT / "proof"
 REPOSITORY = "https://github.com/Robby955/erdos-617-fixed-cases"
-RELEASE_TAG = "cutoff-2026-11-25-v3"
+RELEASE_TAG = "cutoff-2026-11-27"
 CHAPTERS = [
     ("retained-width", "The cutoff at $2^{144}$", None),
     ("order-twelve", "The twelve-color theorem", None),
@@ -78,7 +78,7 @@ def build(kind: str, edition: str = "github") -> None:
     metadata = []
     if edition == "github" and kind != "corollary":
         metadata = ["-M", "author=Robert Sneiderman and OpenAI GPT-6.2 Astra",
-                    "-M", f"date={24 if kind == 'twelve' else 25} November 2026"]
+                    "-M", f"date={24 if kind == 'twelve' else 27} November 2026"]
     elif edition == "review" and kind != "corollary":
         target = target.with_name("review-" + target.name)
     manuscript = "paper.md" if edition == "github" else "paper-review.md"
@@ -113,6 +113,7 @@ def build(kind: str, edition: str = "github") -> None:
                 + corollary + "\n## The formal statement\n" + guide
                 + "\n[Build instructions and verification record](formal-cutoff.md#verification-commands)\n"
             )
+            chapters.append(chapter_text("third-pruning", "Appendix J. A third pruning pass at $2^{143}$", None))
         anchors = set(re.findall(r"\{#([\w-]+)\}", "\n".join(chapters)))
         front = prepare_links(front, ROOT, target, anchors)
         front = re.sub(

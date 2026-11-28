@@ -1,0 +1,24 @@
+27 November 2026. Verification of the cutoff at 2^143.
+Command from cutoff/
+  lake env python3 -Bu proof/replay_pruning_kernels.py cutoff-143
+Exit status 0. This pinned replay also removed the project olean directory from LEAN_PATH.
+135 local modules compiled from source in a temporary directory.
+The same export was passed to leanchecker --from-export, lean4lean --import, and nanoda_bin.
+Nanoda enforced a hard error for any axiom beyond the three listed below.
+
+Proof commit 6b4093ee7559a5a5b09ca2d0134038ea69904527
+Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)
+Rebuilding project modules from source. Compiled project directory removed from LEAN_PATH.
+'Erdos617.missing_color_at_143' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos617.erdos_617_of_ge_two_pow_143' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos617.balancedColoringAt_of_ge_two_pow_143' depends on axioms: [propext, Classical.choice, Quot.sound]
+Lean default kernel accepts the solution
+checked 31019 declarations
+All three kernels accepted the export of 3 cutoff-143 theorems.
+Export SHA-256 a51c1986b3400efd9a2b6e73ffe3bd104b8da318d034b4fd9751e887f0c2573f
+
+Additional checks
+  verify_third_pruning.py — 1489 terminal boxes
+  replay_third_pruning.py — 101 excluded linear boxes
+  verify_pruning_corner.py — 32768 two-row examples and 1280 signed-cut endpoints passed
+  generate_third_pruning_cells.py — reproduced the committed Lean cell source byte for byte

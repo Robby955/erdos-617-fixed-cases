@@ -2,6 +2,8 @@
 
 For every integer $r\ge255\cdot2^{136}$, color the edges of the complete graph on $r^2+1$ vertices with $r$ colors. There are $r+1$ vertices whose induced edges miss a color. The theorem accepts an arbitrary coloring. It has no hypothesis about a packing, a sampling distribution or the outcome of a numerical test. [End-to-end proof](BalancedColoringCutoff.lean)
 
+The 27 November extension proves the cutoff at $2^{143}$. [Third pruning pass, theorem and replay](third-pruning.md)
+
 ## Theorem statement
 
 The theorem **erdos_617_of_ge_cutoff** expresses the conclusion using a coloring of unordered vertex pairs. The comparison only uses distinct vertices. This matches the public Formal Conjectures statement after restricting the number of colors to the proved range. **balancedColoringAt_of_ge_reduced_cutoff** uses the loop-free edge type in this project. **paper_cutoff** gives the manuscript's simpler power-of-two bound, and **finite_counterexample_orders** proves that the set of possible exceptional orders is finite. [Lean statements](BalancedColoringCutoff.lean) · [Original conjecture, p. 80](https://www.renyi.hu/~gyarfas/Cikkek/92_splitandbalanced.pdf#page=2) · [Formal Conjectures statement](https://github.com/google-deepmind/formal-conjectures/blob/6fbb54f24ccc2e64dcfaffc28c58950e377110d2/FormalConjectures/ErdosProblems/617.lean#L42-L46)

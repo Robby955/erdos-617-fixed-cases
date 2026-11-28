@@ -20,12 +20,12 @@
     <article>
       <div class="lead">
         <div class="opening">
-          <p class="date"><time datetime="2026-11-25">25 November 2026</time></p>
+          <p class="date"><time datetime="2026-11-27">27 November 2026</time></p>
           <h1>A finite cutoff for balanced colorings</h1>
           <p class="byline">Robert Sneiderman and OpenAI GPT-6.2 Astra</p>
           <p class="abstract">Color every edge of a complete graph on <span class="math"><i>r</i>² + 1</span> vertices with <i>r</i> colors. Erdős and Gyárfás asked whether some <span class="math"><i>r</i> + 1</span> vertices must miss a color.</p>
-          <p class="result">We prove this for every <span class="math"><i>r</i> ≥ 255 · 2<sup>136</sup></span>. The proof is formalized in Lean.</p>
-          <div class="reading"><a class="paper-link" href="/paper.pdf">Read the paper <span>PDF</span></a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v3/cutoff/proof/BalancedColoringCutoff.lean#L53-L57">Lean theorem</a></div>
+          <p class="result">We prove this for every <span class="math"><i>r</i> ≥ 2<sup>143</sup></span>. The proof is formalized in Lean.</p>
+          <div class="reading"><a class="paper-link" href="/paper.pdf">Read the paper <span>PDF</span></a><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-27/cutoff/proof/ThirdPruningCutoff.lean#L64-L72">Lean theorem</a></div>
         </div>
         <figure aria-labelledby="figure-title">
           <h2 id="figure-title">A three-color example</h2>
@@ -42,20 +42,19 @@
         <h2>The proof</h2>
         <div class="section-text">
           <p>Suppose every set of <span class="math"><i>r</i> + 1</span> vertices sees every color. Fix a color with the fewest edges. Most of its edges lie within parts of a partition. We extract cliques of that color and seek one vertex from each, with enough vertices outside the cliques to reach <span class="math"><i>r</i> + 1</span>. At the stated cutoff, the edges needed to block every such choice exceed the number available.</p>
-          <p>Theorem A gives the simpler bound <span class="math"><i>r</i> ≥ 2<sup>144</sup></span>. The cutoff in Appendix I is 255/256 of that value. Lean, Lean4Lean and Nanoda accepted the same proof export. Independent mathematical review of the paper is pending.</p>
+          <p>Appendix J proves the cutoff by counting the edges lost in a third pruning pass. Lean, Lean4Lean and Nanoda accepted the same proof export. Independent mathematical review of the paper is pending.</p>
           <ul class="resources">
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/overview.pdf">Two-page overview</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-25-v3/cutoff/proof/formal-cutoff.md">Lean proof guide</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/kernel-replay.txt">Kernel replay log</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/lean-and-paper.zip">Source archive</a></li>
-            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-25-v3/corollary.pdf">Sharper bound</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-27/overview.pdf">Two-page overview</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/blob/cutoff-2026-11-27/cutoff/proof/third-pruning.md">Lean proof guide</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-27/kernel-replay.txt">Kernel replay log</a></li>
+            <li><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/download/cutoff-2026-11-27/lean-and-paper.zip">Source archive</a></li>
           </ul>
         </div>
       </section>
       <section id="open">
         <h2>Open cases</h2>
         <div class="section-text">
-          <p>The fixed-case manuscripts and the cutoff leave <span class="math"><strong>13 ≤ <i>r</i> &lt; 255 · 2<sup>136</sup></strong></span>. The first remaining case asks whether every thirteen-coloring on 170 vertices has fourteen vertices that miss a color.</p>
+          <p>The fixed-case manuscripts and the cutoff leave <span class="math"><strong>13 ≤ <i>r</i> &lt; 2<sup>143</sup></strong></span>. The first remaining case asks whether every thirteen-coloring on 170 vertices has fourteen vertices that miss a color.</p>
           <p><a href="research.md">Research notes and replay commands</a> · <a href="https://github.com/Robby955/erdos-617-fixed-cases/issues/new?title=Proposed+cutoff">Propose a smaller cutoff</a></p>
         </div>
       </section>
@@ -76,6 +75,6 @@
       </section>
     </article>
   </main>
-  <footer class="wrap"><span>Robert Sneiderman</span><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-25-v3">Paper and source code</a></footer>
+  <footer class="wrap"><span>Robert Sneiderman</span><a href="https://github.com/Robby955/erdos-617-fixed-cases/releases/tag/cutoff-2026-11-27">Paper and source code</a></footer>
 </body>
 </html>
